@@ -9,7 +9,8 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "lib": "node build/build.lib.js"
+    "lib": "node build/build.lib.js",
+    "build:em": "node build/build.em.js"
   },
   "dependencies": {
     "js-md5": "^0.7.3",
