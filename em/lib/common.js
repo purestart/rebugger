@@ -1,7 +1,10 @@
+/* eslint-disable spaced-comment */
+/* eslint-disable space-before-function-paren */
+/* eslint-disable quotes */
 // 屏幕分辨率
 var utils = {
   // 获取 系统 浏览器等相关信息
-  getReportInfo: function() {
+  getBaseInfo: function() {
     // 获取屏幕信息
     let screenInfo = this.getScreen();
     screenInfo = Object.assign({}, screenInfo, {
@@ -10,7 +13,11 @@ var utils = {
     });
     let languageInfo = Object.assign({}, { language: this.getLanguage() });
     let getSysInfo = this.getSysInfo();
-    let agentInfo = { agent: this.getAgent(), url: this.getLocalUrl(), online: this.getNetStatus()};
+    let agentInfo = {
+      agent: this.getAgent(),
+      url: this.getLocalUrl(),
+      online: this.getNetStatus()
+    };
     let ret = Object.assign(
       {},
       screenInfo,
@@ -177,7 +184,6 @@ var utils = {
       var isWinXP =
         sUserAgent.indexOf("Windows nt 5.1") > -1 ||
         sUserAgent.indexOf("Windows XP") > -1;
-      sUserAgent.indexOf("Windows XP") > -1;
       if (isWinXP) return "WinXP";
       var isWin2003 =
         sUserAgent.indexOf("Windows nt 5.2") > -1 ||
@@ -215,26 +221,27 @@ var utils = {
   },
   getBrowser: function() {
     // 获取浏览器名
+    // eslint-disable-next-line no-useless-escape
     var rMsie = /(msie\s|trident\/7)([\w\.]+)/;
     var rTrident = /(trident)\/([\w.]+)/;
-    var rEdge = /(chrome)\/([\w.]+)/; //IE
+    var rEdge = /(chrome)\/([\w.]+)/; // IE
 
-    var rFirefox = /(firefox)\/([\w.]+)/; //火狐
-    var rOpera = /(opera).+version\/([\w.]+)/; //旧Opera
-    var rNewOpera = /(opr)\/(.+)/; //新Opera 基于谷歌
-    var rChrome = /(chrome)\/([\w.]+)/; //谷歌
-    var rUC = /(chrome)\/([\w.]+)/; //UC
-    var rMaxthon = /(chrome)\/([\w.]+)/; //遨游
-    var r2345 = /(chrome)\/([\w.]+)/; //2345
-    var rQQ = /(chrome)\/([\w.]+)/; //QQ
-    //var rMetasr =  /(metasr)\/([\w.]+)/;//搜狗
+    var rFirefox = /(firefox)\/([\w.]+)/; // 火狐
+    var rOpera = /(opera).+version\/([\w.]+)/; // 旧Opera
+    var rNewOpera = /(opr)\/(.+)/; // 新Opera 基于谷歌
+    var rChrome = /(chrome)\/([\w.]+)/; // 谷歌
+    var rUC = /(chrome)\/([\w.]+)/; // UC
+    var rMaxthon = /(chrome)\/([\w.]+)/; // 遨游
+    var r2345 = /(chrome)\/([\w.]+)/; // 2345
+    var rQQ = /(chrome)\/([\w.]+)/; // QQ
+    // var rMetasr =  /(metasr)\/([\w.]+)/;//搜狗
     var rSafari = /version\/([\w.]+).*(safari)/;
 
     var ua = navigator.userAgent.toLowerCase();
 
     var matchBS, matchBS2;
 
-    //IE 低版
+    // IE 低版
     matchBS = rMsie.exec(ua);
     if (matchBS != null) {
       matchBS2 = rTrident.exec(ua);
@@ -245,25 +252,25 @@ var utils = {
               browser: "Microsoft IE",
               version: "IE: 8" //内核版本号
             };
-            break;
+            // break;
           case "5.0":
             return {
               browser: "Microsoft IE",
               version: "IE: 9"
             };
-            break;
+            // break;
           case "6.0":
             return {
               browser: "Microsoft IE",
               version: "IE: 10"
             };
-            break;
+            // break;
           case "7.0":
             return {
               browser: "Microsoft IE",
               version: "IE: 11"
             };
-            break;
+            // break;
           default:
             return {
               browser: "Microsoft IE",
