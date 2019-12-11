@@ -118,7 +118,6 @@ var utils = {
     // } else {
     //   connection.typeText = connection.type;
     // }
-
     // if (typeof connection.bandwidth == "number") {
     //   if (connection.bandwidth > 10) {
     //     connection.type = "wifi";
@@ -132,13 +131,9 @@ var utils = {
     //     connection.type = "unknown";
     //   }
     // }
-
     // var html = "Type : " + connection.typeText;
-
     // html += "Bandwidth : " + connection.bandwidth;
-
     // var html += " isOnline : " + navigator.onLine;
-
     return navigator.onLine;
   },
 
@@ -156,12 +151,10 @@ var utils = {
   getOS: function() {
     //判断所处操作系统
     var sUserAgent = navigator.userAgent.toLowerCase();
-
     var isWin =
       navigator.platform == "Win32" ||
       navigator.platform == "Win64" ||
       navigator.platform == "wow64";
-
     var isMac =
       navigator.platform == "Mac68K" ||
       navigator.platform == "MacPPC" ||
@@ -225,7 +218,6 @@ var utils = {
     var rMsie = /(msie\s|trident\/7)([\w\.]+)/;
     var rTrident = /(trident)\/([\w.]+)/;
     var rEdge = /(chrome)\/([\w.]+)/; // IE
-
     var rFirefox = /(firefox)\/([\w.]+)/; // 火狐
     var rOpera = /(opera).+version\/([\w.]+)/; // 旧Opera
     var rNewOpera = /(opr)\/(.+)/; // 新Opera 基于谷歌
@@ -236,11 +228,8 @@ var utils = {
     var rQQ = /(chrome)\/([\w.]+)/; // QQ
     // var rMetasr =  /(metasr)\/([\w.]+)/;//搜狗
     var rSafari = /version\/([\w.]+).*(safari)/;
-
     var ua = navigator.userAgent.toLowerCase();
-
     var matchBS, matchBS2;
-
     // IE 低版
     matchBS = rMsie.exec(ua);
     if (matchBS != null) {

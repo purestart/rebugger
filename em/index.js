@@ -3,16 +3,20 @@
 // type异常类型 caught 手动上报异常 unCaught 自动捕获代码异常 sourceError 资源加载异常 httpError 请求异常 unhandledRejection 未处理promise异常 handledRejection
 import utils from "./lib/common";
 import config from "./config/index";
+import customFieldUtil from "./lib/customFieldUtil";
+import reportHandller from "./lib/reportHandller";
 
 var rebugger = {
   options: {
     apikey: "",
-    useCustomField: "false",
+    useCustomField: false,
     silent: false,
     silentDev: false,
     silentPre: false,
-    // 异常上传模式
+    // 异常上传模式 onError 立即上传 byNum 按天存储满多少个上传 byDay 按天上传 onErrorOffline 立即上报且支持线下缓存
     reportMode: "onError",
+    // 满10条数据上报一次
+    reportNum: 10,
     // 版本信息
     appVersion: "",
     // 环境信息
@@ -28,18 +32,24 @@ var rebugger = {
     cityId: "",
     cityName: "",
     // 自定义保存字段 数据将会保存在metaData里面 origin: localStorage / sessionStorage / window / cookie 不能获取跨域信息 需要将js文件下载
-    customField: [
-      {
-        fullName: {
-          origin: "localStorage",
-          keyPaths: "user.fullName"
-        },
-        uid: {
-          origin: "localStorage",
-          keyPaths: "user.uid"
-        }
+    customField: {
+      fullName: {
+        origin: "localStorage",
+        paths: "user.fullName"
+      },
+      uid: {
+        origin: "localStorage",
+        paths: "user.uid"
+      },
+      token: {
+        origin: "sessionStorage",
+        paths: "token"
+      },
+      returnCitySN: {
+        origin: "window",
+        paths: "returnCitySN"
       }
-    ]
+    }
   },
   // 初始化 rebugger 框架内使用
   init(apikey, options) {},
@@ -110,9 +120,9 @@ var rebugger = {
             columnNumber = tmpArr[tmpArr.length - 1];
             fileName = str.replace(":" + lineNumber + ":" + columnNumber, "");
             columnNumber = columnNumber.replace(")", "");
-            console.log(lineNumber);
-            console.log(columnNumber);
-            console.log(fileName);
+            // console.log(lineNumber);
+            // console.log(columnNumber);
+            // console.log(fileName);
           }
         }
       }
@@ -128,10 +138,27 @@ var rebugger = {
         stack: stack.toString()
       };
       let baseInfo = utils.getBaseInfo();
-      let params = Object.assign({}, initParam, baseInfo, errorInfo);
+      let metaData = rebugger.getMetaData();
+      let params = Object.assign({}, initParam, baseInfo, metaData, errorInfo);
       console.log(params);
-      rebugger.reportObject(params);
+      // rebugger.reportObject(params);
+      reportHandller.report(rebugger, params);
     };
+  },
+  getMetaData: function(defaultInfo) {
+    defaultInfo = defaultInfo || {};
+    let metaData = defaultInfo;
+    // console.log(rebugger.options);
+    if (rebugger.options.useCustomField) {
+      let customFieldInfo = customFieldUtil.getCustomField(
+        rebugger.options.customField
+      );
+      // console.log(metaData);
+      metaData = Object.assign({}, metaData, customFieldInfo);
+    }
+    // 其它途径获取的metaData
+
+    return { metaData: JSON.stringify(metaData) };
   }
 };
 export default rebugger;
@@ -208,11 +235,16 @@ export default rebugger;
   let cityId = "";
   let cityName = "";
   // 获取客户端ip和城市信息
+  // eslint-disable-next-line no-undef
   if (returnCitySN) {
+    // eslint-disable-next-line no-undef
     ip = returnCitySN["cip"];
+    // eslint-disable-next-line no-undef
     cityId = returnCitySN["cid"];
+    // eslint-disable-next-line no-undef
     cityName = returnCitySN["cname"];
   }
+
   rebugger.options.ip = ip;
   rebugger.options.cityId = cityId;
   rebugger.options.cityName = cityName;
@@ -231,6 +263,8 @@ export default rebugger;
   rebugger.options.silentTest = silentTest;
   rebugger.options.silentPre = silentPre;
 
+  // 初始化 reportHandller
+  reportHandller.init();
   // window.onerror = function(message, source, lineno, colno, error){
   //   console.log("window.onerror");
   //   console.log("msg ",message,source,lineno,colno,error);
