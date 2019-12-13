@@ -20,6 +20,10 @@ var utils = {
     } else {
       return false;
     }
+  },
+  // 时间字符串比较 2019-12-12 13:13:13
+  CompareDate(d1, d2) {
+    return new Date(d1.replace(/-/g, "/")) > new Date(d2.replace(/-/g, "/"));
   }
 };
 

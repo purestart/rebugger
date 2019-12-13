@@ -1,5 +1,6 @@
 /* eslint-disable quotes */
 /* eslint-disable space-before-function-paren */
+import utils from "./utils";
 
 export default function ajax(options) {
   // 这个options时传入给ajax的配置参数
@@ -31,17 +32,29 @@ export default function ajax(options) {
     }
     if (xhr) {
       if (method === "GET") {
-        xhr.open(method, options.url + "?" + Math.random(), async); // 防止缓存
+        let params = options.params;
+        let paramStr = "";
+        if (params && utils.isObject(params)) {
+          for (let key in params) {
+            paramStr = paramStr + key + "=" + params[key] + "&";
+          }
+          options.url =
+            options.url + "?" + paramStr + "timeStamp=" + new Date().getTime;
+        } else {
+          options.url = options.url + "?" + "timeStamp=" + new Date().getTime; // 防止缓存
+        }
+        xhr.open(method, options.url, async);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(null);
       } else if (method === "POST") {
         xhr.open(method, options.url, async);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(options.data);
+        xhr.send(JSON.stringify(options.data));
       }
       // xhr.responseType = options.type || "";
       xhr.onreadystatechange = () => {
-        if (xhr.responseText) {
+        // console.log(xhr);
+        if (xhr.responseText && xhr.status == 200) {
           // 有数据说明相应成功
           resolve(xhr.responseText);
         }
@@ -54,5 +67,6 @@ export default function ajax(options) {
     }
   }).catch(e => {
     // 可以用image 收集简单异常信息
+    console.log("catch err", e);
   });
 }

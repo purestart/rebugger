@@ -5,6 +5,7 @@ import utils from "./lib/common";
 import config from "./config/index";
 import customFieldUtil from "./lib/customFieldUtil";
 import reportHandller from "./lib/reportHandller";
+import ajax from "./lib/ajax";
 
 var rebugger = {
   options: {
@@ -13,10 +14,13 @@ var rebugger = {
     silent: false,
     silentDev: false,
     silentPre: false,
+    silentVideo: false,
     // 异常上传模式 onError 立即上传 byNum 按天存储满多少个上传 byDay 按天上传 onErrorOffline 立即上报且支持线下缓存
     reportMode: "onError",
     // 满10条数据上报一次
     reportNum: 10,
+    // 缓存数据最大数
+    limitNum: 20,
     // 版本信息
     appVersion: "",
     // 环境信息
@@ -49,25 +53,58 @@ var rebugger = {
         origin: "window",
         paths: "returnCitySN"
       }
-    }
+    },
+    today: "",
+    // rebugger服务器的baseUrl
+    baseUrl: "http://apidadidev.sssoristarcloud.com"
   },
   // 初始化 rebugger 框架内使用
   init(apikey, options) {},
   getHostName: function() {
     return document.domain;
   },
-  report: function(paramStr) {
+  reportByIMG: function(paramStr) {
     var reportUrl = config.baseUrl;
     new Image().src = reportUrl + "?" + paramStr;
   },
   // 发送错误对象信息
-  reportObject: function(obj) {
+  reportObjectByIMG: function(obj) {
     let paramStr = "";
     for (var key in obj) {
       paramStr = paramStr + key + "=" + obj[key] + "&";
     }
-    this.report(paramStr);
+    this.reportByIMG(paramStr);
   },
+  // 上报http异常 用于手动
+  reportHttpError: function(errorInfo) {
+    errorInfo.type = "httpError";
+    rebugger.reportError(errorInfo);
+  },
+  // 上报promise异常捕获信息 用于手动
+  reportHandledRejection: function(errorInfo) {
+    errorInfo.type = "handledRejection";
+    rebugger.reportError(errorInfo);
+  },
+  // 默认type caught 用于手动
+  reportError: function(errorInfo) {
+    // 立即发送
+
+    let options = {
+      method: "POST",
+      url: rebugger.options.baseUrl + "/cpm/user/login",
+      // url: "/cpm/user/login",
+      data: errorInfo
+    };
+    ajax(options)
+      .then(res => {
+        // console.log("success", res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  // 批量上传异常数据
+  reportErrorList: function(params) {},
   // 获取异常组件名称
   getComponentName(vm) {
     if (vm.$root === vm) return "root";
@@ -156,8 +193,7 @@ var rebugger = {
       // console.log(metaData);
       metaData = Object.assign({}, metaData, customFieldInfo);
     }
-    // 其它途径获取的metaData
-
+    // 其它途径获取的metaData ...
     return { metaData: JSON.stringify(metaData) };
   }
 };
@@ -226,6 +262,10 @@ export default rebugger;
         return;
       }
     }
+    let silentVideo = script.getAttribute("silentVideo");
+    if (silentVideo && silentVideo == "true") {
+      rebugger.options.silentVideo = true;
+    }
   } else {
     console.warn("script should be set id = 'rebugger'");
     return;
@@ -262,9 +302,15 @@ export default rebugger;
   rebugger.options.silentDev = silentDev;
   rebugger.options.silentTest = silentTest;
   rebugger.options.silentPre = silentPre;
+  rebugger.options.today =
+    new Date().getFullYear() +
+    "-" +
+    (new Date().getMonth() + 1) +
+    "-" +
+    new Date().getDate();
 
   // 初始化 reportHandller
-  reportHandller.init();
+  reportHandller.init(rebugger);
   // window.onerror = function(message, source, lineno, colno, error){
   //   console.log("window.onerror");
   //   console.log("msg ",message,source,lineno,colno,error);
@@ -286,7 +332,6 @@ export default rebugger;
         // console.log(scriptURI);
         lineNumber = event.lineno;
         columnNumber = event.colno;
-
         let title = event.message;
         let stack = event.error ? event.error.stack : "";
         let errorInfo = {
@@ -301,14 +346,14 @@ export default rebugger;
         let baseInfo = utils.getBaseInfo();
         let params = Object.assign({}, initParam, baseInfo, errorInfo);
         console.log(params);
-        rebugger.reportObject(params);
+        // rebugger.reportObject(params);
+        reportHandller.report(rebugger, params);
       } else {
         // 上报资源地址
         let src = target.src || target.href;
-        console.log("资源加载异常", src);
+        // console.log("资源加载异常", src);
         console.log(event);
         let tagName = target.tagName;
-        console.log(tagName);
         let outerHTML = target.outerHTML;
         let selector = "";
         let paths = event.path;
@@ -381,12 +426,14 @@ export default rebugger;
           outerHTML,
           status: 404,
           statusText: "Not Found",
-          selector
+          selector,
+          type: "sourceError"
         };
         let baseInfo = utils.getBaseInfo();
         let params = Object.assign({}, initParam, baseInfo, errorInfo);
         console.log(params);
-        rebugger.reportObject(params);
+        // rebugger.reportObject(params);
+        reportHandller.report(rebugger, params);
       }
     },
     true
@@ -452,9 +499,9 @@ export default rebugger;
             columnNumber = tmpArr[tmpArr.length - 1];
             fileName = str.replace(":" + lineNumber + ":" + columnNumber, "");
             columnNumber = columnNumber.replace(")", "");
-            console.log(lineNumber);
-            console.log(columnNumber);
-            console.log(fileName);
+            // console.log(lineNumber);
+            // console.log(columnNumber);
+            // console.log(fileName);
             errorInfo.lineNumber = lineNumber;
             errorInfo.columnNumber = columnNumber;
             errorInfo.fileName = fileName;
@@ -466,7 +513,8 @@ export default rebugger;
     let baseInfo = utils.getBaseInfo();
     let params = Object.assign({}, initParam, baseInfo, errorInfo);
     console.log(params);
-    rebugger.reportObject(params);
+    // rebugger.reportObject(params);
+    reportHandller.report(rebugger, params);
   });
 
   // 处理的promise错误
