@@ -58,8 +58,8 @@ var reportHandller = {
     }
     switch (reportMode) {
       case "onError":
-        vm.reportObject(params);
-        reportHandller.reportByNum(vm, params);
+        vm.reportError(params, false);
+        // reportHandller.reportByNum(vm, params);
         break;
       case "byNum":
         reportHandller.reportByNum(vm, params);

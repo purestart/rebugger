@@ -56,7 +56,7 @@ var rebugger = {
     },
     today: "",
     // rebugger服务器的baseUrl
-    baseUrl: "http://apidadidev.sssoristarcloud.com"
+    baseUrl: "http://apidadidev.sdoristarcloud.com"
   },
   // 初始化 rebugger 框架内使用
   init(apikey, options) {},
@@ -76,19 +76,29 @@ var rebugger = {
     this.reportByIMG(paramStr);
   },
   // 上报http异常 用于手动
-  reportHttpError: function(errorInfo) {
+  reportHttpError: function(errorInfo, flag = true) {
     errorInfo.type = "httpError";
-    rebugger.reportError(errorInfo);
+    rebugger.reportError(errorInfo, flag);
   },
   // 上报promise异常捕获信息 用于手动
-  reportHandledRejection: function(errorInfo) {
+  reportHandledRejection: function(errorInfo, flag = true) {
     errorInfo.type = "handledRejection";
-    rebugger.reportError(errorInfo);
+    rebugger.reportError(errorInfo, flag);
   },
-  // 默认type caught 用于手动
-  reportError: function(errorInfo) {
+  // 默认type caught 用于手动  flag是否需要获取基础信息baseInfo和MetaData
+  reportError: function(errorInfo, flag = true) {
     // 立即发送
-
+    if (flag) {
+      let initParam = {
+        apikey: rebugger.options.apikey,
+        ip: rebugger.options.ip,
+        cityId: rebugger.options.cityId,
+        cityName: rebugger.options.cityName
+      };
+      let baseInfo = utils.getBaseInfo();
+      let metaData = rebugger.getMetaData();
+      errorInfo = Object.assign({}, initParam, baseInfo, metaData, errorInfo);
+    }
     let options = {
       method: "POST",
       url: rebugger.options.baseUrl + "/cpm/user/login",
@@ -104,7 +114,26 @@ var rebugger = {
       });
   },
   // 批量上传异常数据
-  reportErrorList: function(params) {},
+  reportErrorList: function(list, flag = true) {
+    let dataObj = {
+      list: list
+    };
+    if (flag) {
+      // 获取baseInfo等基础信息
+    }
+    let options = {
+      method: "POST",
+      url: rebugger.options.baseUrl + "/cpm/user/login",
+      data: dataObj
+    };
+    ajax(options)
+      .then(res => {
+        console.log("report success", res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   // 获取异常组件名称
   getComponentName(vm) {
     if (vm.$root === vm) return "root";

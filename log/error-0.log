@@ -1,0 +1,33 @@
+Error: No default engine was specified and no extension was provided.
+    at new View (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\view.js:61:11)
+    at Function.render (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\application.js:570:12)
+    at ServerResponse.render (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\response.js:1012:7)
+    at G:\Workspaces\open\vue-module\rebugger\server\build\src\app.js:27:9
+    at Layer.handle_error (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\layer.js:71:5)
+    at trim_prefix (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:315:13)
+    at G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:284:7
+    at Function.process_params (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:335:12)
+    at next (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:275:10)
+    at G:\Workspaces\open\vue-module\rebugger\server\build\src\app.js:18:5
+Error: No default engine was specified and no extension was provided.
+    at new View (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\view.js:61:11)
+    at Function.render (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\application.js:570:12)
+    at ServerResponse.render (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\response.js:1012:7)
+    at G:\Workspaces\open\vue-module\rebugger\server\build\src\app.js:27:9
+    at Layer.handle_error (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\layer.js:71:5)
+    at trim_prefix (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:315:13)
+    at G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:284:7
+    at Function.process_params (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:335:12)
+    at next (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:275:10)
+    at G:\Workspaces\open\vue-module\rebugger\server\build\src\app.js:18:5
+Error: No default engine was specified and no extension was provided.
+    at new View (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\view.js:61:11)
+    at Function.render (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\application.js:570:12)
+    at ServerResponse.render (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\response.js:1012:7)
+    at G:\Workspaces\open\vue-module\rebugger\server\build\src\app.js:27:9
+    at Layer.handle_error (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\layer.js:71:5)
+    at trim_prefix (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:315:13)
+    at G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:284:7
+    at Function.process_params (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:335:12)
+    at next (G:\Workspaces\open\vue-module\rebugger\node_modules\.4.17.1@express\lib\router\index.js:275:10)
+    at G:\Workspaces\open\vue-module\rebugger\server\build\src\app.js:18:5
