@@ -14,7 +14,7 @@
     "tsc": "tsc",
     "serve": "ts-node-dev --respawn --transpileOnly ./server/app.ts",
     "serve:node": "npm run tsc && node server/build/app.js",
-    "serve:pm2": "npm run tsc && cross-env NODE_ENV=prod pm2 start server/build/src/app.js -i 2 --name rebugger-server -e log/error.log",
+    "serve:pm2": "npm run tsc && cross-env NODE_ENV=prod pm2 start server/build/app.js -i 2 --name rebugger-server -e log/error.log",
     "stop": "pm2 delete rebugger-server",
     "restart": "npm run stop && npm run serve:pm2"
   },
@@ -27,7 +27,13 @@
     "typescript": "~3.5.1",
     "sequelize": "^4.39.1",
     "mysql": "^2.16.0",
-    "mysql2": "^1.6.1"
+    "mysql2": "^1.6.1",
+    "kcors": "^2.2.2",
+    "koa": "^2.5.3",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "node-uuid": "^1.4.8"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

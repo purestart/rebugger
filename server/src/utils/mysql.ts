@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const config = require("../config/default");
+const config = require("../../config/default");
 
 // const mysql = new Sequelize(config.mysql.default, {
 //   define: {
@@ -8,7 +8,7 @@ const config = require("../config/default");
 //   operatorsAliases: false
 // });
 
-var sequelize = new Sequelize(
+var sequelized = new Sequelize(
   config.database.DATABASE,
   config.database.USER,
   config.database.PASSWORD,
@@ -23,4 +23,4 @@ var sequelize = new Sequelize(
   }
 );
 
-module.exports = sequelize;
+module.exports = sequelized;
