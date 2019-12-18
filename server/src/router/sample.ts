@@ -1,5 +1,6 @@
-const main = (ctx:any) => {
+import { Context } from 'koa';
+const main = (ctx:Context) => {
   ctx.response.body = 'rebugger';
 };
 
-module.exports= main;
+export default main;

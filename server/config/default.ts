@@ -1,4 +1,4 @@
-module.exports = {
+export default{
   port: 3000,
   database: {
     HOST: '127.0.0.1',  //数据库地址

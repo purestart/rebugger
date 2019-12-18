@@ -144,7 +144,7 @@ var utils = {
     let version = this.getBrowser().version || "未知浏览器版本号"; //获取浏览器版本
     let OS = this.getOS() + " " + this.getDigits() || "未知操作系统"; //系统版本号
     sysInfo.browser = browser;
-    sysInfo.version = version;
+    sysInfo.coreVersion = version;
     sysInfo.OS = OS;
     return sysInfo;
   },

@@ -8,6 +8,7 @@ var Router = require("koa-router");
 var router = new Router();
 var Kcors = require("kcors");
 var sample = require("./src/router/sample");
+var myRouter = require('./src/router/index');
 //POST解析
 app.use(bodyParser());
 // 跨域设置
@@ -24,9 +25,20 @@ if (process.env.NODE_ENV === 'development') {
 else {
     app.use(koaStatic(path.resolve(__dirname, "../public")));
 }
+// 路由配置
 router.get("/", sample);
+for (var i in myRouter) {
+    myRouter[i].forEach(function (item) {
+        if (item.method == 'get') {
+            router.get(item.url, item.function);
+        }
+        else if (item.method == 'post') {
+            router.post(item.url, item.function);
+        }
+    });
+}
 app
-    .use(router.routes()) //吧路由都引入进来
+    .use(router.routes()) //把路由都引入进来
     .use(router.allowedMethods());
 console.log("listen 9090");
 app.listen(9090);

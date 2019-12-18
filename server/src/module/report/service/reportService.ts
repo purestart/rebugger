@@ -1,45 +1,31 @@
-import mysql from '../../../../utils/mysql';
+import mysql from '../../../utils/mysql';
 import sequelize from 'sequelize';
-import userSchema from "../schema/user";
-const UserDao = userSchema(mysql, sequelize); // 引入user的表结构
+import reportSchema from "../schema/reportSchema";
+const ReportDao = reportSchema(mysql, sequelize);   // 引入user的表结构
+
+// 重新生成表
+ReportDao.sync({ alter: true, force:true });
+
 const uuid = require("node-uuid");
 
 export default {
   info: async (id: string) => {
-    return await UserDao.findOne({
+    return await ReportDao.findOne({
       where: {
         id
       }
     });
   },
   infoByName: async (name: string) => {
-    return await UserDao.findOne({
+    return await ReportDao.findOne({
       where: {
         name
       }
     });
   },
-  // 用户名登录
-  loginByLoginName: async (loginName: string, password: string) => {
-    return await UserDao.findOne({
-      where: {
-        loginName,
-        password
-      }
-    });
-  },
-  // 邮箱登录
-  loginByEmail: async (email: string, password: string) => {
-    return await UserDao.findOne({
-      where: {
-        email,
-        password
-      }
-    });
-  },
   list: async (pageSize = 10, pageNum: number, searchParams: object) => {
     let total = 0;
-    total = await UserDao.count({ where: searchParams }, { logging: false });
+    total = await ReportDao.count({ where: searchParams }, { logging: false });
     // console.log(total);
     if (total < 1) {
       return [];
@@ -49,7 +35,7 @@ export default {
     if (pageNum > 1) {
       offset = (pageNum - 1) * pageSize;
     }
-    let list = await UserDao.findAll({
+    let list = await ReportDao.findAll({
       where: searchParams,
       //order: [['update_date', 'DESC']],
       offset: offset,
@@ -59,7 +45,6 @@ export default {
     list.forEach(( item:any)=>{
       item.password=""
     })
-
     let result = {
       pageSize,
       pageNum,
@@ -68,14 +53,17 @@ export default {
     };
     return result;
   },
+
   create: async (obj: object) => {
-    return await UserDao.create({
+    return await ReportDao.create({
       id: uuid.v1(),
+      createDate:new Date(),
+      updateDate:new Date(),
       ...obj
     });
   },
   delete: async (id: string) => {
-    let o = await UserDao.findOne({
+    let o = await ReportDao.findOne({
       where: {
         id: id
       }
@@ -83,7 +71,7 @@ export default {
     return await o.destroy();
   },
   update: async (obj: any) => {
-    let o = await UserDao.findOne({
+    let o = await ReportDao.findOne({
       where: {
         id: obj.id
       }
@@ -94,7 +82,7 @@ export default {
     return await o.save();
   },
   updateExist: async (obj:any) => {
-    let o = await UserDao.findOne({
+    let o = await ReportDao.findOne({
       where: {
         id: obj.id
       }

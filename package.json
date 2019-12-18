@@ -19,21 +19,22 @@
     "restart": "npm run stop && npm run serve:pm2"
   },
   "dependencies": {
-    "js-md5": "^0.7.3",
-    "vue": "^2.6.10",
     "@types/express": "~4.17.0",
     "express": "~4.17.1",
-    "ts-node-dev": "^1.0.0-pre.40",
-    "typescript": "~3.5.1",
-    "sequelize": "^4.39.1",
-    "mysql": "^2.16.0",
-    "mysql2": "^1.6.1",
+    "js-md5": "^0.7.3",
     "kcors": "^2.2.2",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
+    "koa-compose": "^4.0.0",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
-    "node-uuid": "^1.4.8"
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.1",
+    "node-uuid": "^1.4.8",
+    "sequelize": "^5.21.3",
+    "ts-node-dev": "^1.0.0-pre.40",
+    "typescript": "~3.5.1",
+    "vue": "^2.6.10"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

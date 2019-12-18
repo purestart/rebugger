@@ -1,14 +1,14 @@
-import userService from '../service/userService';
+import reportService from '../service/reportService';
 import { Context } from 'koa';
 
 export default [
   {
-    url: "/user/info",
+    url: "/report/info",
     method: "get",
     function: async (ctx: Context) => {
       const id = ctx.request.query.id;
       // const id=ctx.params.id;
-      const ret = await userService.info(id);
+      const ret = await reportService.info(id);
       if (ret) {
         ctx.response.body = {
           code: 200,
@@ -24,7 +24,7 @@ export default [
     }
   },
   {
-    url: "/user/delete",
+    url: "/report/delete",
     method: "post",
     function: async (ctx: Context) => {
       //const id=ctx.request.query.id;
@@ -35,7 +35,7 @@ export default [
           let ret = null;
           await new Promise((resolve, reject) => {
             ids.forEach(async (id: string, idx: any) => {
-              ret = await userService.delete(id);
+              ret = await reportService.delete(id);
               if (idx == ids.length - 1) {
                 resolve();
               }
@@ -70,11 +70,11 @@ export default [
     }
   },
   {
-    url: "/user/create",
+    url: "/report/create",
     method: "post",
     function: async (ctx: Context) => {
       let obj = ctx.request.body;
-      const ret = await userService.create(obj);
+      const ret = await reportService.create(obj);
       if (ret) {
         ctx.response.body = {
           code: 200,
@@ -90,7 +90,7 @@ export default [
     }
   },
   {
-    url: "/user/list",
+    url: "/report/list",
     method: "get",
     function: async (ctx: Context) => {
       const pageSize = ctx.request.query.pageSize
@@ -108,7 +108,7 @@ export default [
       }else{
         searchParams={};
       }
-      const ret = await userService.list(pageSize, pageNum, searchParams);
+      const ret = await reportService.list(pageSize, pageNum, searchParams);
       if (ret) {
         ctx.response.body = {
           code: 200,
@@ -123,12 +123,12 @@ export default [
     }
   },
   {
-    url: "/user/update",
+    url: "/report/update",
     method: "post",
     function: async (ctx: Context) => {
       let obj = ctx.request.body;
 
-      const ret = await userService.update(obj);
+      const ret = await reportService.update(obj);
       if (ret) {
         ctx.response.body = {
           code: 200,

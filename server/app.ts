@@ -6,8 +6,10 @@ const path = require("path");
 const Router = require("koa-router");
 const router = new Router();
 const Kcors = require("kcors");
-const sample = require("./src/router/sample");
-const myRouter=require('./src/router/index');
+
+import sample from './src/router/sample';
+import myRouter from './src/router/index';
+import errorMiddleware from './src/middleware/error';
 //POST解析
 app.use(bodyParser());
 // 跨域设置
@@ -17,7 +19,9 @@ const corsOptions = {
   maxAge: 3600
 };
 app.use(Kcors(corsOptions));
-console.log(process.env.NODE_ENV);
+app.use(errorMiddleware());
+// console.log(process.env.NODE_ENV);
+
 if(process.env.NODE_ENV === 'development'){
   app.use(koaStatic(path.resolve(__dirname, "./public")));
 }else{

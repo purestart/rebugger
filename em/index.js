@@ -2,7 +2,6 @@
 /* eslint-disable quotes */
 // type异常类型 caught 手动上报异常 unCaught 自动捕获代码异常 sourceError 资源加载异常 httpError 请求异常 unhandledRejection 未处理promise异常 handledRejection
 import utils from "./lib/common";
-import config from "./config/index";
 import customFieldUtil from "./lib/customFieldUtil";
 import reportHandller from "./lib/reportHandller";
 import ajax from "./lib/ajax";
@@ -33,7 +32,7 @@ var rebugger = {
     // 其它自定义信息
     metaData: {},
     ip: "",
-    cityId: "",
+    cityNo: "",
     cityName: "",
     // 自定义保存字段 数据将会保存在metaData里面 origin: localStorage / sessionStorage / window / cookie 不能获取跨域信息 需要将js文件下载
     customField: {
@@ -56,7 +55,7 @@ var rebugger = {
     },
     today: "",
     // rebugger服务器的baseUrl
-    baseUrl: "http://apidadidev.sdoristarcloud.com"
+    baseUrl: "http://localhost:9090"
   },
   // 初始化 rebugger 框架内使用
   init(apikey, options) {},
@@ -64,7 +63,7 @@ var rebugger = {
     return document.domain;
   },
   reportByIMG: function(paramStr) {
-    var reportUrl = config.baseUrl;
+    var reportUrl = rebugger.baseUrl;
     new Image().src = reportUrl + "?" + paramStr;
   },
   // 发送错误对象信息
@@ -80,6 +79,14 @@ var rebugger = {
     errorInfo.type = "httpError";
     rebugger.reportError(errorInfo, flag);
   },
+  reportLog: function(errorInfo, flag = true) {
+    errorInfo.type = "info";
+    rebugger.reportError(errorInfo, flag);
+  },
+  reportWarn: function(errorInfo, flag = true) {
+    errorInfo.type = "warn";
+    rebugger.reportError(errorInfo, flag);
+  },
   // 上报promise异常捕获信息 用于手动
   reportHandledRejection: function(errorInfo, flag = true) {
     errorInfo.type = "handledRejection";
@@ -92,8 +99,10 @@ var rebugger = {
       let initParam = {
         apikey: rebugger.options.apikey,
         ip: rebugger.options.ip,
-        cityId: rebugger.options.cityId,
-        cityName: rebugger.options.cityName
+        cityNo: rebugger.options.cityNo,
+        cityName: rebugger.options.cityName,
+        emitTime: new Date(),
+        type: errorInfo.type?errorInfo.type:"caught"
       };
       let baseInfo = utils.getBaseInfo();
       let metaData = rebugger.getMetaData();
@@ -101,7 +110,7 @@ var rebugger = {
     }
     let options = {
       method: "POST",
-      url: rebugger.options.baseUrl + "/cpm/user/login",
+      url: rebugger.options.baseUrl + "/report/create",
       // url: "/cpm/user/login",
       data: errorInfo
     };
@@ -169,7 +178,7 @@ var rebugger = {
       let initParam = {
         apikey: rebugger.options.apikey,
         ip: rebugger.options.ip,
-        cityId: rebugger.options.cityId,
+        cityNo: rebugger.options.cityNo,
         cityName: rebugger.options.cityName
       };
 
@@ -200,6 +209,7 @@ var rebugger = {
         columnNumber,
         componentName,
         type: "unCaught",
+        emitTime: new Date(),
         propsData: propsData ? JSON.stringify(propsData) : "",
         stack: stack.toString()
       };
@@ -301,7 +311,7 @@ export default rebugger;
   }
 
   let ip = "";
-  let cityId = "";
+  let cityNo = "";
   let cityName = "";
   // 获取客户端ip和城市信息
   // eslint-disable-next-line no-undef
@@ -309,15 +319,15 @@ export default rebugger;
     // eslint-disable-next-line no-undef
     ip = returnCitySN["cip"];
     // eslint-disable-next-line no-undef
-    cityId = returnCitySN["cid"];
+    cityNo = returnCitySN["cid"];
     // eslint-disable-next-line no-undef
     cityName = returnCitySN["cname"];
   }
 
   rebugger.options.ip = ip;
-  rebugger.options.cityId = cityId;
+  rebugger.options.cityNo = cityNo;
   rebugger.options.cityName = cityName;
-  let initParam = { apikey, ip, cityId, cityName };
+  let initParam = { apikey, ip, cityNo, cityName };
   console.log("init rebugger");
   if (!apikey) {
     console.warn("rebugger request apikey");
@@ -370,11 +380,13 @@ export default rebugger;
           lineNumber,
           columnNumber,
           type: "unCaught",
+          emitTime: new Date(),
           stack: stack.toString()
         };
         let baseInfo = utils.getBaseInfo();
-        let params = Object.assign({}, initParam, baseInfo, errorInfo);
-        console.log(params);
+        let metaData = rebugger.getMetaData();
+        let params = Object.assign({}, initParam, baseInfo,metaData, errorInfo);
+        // console.log(params);
         // rebugger.reportObject(params);
         reportHandller.report(rebugger, params);
       } else {
@@ -456,11 +468,13 @@ export default rebugger;
           status: 404,
           statusText: "Not Found",
           selector,
+          emitTime: new Date(),
           type: "sourceError"
         };
         let baseInfo = utils.getBaseInfo();
-        let params = Object.assign({}, initParam, baseInfo, errorInfo);
-        console.log(params);
+        let metaData = rebugger.getMetaData();
+        let params = Object.assign({}, initParam, baseInfo,metaData, errorInfo);
+        // console.log(params);
         // rebugger.reportObject(params);
         reportHandller.report(rebugger, params);
       }
@@ -491,7 +505,8 @@ export default rebugger;
       type,
       columnNumber: event.reason.columnNumber,
       fileName: event.reason.fileName,
-      lineNumber: event.reason.lineNumber
+      lineNumber: event.reason.lineNumber,
+      emitTime: new Date()
     };
     let reason = event.reason;
     // 未处理网络promiase异常
@@ -540,8 +555,9 @@ export default rebugger;
     }
     console.log(errorInfo);
     let baseInfo = utils.getBaseInfo();
-    let params = Object.assign({}, initParam, baseInfo, errorInfo);
-    console.log(params);
+    let metaData = rebugger.getMetaData();
+    let params = Object.assign({}, initParam, baseInfo,metaData, errorInfo);
+    // console.log(params);
     // rebugger.reportObject(params);
     reportHandller.report(rebugger, params);
   });
