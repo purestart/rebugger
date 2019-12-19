@@ -6,5 +6,6 @@ export default{
     USER: 'root', //数据库用户
     PASSWORD: '18819640516', //数据库密码
     DATABASE: 'rebugger_db' //选中数据库
-  }
+  },
+  cacheTimeOut:60000 //缓存时间 单位ms
 }

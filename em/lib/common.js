@@ -36,10 +36,12 @@ var utils = {
     let width = window.screen.width;
     let height = window.screen.height;
     var myScreen = {
-      clientWidth,
-      clientHeight,
-      availWidth,
-      availHeight,
+      screenInfo:JSON.stringify({
+        clientWidth,
+        clientHeight,
+        availWidth,
+        availHeight,
+      }),
       width,
       height
     };

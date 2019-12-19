@@ -1,20 +1,32 @@
-import mysql from '../../../utils/mysql';
-import sequelize from 'sequelize';
+import mysql from "../../../utils/mysql";
+import sequelize from "sequelize";
 import reportSchema from "../schema/reportSchema";
-const ReportDao = reportSchema(mysql, sequelize);   // 引入user的表结构
+const ReportDao = reportSchema(mysql, sequelize); // 引入user的表结构
+
+import cache from "memory-cache";
 
 // 重新生成表
-ReportDao.sync({ alter: true, force:true });
+ReportDao.sync({ alter: true, force: true });
 
 const uuid = require("node-uuid");
 
 export default {
   info: async (id: string) => {
-    return await ReportDao.findOne({
+    // let obj = cache.get(id);
+    // if(obj){
+    //   return obj;
+    // }
+    // else{
+    let ret = await ReportDao.findOne({
       where: {
         id
       }
     });
+    // if(ret){
+    //   cache.put(id,ret,60000)
+    // }
+    return ret;
+    // }
   },
   infoByName: async (name: string) => {
     return await ReportDao.findOne({
@@ -42,9 +54,9 @@ export default {
       limit: pageSize
     });
 
-    list.forEach(( item:any)=>{
-      item.password=""
-    })
+    list.forEach((item: any) => {
+      item.password = "";
+    });
     let result = {
       pageSize,
       pageNum,
@@ -57,8 +69,8 @@ export default {
   create: async (obj: object) => {
     return await ReportDao.create({
       id: uuid.v1(),
-      createDate:new Date(),
-      updateDate:new Date(),
+      createDate: new Date(),
+      updateDate: new Date(),
       ...obj
     });
   },
@@ -81,7 +93,7 @@ export default {
     o.remarks = obj.remarks;
     return await o.save();
   },
-  updateExist: async (obj:any) => {
+  updateExist: async (obj: any) => {
     let o = await ReportDao.findOne({
       where: {
         id: obj.id
