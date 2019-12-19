@@ -94,8 +94,3 @@ CREATE TABLE `user` (
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES ('sad001', 'zcl', 'purestart', '123qwe', '', null, null, null, null, null, null, null, null, '2019-12-17 17:48:14', null);
