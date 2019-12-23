@@ -1,7 +1,8 @@
 import mysql from "../../../utils/mysql";
 import sequelize from "sequelize";
-import sysConfig from '../../../../config/default';
-import cacheUtil from "memory-cache";
+import sysConfig from "../../../../config/default";
+// import cacheUtil from "memory-cache";
+import cacheUtil from "../../../utils/cacheUtil";
 // 重新生成表
 // ReportDao.sync({ alter: true, force: true });
 const uuid = require("node-uuid");
@@ -11,6 +12,7 @@ export class baseService {
   constructor(entityDao) {
     this.entityDao = entityDao;
   }
+
   /**
    * id 查询字段
    * cacheable 是否开启缓存
@@ -27,7 +29,7 @@ export class baseService {
           }
         });
         if (ret) {
-          cacheUtil.put(id, ret, sysConfig.cacheTimeOut);
+          cacheUtil.set(id, ret, sysConfig.cacheTimeOut);
         }
         return ret;
       }
@@ -39,12 +41,13 @@ export class baseService {
       });
     }
   }
+  
   /**
    * 字段查询 返回列表 适用于少量数据的查询
    * where 搜索条件 返回所有
    * cacheable 是否开启缓存
    */
-  public async find(where : object, cacheable = false) {
+  public async find(where: object, cacheable = false) {
     if (cacheable) {
       let key = JSON.stringify(where);
       let obj = cacheUtil.get(key);
@@ -52,17 +55,17 @@ export class baseService {
         return obj;
       } else {
         let ret = await this.entityDao.findAll({
-          order: [['update_date', 'DESC']],
+          order: [["update_date", "DESC"]],
           where
         });
         if (ret) {
-          cacheUtil.put(key, ret, sysConfig.cacheTimeOut);
+          cacheUtil.set(key, ret, sysConfig.cacheTimeOut);
         }
         return ret;
       }
-    }else{
+    } else {
       return await this.entityDao.findAll({
-        order: [['update_date', 'DESC']],
+        order: [["update_date", "DESC"]],
         where
       });
     }
@@ -70,7 +73,7 @@ export class baseService {
   /**
    * 分页查询
    */
-  public async list({pageNum = 1, pageSize = 10, ...where}) {
+  public async list({ pageNum = 1, pageSize = 10, ...where }) {
     let total = 0;
     total = await this.entityDao.count({ where }, { logging: true });
     if (total < 1) {
@@ -82,7 +85,7 @@ export class baseService {
     }
     let list = await this.entityDao.findAll({
       where,
-      order: [['update_date', 'DESC']],
+      order: [["update_date", "DESC"]],
       offset: offset,
       limit: pageSize
     });
@@ -110,9 +113,7 @@ export class baseService {
   /**
    * createOrUpdate
    */
-  public async createOrUpdate(model: object) {
-    
-  }
+  public async createOrUpdate(model: object) {}
 
   /**
    * update
@@ -125,13 +126,18 @@ export class baseService {
     });
     o.update_date = Date.now();
     // 字段过滤
-    
+
     return await o.save();
   }
   /**
    * delete
    */
-  public async delete() {
-    
+  public async delete(id: string) {
+    let o = await this.entityDao.findOne({
+      where: {
+        id: id
+      }
+    });
+    return await o.destroy();
   }
 }
