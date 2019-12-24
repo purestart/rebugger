@@ -10,7 +10,7 @@ export default function(sequelize: any, DataTypes: any) {
       },
       name:{
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         comment:"项目名称"
       },
       type:{
@@ -18,14 +18,26 @@ export default function(sequelize: any, DataTypes: any) {
         allowNull: true,
         comment:"类型 1 PC 2 移动 3 小程序"
       },
+      language:{
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment:"编写语言"
+      },
+      frame:{
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment:"框架"
+      },
       code:{
         type: DataTypes.STRING(64),
-        allowNull: true,
+        unique:true,
+        allowNull: false,
         comment:"项目编码"
       },
       apikey:{
         type: DataTypes.STRING,
-        allowNull: true,
+        unique:true,
+        allowNull: false,
         comment:"项目秘钥"
       },
       image:{

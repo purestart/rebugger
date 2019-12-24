@@ -7,5 +7,8 @@ export default{
     PASSWORD: '18819640516', //数据库密码
     DATABASE: 'rebugger_db' //选中数据库
   },
-  cacheTimeOut:60000 //缓存时间 单位ms
+  useRedis:false, // 缓存使用 redis
+  redis:{
+    exprires:60000, //默认缓存时间 单位ms
+  }
 }
