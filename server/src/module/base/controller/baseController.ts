@@ -10,10 +10,10 @@ export default class BaseController {
   public profix: string;
   public infoCacheable = false;
   public findCacheable = false;
-  public options:any = {
-    exprires:sysConfig.redis.exprires,
-    infoCacheable:false,
-    findCacheable:false
+  public options: any = {
+    exprires: sysConfig.redis.exprires,
+    infoCacheable: false,
+    findCacheable: false
   };
   constructor(entityService, profix, options?: any) {
     this.entityService = entityService;
@@ -21,11 +21,11 @@ export default class BaseController {
     if (options && options.infoCacheable) {
       this.infoCacheable = options.infoCacheable;
     }
-    if(options && options.findCacheable){
+    if (options && options.findCacheable) {
       this.findCacheable = options.findCacheable;
     }
-    if(options){
-      this.options = Object.assign({},this.options,options);
+    if (options) {
+      this.options = Object.assign({}, this.options, options);
     }
   }
 
@@ -51,7 +51,7 @@ export default class BaseController {
             ctx.response.body = {
               code: 503,
               data: null,
-              errMsg: "查询错误"
+              errMsg: "查询失败，查询不到该数据"
             };
           }
         }
@@ -61,17 +61,19 @@ export default class BaseController {
         method: "post",
         function: async (ctx: Context) => {
           let where = ctx.request.body;
-          const ret = await this.entityService.find(where,this.findCacheable);
+          const ret = await this.entityService.find(where, this.findCacheable);
           if (ret) {
             ctx.response.body = {
               code: 200,
-              data: ret
+              data: {
+                list: ret
+              }
             };
           } else {
             ctx.response.body = {
               code: 503,
               data: null,
-              errMsg: "查询错误"
+              errMsg: "查询失败，请稍后再试"
             };
           }
         }
@@ -83,7 +85,6 @@ export default class BaseController {
           //const id=ctx.request.query.id;
           //const id=ctx.params.id;
           let ids = ctx.request.body.ids;
-
           if (ids && ids.length > 0) {
             try {
               let ret = null;
@@ -138,7 +139,7 @@ export default class BaseController {
             ctx.response.body = {
               code: 503,
               data: null,
-              errMsg: "创建失败"
+              errMsg: "创建失败，请稍后再试"
             };
           }
         }
@@ -168,7 +169,8 @@ export default class BaseController {
           } else {
             ctx.response.body = {
               code: 503,
-              data: null
+              data: null,
+              errMsg: "查询失败"
             };
           }
         }
@@ -188,7 +190,7 @@ export default class BaseController {
             ctx.response.body = {
               code: 503,
               data: null,
-              errMsg: "更新失败"
+              errMsg: "保存失败，请稍后再试"
             };
           }
         }
@@ -208,7 +210,7 @@ export default class BaseController {
             ctx.response.body = {
               code: 503,
               data: null,
-              errMsg: "更新失败"
+              errMsg: "保存失败，请稍后再试"
             };
           }
         }
@@ -228,7 +230,7 @@ export default class BaseController {
             ctx.response.body = {
               code: 503,
               data: null,
-              errMsg: "更新失败"
+              errMsg: "更新失败，请稍后再试"
             };
           }
         }

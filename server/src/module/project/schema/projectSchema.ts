@@ -45,6 +45,11 @@ export default function(sequelize: any, DataTypes: any) {
         allowNull: true,
         comment:"项目封面"
       },
+      domain:{
+        type: DataTypes.STRING(1024),
+        allowNull: true,
+        comment:"允许域名"
+      },
       description:{
         type: DataTypes.STRING(1024),
         allowNull: true,

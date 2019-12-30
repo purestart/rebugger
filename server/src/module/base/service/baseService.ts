@@ -50,8 +50,9 @@ export default class baseService {
   public async find(where: object, cacheable = false, options?:any) {
     if (cacheable) {
       let key = JSON.stringify(where);
-      let obj = cacheUtil.get(key);
+      let obj = await cacheUtil.get(key);
       if (obj) {
+        obj = JSON.parse(obj)
         return obj;
       } else {
         let ret = await this.entityDao.findAll({
@@ -59,7 +60,7 @@ export default class baseService {
           where
         });
         if (ret) {
-          cacheUtil.set(key, ret, (options && options.exprires)?options.exprires:sysConfig.redis.exprires);
+          cacheUtil.set(key, JSON.stringify(ret), (options && options.exprires)?options.exprires:sysConfig.redis.exprires);
         }
         return ret;
       }

@@ -21,10 +21,12 @@ const handler = async (ctx: Context, next: () => void) => {
       return;
     } else {
       // General Exception
+      let errMsg =error.message +": "+ (error.parent ? error.parent.message:'');
+
       ctx.body = {
         code:503,
         data:null,
-        errMsg:error.message
+        errMsg:errMsg
       };
       // ctx.status = error.statusCode || 500;
       ctx.status = 200;

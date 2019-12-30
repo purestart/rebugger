@@ -16,17 +16,17 @@ export default function(sequelize: any, DataTypes: any) {
       type:{
         type: DataTypes.INTEGER,
         allowNull: true,
-        comment:"类型 1 开发环境 2 测试 3 预生产 4 生产"
+        comment:"类型 1 允许访问的域名 2 禁止访问的域名 3 禁止ip列表"
       },
       domain:{
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
-        comment:"允许域名"
+        comment:"允许域名JSON数据"
       },
       description:{
         type: DataTypes.STRING(1024),
         allowNull: true,
-        comment:"描述" 
+        comment:"描述"
       },
       createDate: {
         type: DataTypes.DATE,
