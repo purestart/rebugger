@@ -1,30 +1,31 @@
-'use strict'
-const utils = require('./utils')
-const webpack = require('webpack')
-const config = require('../config')
-const merge = require('webpack-merge')
-const path = require('path')
-const baseWebpackConfig = require('./webpack.base.conf')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const portfinder = require('portfinder')
-const HtmlModulePlugin = require('html-module-plugin')
-const MergeModulePlugin = require('merge-module-plugin')
+/* eslint-disable quotes */
+"use strict";
+const utils = require("./utils");
+const webpack = require("webpack");
+const config = require("../config");
+const merge = require("webpack-merge");
+const path = require("path");
+const baseWebpackConfig = require("./webpack.base.conf");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
+const portfinder = require("portfinder");
+// const HtmlModulePlugin = require("html-module-plugin");
+// const MergeModulePlugin = require("merge-module-plugin");
 
-const buildConfigBuilder = require('../../parent/src/build.config')
-let buildConfig = buildConfigBuilder.getConfig('rebugger')
+// const buildConfigBuilder = require("../../parent/src/build.config");
+// let buildConfig = buildConfigBuilder.getConfig("rebugger");
 
-const isProduction = process.env.NODE_ENV === 'production'
-const envConfigBuilder = require('../../parent')
-let envConfig = envConfigBuilder.getEnv('rebugger')
+const isProduction = process.env.NODE_ENV === "production";
+// const envConfigBuilder = require("../../parent");
+// let envConfig = envConfigBuilder.getEnv("rebugger");
 
-let localEnv = require('../config/dev.env')
+let localEnv = require("../config/dev.env");
 
-let myEnv = Object.assign(localEnv, envConfig)
+// let myEnv = Object.assign(localEnv, envConfig);
 
-const HOST = process.env.HOST
-const PORT = process.env.PORT && Number(process.env.PORT)
+const HOST = process.env.HOST;
+const PORT = process.env.PORT && Number(process.env.PORT);
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -38,12 +39,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    clientLogLevel: 'warning',
+    clientLogLevel: "warning",
     historyApiFallback: {
       rewrites: [
         {
           from: /.*/,
-          to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
+          to: path.posix.join(config.dev.assetsPublicPath, "index.html")
         }
       ]
     },
@@ -65,59 +66,55 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': JSON.stringify(myEnv)
+      "process.env": require('../config/dev.env')
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
+      filename: "index.html",
+      template: "index.html",
       inject: true
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../static'),
+        from: path.resolve(__dirname, "../static"),
         to: config.dev.assetsSubDirectory,
-        ignore: ['.*']
+        ignore: [".*"]
       }
-    ]),
-    // new HtmlModulePlugin({
+    ])
+    // new MergeModulePlugin({
     //   config: buildConfig,
-    //   publicPath: '/static/'
-    // }),
-    new MergeModulePlugin({
-      config: buildConfig,
-      dirname: __dirname,
-      uglifyOptions: {
-        compress: {
-          warnings: false,
-          drop_console: true,
-          drop_debugger: true
-        },
-        output: {
-          // 去掉注释内容
-          comments: false
-        }
-      },
-      sourceMap: false,
-      parallel: true
-    })
+    //   dirname: __dirname,
+    //   uglifyOptions: {
+    //     compress: {
+    //       warnings: false,
+    //       drop_console: true,
+    //       drop_debugger: true
+    //     },
+    //     output: {
+    //       // 去掉注释内容
+    //       comments: false
+    //     }
+    //   },
+    //   sourceMap: false,
+    //   parallel: true
+    // })
   ]
-})
+});
 
 module.exports = new Promise((resolve, reject) => {
-  portfinder.basePort = process.env.PORT || config.dev.port
+  portfinder.basePort = process.env.PORT || config.dev.port;
   portfinder.getPort((err, port) => {
     if (err) {
-      reject(err)
+      reject(err);
     } else {
       // publish the new Port, necessary for e2e tests
-      process.env.PORT = port
+      process.env.PORT = port;
       // add port to devServer config
-      devWebpackConfig.devServer.port = port
+      devWebpackConfig.devServer.port = port;
 
       // Add FriendlyErrorsPlugin
       devWebpackConfig.plugins.push(
@@ -131,9 +128,9 @@ module.exports = new Promise((resolve, reject) => {
             ? utils.createNotifierCallback()
             : undefined
         })
-      )
+      );
 
-      resolve(devWebpackConfig)
+      resolve(devWebpackConfig);
     }
-  })
-})
+  });
+});

@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "server\\logs\\.99b9b2bc13f169fad9f8fbd669aac9da809c2cc3-audit.json",
+    "files": [
+        {
+            "date": 1577776628800,
+            "name": "server\\logs\\CGI-2019-12-31.log",
+            "hash": "92deb8ff2f765efd7ef6b0c0566be740"
+        }
+    ]
+}

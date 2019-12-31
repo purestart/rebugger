@@ -1,38 +1,38 @@
-'use strict'
-const path = require('path')
-const utils = require('./utils')
-const config = require('../config')
-const vueLoaderConfig = require('./vue-loader.conf')
-const webpack = require('webpack')
+/* eslint-disable quotes */
+"use strict";
+const path = require("path");
+const utils = require("./utils");
+const config = require("../config");
+const vueLoaderConfig = require("./vue-loader.conf");
+const webpack = require("webpack");
 
-function resolve(dir) {
-  return path.join(__dirname, '..', dir)
+function resolve (dir) {
+  return path.join(__dirname, "..", dir);
 }
-
 
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
-  loader: 'eslint-loader',
-  enforce: 'pre',
-  include: [resolve('src'), resolve('test')],
+  loader: "eslint-loader",
+  enforce: "pre",
+  include: [resolve("src"), resolve("test")],
   options: {
-    formatter: require('eslint-friendly-formatter'),
+    formatter: require("eslint-friendly-formatter"),
     emitWarning: !config.dev.showEslintErrorsInOverlay
   }
-})
+});
 
 module.exports = {
-  context: path.resolve(__dirname, '../'),
+  context: path.resolve(__dirname, "../"),
   entry: {
     app:
-      process.env.NODE_ENV === 'production' ? './em/index.js' : './em/index.js'
+      process.env.NODE_ENV === "production" ? "./em/index.js" : "./em/index.js"
   },
   output: {
-    path: path.resolve(__dirname, '../lib'),
-    filename: 'rebugger.min.js',
-    library: 'Rebugger',
+    path: path.resolve(__dirname, "../lib"),
+    filename: "rebugger.min.js",
+    library: "Rebugger",
     publicPath:
-      process.env.NODE_ENV === 'production'
+      process.env.NODE_ENV === "production"
         ? config.build.assetsPublicPath
         : config.dev.assetsPublicPath
   },
@@ -45,12 +45,11 @@ module.exports = {
       sourceMap: true
     })
   ],
-  externals: {
-  },
+  externals: {},
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: [".js", ".vue", ".json"],
     alias: {
-      rebuggerSrc: resolve('src')
+      rebuggerSrc: resolve("src")
     }
   },
   module: {
@@ -58,41 +57,41 @@ module.exports = {
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
+        loader: "vue-loader",
         options: vueLoaderConfig
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        loader: "babel-loader",
         include: [
-          resolve('src'),
-          resolve('em'),
-          resolve('test'),
-          resolve('node_modules/webpack-dev-server/client')
+          resolve("src"),
+          resolve("em"),
+          resolve("test"),
+          resolve("node_modules/webpack-dev-server/client")
         ]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
+        loader: "url-loader",
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath("img/[name].[hash:7].[ext]")
         }
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        loader: 'url-loader',
+        loader: "url-loader",
         options: {
           limit: 10000,
-          name: utils.assetsPath('media/[name].[hash:7].[ext]')
+          name: utils.assetsPath("media/[name].[hash:7].[ext]")
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
+        loader: "url-loader",
         options: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: utils.assetsPath("fonts/[name].[hash:7].[ext]")
         }
       }
     ]
@@ -103,10 +102,10 @@ module.exports = {
     setImmediate: false,
     // prevent webpack from injecting mocks to Node native modules
     // that does not make sense for the client
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty'
+    dgram: "empty",
+    fs: "empty",
+    net: "empty",
+    tls: "empty",
+    child_process: "empty"
   }
-}
+};

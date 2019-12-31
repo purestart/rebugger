@@ -6,6 +6,8 @@ const path = require("path");
 const Router = require("koa-router");
 const router = new Router();
 const Kcors = require("kcors");
+// const koaLogger = require('koa-logger-winston');
+// import logger from './src/middleware/logger';
 
 import sample from './src/router/sample';
 import myRouter from './src/router/index';
@@ -39,9 +41,15 @@ for(var i in myRouter) {
   })
 }
 
+//正常请求的日志
+// app.use(koaLogger(logger.success));
+
 app
   .use(router.routes()) //把路由都引入进来
   .use(router.allowedMethods());
+
+// 收集错误日志
+// app.use(koaLogger(logger.error));
 
 console.log("listen 9090");
 app.listen(9090);

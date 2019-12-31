@@ -1,0 +1,37 @@
+/**
+ * Created by 熊超超 on 2017/8/4.
+ */
+$baseFontSize: 12px;
+$baseFontColor: #333333;
+$rem: 1px;
+
+$color-primary: #ec8d00;
+$color-success: #67C23A;
+$color-warning: #f39c12;
+$color-danger: #F56C6C;
+$color-info: #909399;
+$color-gray: #5a5a5a;
+$color-white: white;
+$color-black: black;
+$color-nodata: #909399;
+$bg: #ecf0f5;
+$bg0: mix($color-black, $color-primary, 80%);
+$bg-gray: #f6f6f6;
+$border-color: #ebebeb;
+
+$--border-color-base: #dcdfe6;
+$--color-text-placeholder: #c0c4cc;
+
+$l_fontsize:16px !default;
+
+$m_fontsize:14px !default;
+
+$s_fontsize:12px !default;
+
+$fontcolor: #8E6B19 !default;
+
+$focusfontcolor: #3C3C3C !default;
+
+$bg_color:#f90 !default;
+$fontfamily:'微软雅黑' !default;
+$nav_bg_color:#414141;

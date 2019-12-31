@@ -1,0 +1,27 @@
+{
+  "code": 0,
+  "count": 2,
+  "data": [{
+    "userId": 1,
+    "username": "admin",
+    "salt": "YzcmCZNvbXocrsz9dm8e",
+    "email": "root@renren.io",
+    "mobile": "13612345678",
+    "status": 1,
+    "roleIdList": null,
+    "createTime": "2016-11-11 11:11:11",
+    "deptId": 1,
+    "deptName": "XXX集团"
+  }, {
+    "userId": 2,
+    "username": "pure",
+    "salt": "zLmvb0wWCYDo6Lbjq3Dt",
+    "email": "5223802456@qq.com",
+    "mobile": "18819640516",
+    "status": 1,
+    "roleIdList": null,
+    "createTime": "2018-10-26 08:57:36",
+    "deptId": 1,
+    "deptName": "XXXX集团"
+  }]
+}
