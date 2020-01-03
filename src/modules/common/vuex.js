@@ -35,8 +35,27 @@ let tmpMenus = [
     isVisible: 1
   },
   {
+    id: 6661,
+    parentId: 0,
+    children: [],
+    name: "项目管理",
+    icon: "icon-fa-columns",
+    sortNo: 1,
+    menuUrl: "/project",
+    menuType: 0,
+    applicationId: 81,
+    isVisible: 1
+  },
+  {
     id: 67,
     parentId: 0,
+    name: "我的工作台",
+    icon: "icon-fa-columns",
+    sortNo: 2,
+    menuUrl: null,
+    menuType: 1,
+    applicationId: 81,
+    isVisible: 1,
     children: [
       {
         id: 69,
@@ -50,14 +69,7 @@ let tmpMenus = [
         applicationId: 81,
         isVisible: 1
       }
-    ],
-    name: "我的工作台",
-    icon: "icon-fa-columns",
-    sortNo: 2,
-    menuUrl: null,
-    menuType: 1,
-    applicationId: 81,
-    isVisible: 1
+    ]
   },
   {
     id: 99,
@@ -415,6 +427,9 @@ const mutations = {
     } else if (command === "right") {
       state.menuTabs.splice(index + 1);
     }
+  },
+  clearTabs(state, command) {
+    state.menuTabs = [];
   },
   updateMenus(state, menus) {
     const home = menus.find(m => m.menuUrl === "/" || m.menuUrl === "/home");

@@ -3,10 +3,10 @@
     <div class="logo" :class="isCollapse?'collapse':''">
       <!-- <img v-if="!isCollapse" class="img-logo p-l-20" src="../../../assets/logo1.png"> -->
       <span v-if="!isCollapse" class="f-18">LOGO</span>
-      <cc-icon v-if="isCollapse" name="gcjzlogo" size="37" />
+      <dy-icon v-if="isCollapse" name="gcjzlogo" size="37" />
     </div>
     <div class="h_nav">
-      <cc-icon :name="isCollapse?'expand':'unexpand'" @click="expandChange" size="50" class="expand" />
+      <dy-icon :name="isCollapse?'expand':'unexpand'" @click="expandChange" size="50" class="expand" />
       <ul class="list">
         <li>后台管理系统</li>
         <el-popover placement="bottom" width="300" trigger="hover">
@@ -45,7 +45,7 @@
             <a class="c-white" target="_blank" href="#">旧系统</a>
           </span>
           <a class="h-100 a-c p-r-15 c-white" style="cursor: pointer;" href="/docs" target="_blank">
-            <cc-icon name="wenhao" size="16" />
+            <dy-icon name="wenhao" size="16" />
           </a>
         </div>
         <el-dropdown trigger="hover" placement="bottom-end" @command="selectSelf">
@@ -281,7 +281,7 @@ export default {
   display: flex;
   background-color: $bg_color;
   .logo {
-    width: 200px;
+    width: 180px;
     // font-size: 20px;
     color: rgba(255, 255, 255, 1);
     // line-height: 28px;

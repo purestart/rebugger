@@ -2,6 +2,8 @@ import mysql from '../../../../utils/mysql';
 import sequelize from 'sequelize';
 import userSchema from "../../user/schema/user";
 const UserDao = userSchema(mysql, sequelize); // 引入user的表结构
+const jwt = require('jsonwebtoken');
+import config from '../../../../../config/default';
 
 class authService {
   constructor() {
@@ -14,9 +16,14 @@ class authService {
       let ret = await this.loginByLoginName(params.userName, params.password);
       if(ret){
         ret.password = "";
+      // 帐号密码正确  创建token   
+      //payload中写入一些值  time:创建日期  timeout：多长时间后过期
+      let payload = {userId:ret.id,time:new Date().getTime(),timeout:1000*60*60*2}
+      let token = jwt.sign(payload, config.secret);
         return {
           code: 200,
-          data: ret
+          data: ret,
+          token
         }
       }else{
         return {

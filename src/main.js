@@ -3,16 +3,18 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-// import echarts from "echarts";
+import echarts from "echarts";
 import ElementUI from "element-ui";
 import formVerify from "./utils/formVerify";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 import regComponents from "./utils/regComponents.js";
 import "flex.css";
 import "./assets/css/base.scss";
 import utils from "./utils";
 import "./assets/icons/icon";
-// Vue.prototype.$echarts = echarts;
+Vue.prototype.$echarts = echarts;
 
 Vue.use(ElementUI, {
   size: "small"
@@ -20,6 +22,41 @@ Vue.use(ElementUI, {
 Vue.use(formVerify);
 Vue.use(regComponents);
 Vue.use(utils);
+
+router.beforeEach((to, from, next) => {
+  let token = sessionStorage.getItem("token");
+  let user = localStorage.getItem("user");
+  NProgress.start();
+  if (to.path == "/login") {
+    window.localStorage.removeItem('token');
+    window.sessionStorage.clear();
+    // 清除所有tab缓存
+    store.commit('clearTabs', 'all');
+    next();
+  } else {
+    if (!token || !user) {
+      if (token && user) {
+        // store.commit('updateLoginTokenCPM', token);
+        // store.commit('updateLoginUserCPM', JSON.parse(user));
+        // setGlobalTopNavs(to, next);
+        next();
+      } else {
+        next({
+          path: "/login"
+        });
+      }
+    } else {
+      next();
+    }
+  }
+  next();
+});
+
+router.afterEach(transition => {
+  setTimeout(() => {
+    NProgress.done();
+  }, 200);
+});
 
 Vue.config.productionTip = false;
 

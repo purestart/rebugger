@@ -10,5 +10,6 @@ export default{
   useRedis:false, // 缓存使用 redis
   redis:{
     exprires:60000, //默认缓存时间 单位ms
-  }
+  },
+  secret:"gesafe"
 }

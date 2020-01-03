@@ -97,6 +97,15 @@ export default {
 <style lang="scss" scoped>
 .tabs-container {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+  /deep/ .el-icon-close{
+    position: absolute;
+    top:1px;
+    right:1px;
+    &::hover{
+      color: #ffffff;
+      background-color: #efefef;
+    }
+  }
 }
 .el-tabs--border-card {
   border-left: 0;

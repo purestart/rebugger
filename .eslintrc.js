@@ -26,7 +26,9 @@ module.exports = {
     'one-var': 0,
     eqeqeq: 'off',
     'no-callback-literal': 0,
-    'standard/no-callback-literal': 0
+    'standard/no-callback-literal': 0,
+    "quotes": [1, "double"], //引号类型 `` "" ''
+    "space-before-function-paren": [0, "always"] //函数定义时括号前面要不要有空格
   },
   globals: {
     requireModule: true

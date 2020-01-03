@@ -2,7 +2,7 @@
   <el-row class="Ynav">
     <!-- <h3 class="sys-name" v-if="lips">系统管理</h3>
     <h3 class="sys-name" v-else></h3> -->
-    <el-menu :default-active="$route.path" class="el-menu-vertical-demo menu" @select="selectMenu" :collapse="isCollapse" background-color="#414141" text-color="#fdfefe" active-text-color="rgba(240, 133, 25, 1)" :router="true">
+    <el-menu :default-active="$route.path" class="el-menu-vertical-demo menu" @select="selectMenu" :collapse="isCollapse" background-color="#21376b" text-color="#fdfefe" active-text-color="rgba(240, 133, 25, 1)" :router="true" :unique-opened="true">
       <template v-for="item in menus">
         <el-menu-item v-if="!item.children || item.children.length==0" :key="item.id" :index="item.url||item.menuUrl || ''" class="spec_menu_item">
           <i :class="'iconfont ' + item.icon"></i>
@@ -83,8 +83,13 @@ export default {
 <style lang="scss">
 @import "../../../assets/css/vars.scss";
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
+  width: 180px;
   min-height: 400px;
+}
+
+.el-submenu__icon-arrow {
+    right: 10px;
+    margin-top: -5px;
 }
 
 .el-menu-item-group__title {

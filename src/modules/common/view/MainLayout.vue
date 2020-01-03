@@ -107,7 +107,7 @@ export default {
   /* left: 0;  */
   /* transition: width 0.28s; */
 
-  width: 200px;
+  width: 180px;
   transition: width 0.28s;
   /* top: 0; bottom: 0; */
   overflow-y: auto;

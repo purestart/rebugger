@@ -1,13 +1,14 @@
 <template>
   <div class="login-box">
+    <div class="layer-box">
     <div class="mian-box">
       <!-- <img src=""> -->
       <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container full-width">
         <div class="header">
           <!-- <img src=""> -->
           <h3 class="title">
-            <span class="tit-one">XXX后台管理系统</span>
-            <span class="tit-two">Engineering Hardcover Project Management System</span>
+            <span class="tit-one">辰星web异常监控系统</span>
+            <span class="tit-two">Minitor System</span>
           </h3>
           <!-- <img src=""> -->
         </div>
@@ -25,9 +26,10 @@
         </el-form-item>
         <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
         <el-form-item style="width:100%;">
-          <el-button type="primary" style="width:100%;background:#FF923B;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
+          <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
         </el-form-item>
       </el-form>
+    </div>
     </div>
 
   </div>
@@ -84,14 +86,28 @@ export default {
 .login-box {
   height: 100%;
   width: 100%;
-  background: url("../../../assets/images/login_bg.png") no-repeat;
+  // background: url("../../../assets/images/login_bg.png") no-repeat;
+  background: url("../../../assets/images/login-bg.png") center left no-repeat;
   overflow: hidden;
   background-size: 100% 100%;
+  overflow: hidden;
+  display: -ms-flexbox;
+  display: -moz-box;
+  display:-webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  .layer-box{
+    background-color: #111d75;
+    height: 100%;
+    width: 100%;
+    opacity: 0.75;
+  }
   .mian-box {
+    opacity: 1;
     box-shadow: 0 0 25px #cac6c6;
     margin: 72px auto;
     height: 620px;
-    width: 845px;
+    width: 745px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,7 +120,8 @@ export default {
       height: 100%;
       width: 50%;
       padding: 95px 35px 15px 35px;
-      background: #fff;
+      // background: #fff;
+      // opacity: 0.8;
       /*border: 1px solid #eaeaea;*/
       .header {
         display: flex;
@@ -124,7 +141,7 @@ export default {
           align-items: center;
           flex-direction: column;
           margin: 0px auto 40px auto;
-          color: #4f4f4f;
+          color: #ffffff;
           .tit-one {
             font-size: 23px;
           }

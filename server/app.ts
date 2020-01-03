@@ -12,6 +12,10 @@ const Kcors = require("kcors");
 import sample from './src/router/sample';
 import myRouter from './src/router/index';
 import errorMiddleware from './src/middleware/error';
+import checkMiddleware from './src/middleware/check';
+
+// 验证是否有token
+app.use(checkMiddleware);
 //POST解析
 app.use(bodyParser());
 // 跨域设置

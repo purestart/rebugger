@@ -1,12 +1,16 @@
-<!--Created by 熊超超 on 2018/4/25.-->
+<!--Created by 詹陈龙 on 2018/4/25.-->
 <template>
-  <svg :class="svgClass" :style="styleObj" aria-hidden="true" @click="$emit('click')">
+  <svg
+    :class="svgClass"
+    :style="styleObj"
+    aria-hidden="true"
+    @click="$emit('click')"
+  >
     <use :xlink:href="iconName"></use>
   </svg>
 </template>
 
 <script>
-
 export default {
   props: {
     name: {
@@ -26,20 +30,20 @@ export default {
     }
   },
   computed: {
-    svgClass () {
-      return ('svg-icon ' + (this.className || '')).trim()
+    svgClass() {
+      return ("svg-icon " + (this.className || "")).trim();
     },
-    iconName () {
-      return `#icon-${this.name}`
+    iconName() {
+      return `#icon-${this.name}`;
     },
-    styleObj () {
+    styleObj() {
       return {
         transform: `rotate(${this.rotate}deg)`,
         fontSize: `${this.size}px`
-      }
+      };
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

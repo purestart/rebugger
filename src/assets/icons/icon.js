@@ -3,9 +3,9 @@
  */
 
 import Vue from 'vue'
-import SvgIcon from '../../components/base/CcIcon.vue'
+import SvgIcon from '../../components/base/DyIcon.vue'
 
-Vue.component('cc-icon', SvgIcon)
+Vue.component('dy-icon', SvgIcon)
 
 const content = require.context('./svg', false, /\.svg$/)
 

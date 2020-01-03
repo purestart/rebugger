@@ -1,43 +1,57 @@
-<!--Created by 熊超超 on 2018/6/4.-->
+<!--Created by 詹陈龙 on 2018/6/4.-->
 <template>
   <div class="input-con" @click="$emit('click')">
     <div class="tags" v-if="value && value.length">
-      <el-tag size="mini" type="info" v-for="(item, index) in showList" :key="index" :closable="!disabled" @close="$emit('del', item)">{{item[label]}}</el-tag>
-      <el-tag size="mini" type="info" v-if="otherNum > 0">+{{otherNum}}</el-tag>
+      <el-tag
+        size="mini"
+        type="info"
+        v-for="(item, index) in showList"
+        :key="index"
+        :closable="!disabled"
+        @close="$emit('del', item)"
+        >{{ item[label] }}</el-tag
+      >
+      <el-tag size="mini" type="info" v-if="otherNum > 0"
+        >+{{ otherNum }}</el-tag
+      >
     </div>
-    <el-input :disabled="disabled" type="text" readonly :placeholder="myPlaceholder">
+    <el-input
+      :disabled="disabled"
+      type="text"
+      readonly
+      :placeholder="myPlaceholder"
+    >
     </el-input>
     <!--<span class="icon"><cc-icon :name="icon" size="18"></cc-icon></span>-->
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
     disabled: Boolean,
     value: {},
     placeholder: String,
-    label: { type: String, default: 'name' },
+    label: { type: String, default: "name" },
     icon: String,
     collapseTags: Boolean
   },
   computed: {
-    myPlaceholder () {
-      return this.value && this.value.length === 0 ? this.placeholder : ''
+    myPlaceholder() {
+      return this.value && this.value.length === 0 ? this.placeholder : "";
     },
-    showList () {
+    showList() {
       if (!this.collapseTags) {
-        return this.value.slice(0, Math.min(20, this.value.length))
+        return this.value.slice(0, Math.min(20, this.value.length));
       } else {
-        return this.value.slice(0, 1)
+        return this.value.slice(0, 1);
       }
     },
-    otherNum () {
-      return this.value.length - this.showList.length
+    otherNum() {
+      return this.value.length - this.showList.length;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

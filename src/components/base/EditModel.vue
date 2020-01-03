@@ -1,26 +1,43 @@
+<!--Created by 詹陈龙 on 2018/6/11.-->
 <template>
-  <div :style="getStyle" :class="modelVisible?'show':''" class="edit-model">
+  <div :style="getStyle" :class="modelVisible ? 'show' : ''" class="edit-model">
     <div class="edit-box">
       <div class="model-header">
-        <span>{{title}}</span>
+        <span>{{ title }}</span>
         <span class="tool-bar">
-          <span @click="reflesh" v-if="isReflesh" class="m-r-10 f-12">刷新</span>
+          <span @click="reflesh" v-if="isReflesh" class="m-r-10 f-12"
+            >刷新</span
+          >
           <i @click="magnifyModel" class="el-icon-rank m-r-10"></i>
           <i @click="closeModel" class="el-icon-close"></i>
         </span>
       </div>
-      <div :style="'height:'+(getHeight-40)+'px;overflow-y: scroll;padding-bottom:15px;'">
+      <div
+        :style="
+          'height:' +
+            (getHeight - 40) +
+            'px;overflow-y: scroll;padding-bottom:15px;'
+        "
+      >
         <slot></slot>
       </div>
       <div class="btn">
-        <el-button type="primary" size="mini" @click="submitForm" v-if="!hideSubmitBtn">{{cimmitButtonText}}</el-button>
-        <el-button type="primary" size="mini" @click="closeModel">取消</el-button>
+        <el-button
+          type="primary"
+          size="mini"
+          @click="submitForm"
+          v-if="!hideSubmitBtn"
+          >{{ cimmitButtonText }}</el-button
+        >
+        <el-button type="primary" size="mini" @click="closeModel"
+          >取消</el-button
+        >
       </div>
     </div>
   </div>
 </template>
 
-<script type='text/ecmascript-6'>
+<script type="text/ecmascript-6">
 export default {
   name: 'EditModel',
   props: {
@@ -37,7 +54,7 @@ export default {
     title: { // 弹出框标题
       type: String,
       required: false,
-      default: ''
+      default: ""
     },
     width: { // 自定义宽度
       type: Number,
@@ -80,38 +97,38 @@ export default {
           ';'
         )
       } else {
-        return 'width:100%' + ';height:100%' + ';z-index:' + this.zIndex + ';'
+        return 'width:100%' + ';height:100%' + ';z-index:' + this.zIndex + ';';
       }
     },
     getHeight () {
       // console.log(this.maxVisible);
       // console.log(document.body.clientHeight);
       if (this.maxVisible === false) {
-        return this.height
+        return this.height;
       } else {
-        return document.body.clientHeight
+        return document.body.clientHeight;
       }
     }
   },
   mounted () { },
   methods: {
     closeModel () {
-      this.$emit('close', false)
+      this.$emit('close', false);
     },
     submitForm () {
-      this.$emit('submit', false)
+      this.$emit('submit', false);
     },
     reflesh () {
-      this.$emit('reflesh', false)
+      this.$emit('reflesh', false);
     },
     magnifyModel () {
-      this.maxVisible = !this.maxVisible
+      this.maxVisible = !this.maxVisible;
     }
   }
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .edit-model {
   position: fixed;
   margin: auto;
