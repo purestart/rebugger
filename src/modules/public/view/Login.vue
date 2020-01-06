@@ -36,17 +36,17 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations } from "vuex";
 // import NProgress from 'nprogress'
-import publicApi from '../api';
+import publicApi from "../api";
 export default {
   data () {
     return {
       logining: false,
       ruleForm2: {
-        companyCode: 'MH00000',
-        userName: 'purestart',
-        password: '123qwe'
+        companyCode: "MH00000",
+        userName: "purestart",
+        password: "123qwe"
       },
       rules2: {
         // organNum: [
@@ -54,36 +54,35 @@ export default {
         //   //{ validator: validaePass }
         // ],
         account: [
-          { required: true, message: '请输入账号', trigger: 'blur' }
+          { required: true, message: "请输入账号", trigger: "blur" }
           // { validator: validaePass }
         ],
         checkPass: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
+          { required: true, message: "请输入密码", trigger: "blur" }
           // { validator: validaePass2 }
         ]
       },
       checked: true
-    }
+    };
   },
   methods: {
-    ...mapMutations(['updateUserInfo']),
+    ...mapMutations(["updateUserInfo"]),
     handleReset2 () {
-      this.$refs.ruleForm2.resetFields()
+      this.$refs.ruleForm2.resetFields();
     },
     async handleSubmit2 () {
-
-      let [err,ret] = await this.$to(publicApi.login(this.ruleForm2));
-      if(err) {
+      let [err, ret] = await this.$to(publicApi.login(this.ruleForm2));
+      if (err) {
         console.log(err);
         return;
       }
       console.log(ret);
-      if(ret.code == 200){
+      if (ret.code == 200) {
         // 登录成功 存储用户信息 存储token
-        sessionStorage.setItem("token",ret.token);
-        localStorage.setItem('user', JSON.stringify(ret.data));
+        sessionStorage.setItem("token", ret.token);
+        localStorage.setItem("user", JSON.stringify(ret.data));
         this.updateUserInfo(ret.data);
-        this.$router.push('/home');
+        this.$router.push("/home");
       }
       // this.$router.push('/home')
       // const { data } = await this.$store.dispatch('nativeLogin', this.ruleForm2)
@@ -95,8 +94,7 @@ export default {
       // }
     }
   }
-}
-
+};
 </script>
 
 <style lang="scss" scoped>
@@ -126,7 +124,7 @@ export default {
     opacity: 1;
     box-shadow: 0 0 25px #cac6c6;
     margin: 72px auto;
-    height: 620px;
+    height: 550px;
     width: 745px;
     display: flex;
     justify-content: center;

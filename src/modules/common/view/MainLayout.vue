@@ -23,22 +23,22 @@
 </template>
 
 <script>
-import Nav from './Nav.vue'
-import Header from './Header.vue'
-import Tabs from './Tabs.vue'
-import { mapActions, mapState } from 'vuex'
+import Nav from "./Nav.vue";
+import Header from "./Header.vue";
+import Tabs from "./Tabs.vue";
+import { mapActions, mapState } from "vuex";
 export default {
   components: { Nav, Header, Tabs },
   data () {
     return {
-      ShowHide: false,
+      ShowHide: true,
       lips: true,
       logining: false,
       userInfo: {}
-    }
+    };
   },
   async created () {
-    this.getUserMenu()
+    this.getUserMenu();
   },
   computed: {
     ...mapState({
@@ -47,26 +47,26 @@ export default {
   },
   watch: {
     $route (val) {
-      if (val.path !== '' && val.path !== '/') {
-        this.$utils.toTab(val.fullPath, val)
+      if (val.path !== "" && val.path !== "/") {
+        this.$utils.toTab(val.fullPath, val);
       }
     }
   },
   methods: {
-    ...mapActions(['fetchAuth', 'deftheme', 'getUserMenu']),
+    ...mapActions(["fetchAuth", "deftheme", "getUserMenu"]),
     toggleShow ($event) {
-      this.ShowHide = !this.ShowHide
+      this.ShowHide = !this.ShowHide;
       // this.lips=!this.lips;
-      this.lips = !this.ShowHide
+      this.lips = !this.ShowHide;
     },
     toRouter (url) {
-      this.$router.push(url)
+      this.$router.push(url);
     }
   },
   mounted () {
     // this.deftheme();
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import "../../../assets/css/vars.scss";
