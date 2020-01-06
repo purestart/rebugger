@@ -10,10 +10,62 @@ Target Server Type    : MYSQL
 Target Server Version : 50711
 File Encoding         : 65001
 
-Date: 2019-12-19 21:55:17
+Date: 2020-01-06 18:25:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for ip_auth
+-- ----------------------------
+DROP TABLE IF EXISTS `ip_auth`;
+CREATE TABLE `ip_auth` (
+  `id` varchar(255) NOT NULL COMMENT '主键',
+  `name` varchar(255) NOT NULL COMMENT '环境名称',
+  `type` int(11) DEFAULT NULL COMMENT '类型 1 允许访问的域名 2 禁止访问的域名 3 禁止ip列表',
+  `domain` text NOT NULL COMMENT '允许域名JSON数据',
+  `description` varchar(1024) DEFAULT NULL COMMENT '描述',
+  `create_date` datetime DEFAULT NULL COMMENT '创建日期',
+  `update_date` datetime DEFAULT NULL COMMENT '修改日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ip_auth
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for project
+-- ----------------------------
+DROP TABLE IF EXISTS `project`;
+CREATE TABLE `project` (
+  `id` varchar(255) NOT NULL COMMENT '主键',
+  `name` varchar(255) NOT NULL COMMENT '项目名称',
+  `type` int(11) DEFAULT NULL COMMENT '类型 1 PC 2 移动 3 小程序',
+  `language` varchar(255) DEFAULT NULL COMMENT '编写语言',
+  `frame` varchar(255) DEFAULT NULL COMMENT '框架',
+  `code` varchar(64) NOT NULL COMMENT '项目编码',
+  `apikey` varchar(255) NOT NULL COMMENT '项目秘钥',
+  `image` varchar(255) DEFAULT NULL COMMENT '项目封面',
+  `domain` varchar(1024) DEFAULT NULL COMMENT '允许域名',
+  `description` varchar(1024) DEFAULT NULL COMMENT '描述',
+  `retain_name_config` varchar(255) DEFAULT NULL COMMENT '保留字段配置',
+  `retain_id_config` varchar(255) DEFAULT NULL COMMENT '保留字段配置',
+  `retain_field_config` varchar(255) DEFAULT NULL COMMENT '保留字段配置',
+  `module_config` varchar(255) DEFAULT NULL COMMENT '模块分类配置',
+  `create_date` datetime DEFAULT NULL COMMENT '创建日期',
+  `update_date` datetime DEFAULT NULL COMMENT '修改日期',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`),
+  UNIQUE KEY `apikey` (`apikey`),
+  UNIQUE KEY `code_2` (`code`),
+  UNIQUE KEY `apikey_2` (`apikey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of project
+-- ----------------------------
+INSERT INTO `project` VALUES ('46ae0b10-26ec-11ea-9ca3-4d070c34f5f7', 'purestart', '1', null, null, 'pos-web', 'b402fd20-262d-11ea-8a78-557d3d32d13c', null, 'localhost,127.0.0.1', null, null, null, null, null, '2019-12-25 07:58:02', '2020-01-03 08:14:53');
 
 -- ----------------------------
 -- Table structure for report
@@ -94,3 +146,8 @@ CREATE TABLE `user` (
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('sad001', 'zcl', 'purestart', '123qwe', '', null, null, null, null, null, null, null, null, '2019-12-17 17:48:14', null);
