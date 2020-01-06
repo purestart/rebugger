@@ -16,11 +16,11 @@ export default class baseService {
    * id 查询字段
    * cacheable 是否开启缓存
    */
-  public async info(id: string, cacheable = false, options?:any) {
+  public async info(id: string, cacheable = false, options?: any) {
     if (cacheable) {
       let obj = await cacheUtil.get(id);
       if (obj) {
-        obj = JSON.parse(obj)
+        obj = JSON.parse(obj);
         return obj;
       } else {
         let ret = await this.entityDao.findOne({
@@ -29,7 +29,13 @@ export default class baseService {
           }
         });
         if (ret) {
-          cacheUtil.set(id, JSON.stringify(ret), (options && options.exprires)?options.exprires:sysConfig.redis.exprires);
+          cacheUtil.set(
+            id,
+            JSON.stringify(ret),
+            options && options.exprires
+              ? options.exprires
+              : sysConfig.redis.exprires
+          );
         }
         return ret;
       }
@@ -47,12 +53,12 @@ export default class baseService {
    * where 搜索条件 返回所有
    * cacheable 是否开启缓存
    */
-  public async find(where: object, cacheable = false, options?:any) {
+  public async find(where: object, cacheable = false, options?: any) {
     if (cacheable) {
       let key = JSON.stringify(where);
       let obj = await cacheUtil.get(key);
       if (obj) {
-        obj = JSON.parse(obj)
+        obj = JSON.parse(obj);
         return obj;
       } else {
         let ret = await this.entityDao.findAll({
@@ -60,7 +66,13 @@ export default class baseService {
           where
         });
         if (ret) {
-          cacheUtil.set(key, JSON.stringify(ret), (options && options.exprires)?options.exprires:sysConfig.redis.exprires);
+          cacheUtil.set(
+            key,
+            JSON.stringify(ret),
+            options && options.exprires
+              ? options.exprires
+              : sysConfig.redis.exprires
+          );
         }
         return ret;
       }
@@ -75,16 +87,22 @@ export default class baseService {
   /**
    * 分页查询
    */
-  public async list({ pageNum = 1, pageSize = 10, ...where }) {
+  public async list(pageNum = 1, pageSize = 10, where) {
     let total = 0;
     total = await this.entityDao.count({ where }, { logging: true });
     if (total < 1) {
-      return [];
+      return {
+        pageSize,
+        pageNum,
+        list:[],
+        total:0
+      };
     }
     let offset = 0;
     if (pageNum > 1) {
       offset = (pageNum - 1) * pageSize;
     }
+    console.log(offset);
     let list = await this.entityDao.findAll({
       where,
       order: [["updateDate", "DESC"]],

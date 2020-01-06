@@ -8,7 +8,16 @@ import dashboard from "./modules/dashboard/router.js";
 import system from "./modules/system/router";
 import publicRouter from "./modules/public/router";
 import chart from "./modules/chart/router";
-import projectRouter from './modules/project/router';
+import projectRouter from "./modules/project/router";
+
+// 全局处理异常 this.$router.push('/home') 出现 NavigationDuplicated 的bug
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject){
+    return originalPush.call(this, location, onResolve, onReject);
+  }
+  return originalPush.call(this, location).catch(err => err);
+};
 
 Vue.use(Router);
 

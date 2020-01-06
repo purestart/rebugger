@@ -3,7 +3,7 @@ import { Context } from 'koa';
 
 export default [
   {
-    url: "/auth/login",
+    url: "/api/auth/login",
     method: "post",
     function: async (ctx: Context) => {
       let params:any = ctx.request.body;

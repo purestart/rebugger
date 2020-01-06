@@ -130,6 +130,7 @@ class UiUtils extends Utils {
       if (url.startsWith('/home')) return
       let item = menuTabs.find((item) => item.key === route.name)
       const name = route.meta[route.meta.length - 1]
+      // console.log("到这里", name);
       if (!item) {
         // // console.log(route.meta);
         // if(route.meta && route.meta.length === 1){

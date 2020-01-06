@@ -8,16 +8,16 @@
     <div class="h_nav">
       <dy-icon :name="isCollapse?'expand':'unexpand'" @click="expandChange" size="50" class="expand" />
       <ul class="list">
-        <li>后台管理系统</li>
-        <el-popover placement="bottom" width="300" trigger="hover">
+        <li v-if="false">后台管理系统</li>
+        <!-- <el-popover placement="bottom" width="300" trigger="hover">
           <div style="display:flex">
             <div @click="toPage('eng-chart')" style="cursor: pointer;flex:1;text-align:center;padding:10px;5px;background-color:#f2f2f2;margin:5px;">工程线</div>
             <div @click="toPage('dealer-chart')" style="cursor: pointer;flex:1;text-align:center;padding:10px;5px;background-color:#f2f2f2;margin:5px;">经销商</div>
             <div @click="toPage('work-team')" style="cursor: pointer;flex:1;text-align:center;padding:10px;5px;background-color:#f2f2f2;margin:5px;">施工队</div>
           </div>
           <li slot="reference">驾驶舱</li>
-        </el-popover>
-        <el-dropdown trigger="hover" @command="changeSys()">
+        </el-popover> -->
+        <el-dropdown v-if="false" trigger="hover" @command="changeSys()">
           <li>更多系统</li>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="安全设置">客服系统</el-dropdown-item>
@@ -51,7 +51,7 @@
         <el-dropdown trigger="hover" placement="bottom-end" @command="selectSelf">
           <div class="login-user">
             <img src="../../../assets/images/head.jpg" alt>
-            <span class="username">{{username}}</span>
+            <span class="username">{{userInfo.name?userInfo.name:'未登录'}}</span>
           </div>
           <el-dropdown-menu slot="dropdown">
             <!-- <el-dropdown-item command="桌面配置">桌面配置</el-dropdown-item> -->
@@ -164,7 +164,7 @@ export default {
   props: ['username', 'isCollapse'],
   computed: {
     ...mapState({
-      // msg: state => state.default.msg,
+      userInfo: state => state.default.userInfo,
     }),
     selected () {
       return this.userDashboard.map(

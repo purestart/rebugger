@@ -17,11 +17,11 @@ const store = new Vuex.Store({
       storage: window.localStorage,
       reducer: state => ({
         default: {
-          // userInfo: state.default.userInfo,
-          // menus: state.default.menus,
-          // menuTabs: state.default.menuTabs,
-          // selectedTab: state.default.selectedTab,
-          // noMenuTabsMap: state.default.noMenuTabsMap,
+          userInfo: state.default.userInfo,
+          menus: state.default.menus,
+          menuTabs: state.default.menuTabs,
+          selectedTab: state.default.selectedTab,
+          noMenuTabsMap: state.default.noMenuTabsMap
           // allAreas: state.default.allAreas
         }
       })

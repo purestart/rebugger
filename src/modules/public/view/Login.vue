@@ -8,7 +8,7 @@
           <!-- <img src=""> -->
           <h3 class="title">
             <span class="tit-one">辰星web异常监控系统</span>
-            <span class="tit-two">Minitor System</span>
+            <span class="tit-two m-t-10">Minitor System</span>
           </h3>
           <!-- <img src=""> -->
         </div>
@@ -36,15 +36,17 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 // import NProgress from 'nprogress'
+import publicApi from '../api';
 export default {
   data () {
     return {
       logining: false,
       ruleForm2: {
         companyCode: 'MH00000',
-        userName: 'admin',
-        password: '123456'
+        userName: 'purestart',
+        password: '123qwe'
       },
       rules2: {
         // organNum: [
@@ -64,11 +66,26 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['updateUserInfo']),
     handleReset2 () {
       this.$refs.ruleForm2.resetFields()
     },
     async handleSubmit2 () {
-      this.$router.push('/home')
+
+      let [err,ret] = await this.$to(publicApi.login(this.ruleForm2));
+      if(err) {
+        console.log(err);
+        return;
+      }
+      console.log(ret);
+      if(ret.code == 200){
+        // 登录成功 存储用户信息 存储token
+        sessionStorage.setItem("token",ret.token);
+        localStorage.setItem('user', JSON.stringify(ret.data));
+        this.updateUserInfo(ret.data);
+        this.$router.push('/home');
+      }
+      // this.$router.push('/home')
       // const { data } = await this.$store.dispatch('nativeLogin', this.ruleForm2)
       // if (data) {
       //   localStorage.setItem('nativeLogin', 1)
@@ -101,6 +118,9 @@ export default {
     height: 100%;
     width: 100%;
     opacity: 0.75;
+    display: flex;
+    align-items:center;
+    justify-content:center;
   }
   .mian-box {
     opacity: 1;

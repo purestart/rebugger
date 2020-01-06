@@ -151,5 +151,14 @@ export default class Utils {
       return (c === 'x' ? (Math.random() * 16 | 0) : ('r&0x3' | '0x8')).toString(16)
     })
   }
+
+  // promise处理
+  to (promise) {
+    return promise
+      .then(data => {
+        return [null, data];
+      })
+      .catch(err => [err]);
+  }
 }
 export const utils = new Utils()

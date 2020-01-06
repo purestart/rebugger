@@ -41,11 +41,23 @@ let tmpMenus = [
     name: "项目管理",
     icon: "icon-fa-columns",
     sortNo: 1,
-    menuUrl: "/project",
+    menuUrl: "/project/list",
     menuType: 0,
     applicationId: 81,
     isVisible: 1
   },
+  // {
+  //   id: 6661,
+  //   parentId: 0,
+  //   children: [],
+  //   name: "项目编辑",
+  //   icon: "icon-fa-columns",
+  //   sortNo: 1,
+  //   menuUrl: "/project/edit",
+  //   menuType: 0,
+  //   applicationId: 81,
+  //   isVisible: 1
+  // },
   {
     id: 67,
     parentId: 0,
@@ -334,23 +346,23 @@ const mutations = {
   },
   clearUserInfo(state) {
     // state.selectedTab =
-    state.noMenuTabsMap = {};
-    state.menus = [];
+    // state.noMenuTabsMap = {};
+    // state.menus = [];
     state.menuTabs = [];
     state.userInfo = {};
-    localStorage.removeItem("token");
-    localStorage.removeItem("ticket");
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("ticket");
   },
-  updateUser(state, payload) {
-    state.userInfo = payload.userInfo;
-    localStorage.setItem(
-      "HEADER-USERINFO",
-      Base64.encode(
-        JSON.stringify({
-          userId: payload.userInfo.id
-        })
-      )
-    );
+  updateUserInfo(state, payload) {
+    state.userInfo = payload;
+    // localStorage.setItem(
+    //   "HEADER-USERINFO",
+    //   Base64.encode(
+    //     JSON.stringify({
+    //       userId: payload.userInfo.id
+    //     })
+    //   )
+    // );
   },
   updateMsg(state, payload) {
     state.msg = payload;
@@ -455,6 +467,12 @@ const mutations = {
   }
 };
 const actions = {
+  updateUserInfo(context, params) {
+    context.commit("updateUser", params);
+  },
+  clearUserInfo(context, params){
+    context.commit("clearUserInfo");
+  },
   login(context, params) {
     // return systemApi.login(params)
   },

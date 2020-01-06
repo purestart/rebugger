@@ -29,14 +29,14 @@ class authService {
         return {
           code: 503,
           data: null,
-          errMsg: "登录失败"
+          message: "登录失败,账号或密码错误！"
         }
       }
     }else{
       return {
         code: 503,
         data: null,
-        errMsg: "登录失败,账号或密码错误！"
+        message: "登录失败,账号或密码错误！"
       }
     }
   }

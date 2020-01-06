@@ -11,9 +11,9 @@
         <tabs flex-box="0" />
         <div flex-box="1" class="router-view">
           <transition name="fade-transform" mode="out-in">
-            <keep-alive :exclude="/^.*-noCache$/">
+            <!-- <keep-alive :exclude="/^.*-noCache$/"> -->
               <router-view></router-view>
-            </keep-alive>
+            <!-- </keep-alive> -->
           </transition>
         </div>
       </div>

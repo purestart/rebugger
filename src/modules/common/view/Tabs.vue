@@ -48,6 +48,7 @@ export default {
     tabs () {
       const menus = this.menuTabs.map(o => {
         const menu = o.menus[o.menus.length - 1]
+        console.log(menu);
         return {
           title: menu.name.name || menu.name,
           name: o.key,

@@ -41,18 +41,14 @@
 
 <script type="text/ecmascript-6">
 import baseMixins from '../../../mixins/baseMixins';
+import projectApi from '../api';
 export default {
   mixins:[baseMixins.pageMixin],
   data () {
     return {
       dataForm:{},
       loading:false,
-      rows: [
-        {
-          apikey:"sad",
-          keyVisible:false
-        }
-      ],
+      rows: [],
       columns: [
         // { type: 'index', align: 'center', label: '序号' },
         { label: '项目名称', prop: 'name' },
@@ -62,12 +58,27 @@ export default {
         { label: '使用框架', prop: 'frame'},
         { label: '更新日期', prop: 'updateDate'},
         { label: 'apikey', prop: 'apikey',
+          align: 'center',
+          width: '150',
           renderCell: (h, value, row) => (
             <div>
-              <span class="apikey-bg p-h-5">{row.keyVisible?row.apikey:'******'}</span>
-              <el-button onClick={()=>this.showApikey(row)} plain class="m-l-10">{row.keyVisible?'不显示':'显示'}</el-button>
+              <span class="apikey-bg p-h-5">{row.keyVisible?row.apikey:'*********'}</span>
+              <el-button size="mini" onClick={()=>this.showApikey(row)} plain class="m-l-10">{row.keyVisible?'不显示':'显示'}</el-button>
             </div>
           )
+        },
+        {
+          label: '操作',
+          width: '150',
+          fixed: 'right',
+          align: 'center',
+          target: ['table'],
+          renderCell: (h, value, row, index) => {
+            return <div>
+              <el-button size="mini" onClick={e => this.edit(e, row)}>修改</el-button>
+              <el-button plain size="mini" onClick={e => this.delete(e, row)}>删除</el-button>
+            </div>
+          },
         }
       ]
     }
@@ -78,8 +89,34 @@ export default {
 
   },
   methods:{
-    getData(){
+    async getData(){
+      let params={
+        pageNum:this.pageNum,
+        pageSize:this.pageSize,
+        ...this.dataForm
+      }
+      let [err, ret] = await this.$to(projectApi.fetchProjectList(params));
+      if(err){
+        console.log(err);
+        return;
+      }
+      // console.log(ret);
+      ret.data.list.forEach(item=>{
+        item.keyVisible = false;
+      })
+      this.total = ret.data.total;
+      this.rows = ret.data.list;
+    },
+    async delete(){
+      let str = '确定要删除该项目吗？';
+      const ret = await this.$utils.confirm(str);
+      if(ret){
 
+      }
+    },
+    edit(e, row){
+      this.$router.push({name:"editProject",params:{id:row.id}})
+      
     },
     showApikey(row){
       if(row.keyVisible){
@@ -96,7 +133,7 @@ export default {
 .project-list {
   padding: 16px;
   background-color: #ffffff;
-  /deep/ .apikey-bg{
+  /deep/ .apikey-bg {
     background-color: #efefef;
     display: inline-block;
   }

@@ -14,6 +14,11 @@
             "date": 1578038272269,
             "name": "server\\logs\\CGI-2020-01-03.log",
             "hash": "c569f52c1840142310d117e8c434542a"
+        },
+        {
+            "date": 1578278411116,
+            "name": "server\\logs\\CGI-2020-01-06.log",
+            "hash": "c24ce76b70ee2e4318c7d065a5dc460b"
         }
     ]
 }

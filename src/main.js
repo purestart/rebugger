@@ -28,26 +28,27 @@ router.beforeEach((to, from, next) => {
   let user = localStorage.getItem("user");
   NProgress.start();
   if (to.path == "/login") {
-    window.localStorage.removeItem('token');
+    window.localStorage.removeItem("user");
     window.sessionStorage.clear();
+    store.commit('clearUserInfo', {});
     // 清除所有tab缓存
-    store.commit('clearTabs', 'all');
+    store.commit("clearTabs", "all");
     next();
   } else {
-    if (!token || !user) {
-      if (token && user) {
-        // store.commit('updateLoginTokenCPM', token);
-        // store.commit('updateLoginUserCPM', JSON.parse(user));
-        // setGlobalTopNavs(to, next);
-        next();
-      } else {
-        next({
-          path: "/login"
-        });
-      }
-    } else {
+    // if (!token || !user) {
+    if (token && user) {
+      // store.commit('updateLoginTokenCPM', token);
+      // store.commit('updateLoginUserCPM', JSON.parse(user));
+      // setGlobalTopNavs(to, next);
       next();
+    } else {
+      next({
+        path: "/login"
+      });
     }
+    // } else {
+    // next();
+    // }
   }
   next();
 });

@@ -15,7 +15,6 @@ import errorMiddleware from './src/middleware/error';
 import checkMiddleware from './src/middleware/check';
 
 // 验证是否有token
-app.use(checkMiddleware);
 //POST解析
 app.use(bodyParser());
 // 跨域设置
@@ -25,6 +24,8 @@ const corsOptions = {
   maxAge: 3600
 };
 app.use(Kcors(corsOptions));
+
+app.use(checkMiddleware);
 app.use(errorMiddleware());
 // console.log(process.env.NODE_ENV);
 

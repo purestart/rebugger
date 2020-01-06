@@ -40,10 +40,10 @@ axios.interceptors.response.use(
         reader.onload = e => {
           const result = JSON.parse(e.target.result);
           if (result.status === 401) {
-            return handler401(result.desc);
+            return handler401(result.message);
           } else {
             Message({
-              message: result.desc || "请求错误",
+              message: result.message || "请求错误",
               type: "error"
             });
           }
@@ -75,7 +75,7 @@ axios.interceptors.response.use(
     }
     if (response.data.status === 401) {
       // 401, token失效
-      return handler401(response.data.desc);
+      return handler401(response.data.message);
     }
     return response;
   },
@@ -125,17 +125,18 @@ export default function setAxios() {
           if (res.status === 204) {
             return resolve({});
           }
-          if (res.data.status === 200 || res.data.code === 0) {
+          console.log(res);
+          if (res.data.code === 200 || res.data.code === 0) {
             // return reject(res.data);
             return resolve(res.data);
           } else {
             if (!config.hideError) {
               Message({
-                message: res.data.desc || "服务器异常",
+                message: res.data.message || "服务器异常",
                 type: "error"
               });
             }
-            return resolve({ status: 500, msg: res.data.desc });
+            return resolve({ status: 500, msg: res.data.message });
           }
         })
         .catch(err => {

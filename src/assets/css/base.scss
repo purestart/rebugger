@@ -288,11 +288,36 @@ input::-moz-focus-inner {
 @for $i from 1 through 10 {
   $j: 20*$i;
 
+  // .w-#{$j} {
+  //   width: #{$j}px;
+  // }
+
+  .h-#{$j} {
+    height: #{$j}px;
+  }
+}
+
+//宽度1-20
+@for $i from 1 through 20 {
+  .w-#{$i} {
+    width: #{$i}px;
+  }
+}
+
+//宽度20-200 偶数
+@for $i from 11 through 100 {
+  $j: 2*$i;
+
   .w-#{$j} {
     width: #{$j}px;
   }
+}
 
-  .h-#{$j} {
+//宽度250-800 step 50
+@for $i from 5 through 16 {
+  $j: 50*$i;
+
+  .w-#{$j} {
     width: #{$j}px;
   }
 }

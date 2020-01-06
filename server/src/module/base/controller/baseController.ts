@@ -157,10 +157,19 @@ export default class BaseController {
 
           // const name = ctx.request.query.name;
           let { pageNum = 1, pageSize = 10, ...where } = ctx.request.body;
+          console.log(ctx.request.body);
+          
           //获取搜索参数
           where = where || {};
-
-          const ret = await this.entityService.list(pageSize, pageNum, where);
+          // 去空字符串和 null 以及undefined
+          let obj = {};
+          for(let key in where){
+            if(where[key] && where[key] !==''){
+              obj[key]=where[key];
+            }
+          }
+          where = obj;
+          const ret = await this.entityService.list(pageNum, pageSize, where);
           if (ret) {
             ctx.response.body = {
               code: 200,
