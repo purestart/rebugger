@@ -1,0 +1,237 @@
+<template>
+  <div class="project-list">
+    <div class="search">
+      <el-form
+        class="base-form"
+        :inline="true"
+        :model="dataForm"
+        @keyup.enter.native="getData()"
+      >
+        <el-form-item label="项目名称:">
+          <el-input
+            v-model="dataForm.projectName"
+            clearable
+            placeholder="项目名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="项目编码:">
+          <el-input
+            v-model="dataForm.code"
+            clearable
+            placeholder="项目编码"
+          ></el-input>
+        </el-form-item>
+        <template v-for="(item,index) in dynamicSearchFormList">
+          <el-form-item :key="index" :label="item.title+':'">
+            <el-input
+              v-model="dataForm[item.fieldName]"
+              clearable
+              :placeholder="item.title"
+            ></el-input>
+          </el-form-item>
+        </template>
+        <el-form-item>
+          <el-button size="small" @click="getData()">查询</el-button>
+          <!-- <el-button type="primary" size="small" @click="add()">新建项目</el-button> -->
+        </el-form-item>
+      </el-form>
+    </div>
+    <dy-table
+      border
+      ref="dyTable"
+      v-loading="loading"
+      :columns="columns"
+      :rows="rows"
+    ></dy-table>
+    <el-pagination
+      class="m-t-10 a-c"
+      background
+      @current-change="pageNumChange"
+      @size-change="pageSizeChange"
+      :page-size="pageSize"
+      :current-page="pageNum"
+      :layout="layout"
+      :total="total"
+    ></el-pagination>
+    <InfoModel :info="infoModelData" ref="infoModel" />
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+import baseMixins from '../../../mixins/baseMixins';
+import projectApi from '../api';
+import InfoModel from '../fragment/infoModel';
+export default {
+  mixins:[baseMixins.pageMixin],
+  components:{
+    InfoModel
+  },
+  data () {
+    return {
+      infoModelData:{},
+      dynamicSearchForm:{},
+      dataForm:{},
+      loading:false,
+      rows: [],
+      columns: [
+        // { type: 'index', align: 'center', label: '序号' },
+        { label: '异常名称', prop: 'name' },
+        { label: '异常类型', prop: 'type' },
+        { label: '异常时间', prop: 'emitTime', width: 140 },
+        { label: '异常信息', prop: 'message'},
+        { label: '项目名称', prop: 'projectName', },
+        { label: '浏览器', prop: 'browser', showOverflowTooltip:true,
+          renderCell: (h, value, row) => (
+            <span>{row.browser + row.coreVersion}</span>
+          )
+        },
+        { label: '路由信息', prop: 'url'},
+        // { label: '路由信息', prop: 'url',
+        //   align: 'center',
+        //   width: '150',
+        //   renderCell: (h, value, row) => (
+        //     <div>
+        //       <span class="apikey-bg p-h-5">{row.keyVisible?row.apikey:'*********'}</span>
+        //       <el-button size="mini" onClick={()=>this.showApikey(row)} plain class="m-l-10">{row.keyVisible?'不显示':'显示'}</el-button>
+        //     </div>
+        //   )
+        // },
+        {
+          label: '操作',
+          width: '200',
+          fixed: 'right',
+          align: 'center',
+          target: ['table'],
+          renderCell: (h, value, row, index) => {
+            return <div>
+              <el-button size="mini" onClick={e => this.info(row)}>查看详情</el-button>
+              <el-button plain size="mini" onClick={e => this.delete(e, row)}>编辑状态</el-button>
+            </div>
+          },
+        }
+      ]
+    }
+  },
+  computed: {
+    dynamicSearchFormList() {
+      let arr=[];
+      let dynamicSearchForm = this.dynamicSearchForm;
+      // console.log(dynamicSearchForm);
+      for(let key in dynamicSearchForm){
+        arr.push(dynamicSearchForm[key]);
+      }
+      return arr;
+    }
+  },
+  created () {
+  },
+  mounted () {
+  },
+  methods:{
+    info(row){
+      this.infoModelData = row;
+      this.$nextTick(()=>{
+        this.$refs.infoModel.showInfoModel(true);
+      })
+    },
+    add(){
+      this.$router.push({name:"editProject",params:{id:0}})
+    },
+    async getData(){
+      let params={
+        pageNum:this.pageNum,
+        pageSize:this.pageSize,
+        ...this.dataForm
+      }
+      let [err, ret] = await this.$to(projectApi.fetchReportList(params));
+      if(err){
+        console.log(err);
+        return;
+      }
+      // console.log(ret);
+      let project = ret.data.project;
+      let dynamicSearchForm ={};
+      if(project){
+        let retainNameConfig = project.retainNameConfig;
+        if(retainNameConfig && retainNameConfig.length>5){
+          retainNameConfig = JSON.parse(retainNameConfig);
+          retainNameConfig.fieldName = "retainName";
+          dynamicSearchForm[retainNameConfig] = retainNameConfig;
+          // console.log(retainNameConfig);
+          let retainNameColumn = this.columns.find(item=>item.prop == 'retainName');
+          if(!retainNameColumn){
+            this.columns.push({ label: retainNameConfig.title, prop: 'retainName'});
+          }else{
+            retainNameColumn.label = retainNameConfig.title;
+          }
+        }
+        let retainIdConfig = project.retainIdConfig;
+        if(retainIdConfig && retainIdConfig.length>5){
+          retainIdConfig = JSON.parse(retainIdConfig);
+          retainIdConfig.fieldName = "retainId";
+          dynamicSearchForm[retainIdConfig] = retainIdConfig;
+          // console.log(retainNameConfig);
+          let retainNameColumn = this.columns.find(item=>item.prop == 'retainId');
+          if(!retainNameColumn){
+            this.columns.push({ label: retainIdConfig.title, prop: 'retainId'});
+          }else{
+            retainNameColumn.label = retainIdConfig.title;
+          }
+        }
+        let retainFieldConfig = project.retainFieldConfig;
+        if(retainFieldConfig && retainFieldConfig.length>5){
+          retainFieldConfig = JSON.parse(retainFieldConfig);
+          retainFieldConfig.fieldName = "retainField";
+          dynamicSearchForm[retainFieldConfig] = retainFieldConfig;
+          // console.log(retainNameConfig);
+          let retainNameColumn = this.columns.find(item=>item.prop == 'retainField');
+          if(!retainNameColumn){
+            this.columns.push({ label: retainFieldConfig.title, prop: 'retainField'});
+          }else{
+            retainNameColumn.label = retainFieldConfig.title;
+          }
+        }
+        this.dynamicSearchForm = dynamicSearchForm;
+      }
+      ret.data.list.forEach(item=>{
+        item.keyVisible = false;
+      })
+      this.total = ret.data.total;
+      this.rows = ret.data.list;
+    },
+    async delete(e, row){
+      let str = '确定要删除该项目吗？';
+      const ret = await this.$utils.confirm(str);
+      if(ret){
+        let [err,ret] = await this.$to(projectApi.deleteProject({ids:[row.id]}));
+        if(err) return;
+        if(ret.code == 200){
+          this.$utils.message("删除成功！");
+          this.getData();
+        }
+      }
+    },
+    edit(e, row){
+      this.$router.push({name:"editProject",params:{id:row.id}})
+    },
+    showApikey(row){
+      if(row.keyVisible){
+        row.keyVisible=false;
+      }else{
+        row.keyVisible=true;
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.project-list {
+  padding: 16px;
+  background-color: #ffffff;
+  /deep/ .apikey-bg {
+    background-color: #efefef;
+    display: inline-block;
+  }
+}
+</style>

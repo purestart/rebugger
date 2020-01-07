@@ -16,6 +16,7 @@
         </el-form-item>
         <el-form-item>
           <el-button size="small" @click="getData()">查询</el-button>
+          <el-button type="primary" size="small" @click="add()">新建项目</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -89,6 +90,9 @@ export default {
 
   },
   methods:{
+    add(){
+      this.$router.push({name:"editProject",params:{id:0}})
+    },
     async getData(){
       let params={
         pageNum:this.pageNum,
@@ -107,16 +111,20 @@ export default {
       this.total = ret.data.total;
       this.rows = ret.data.list;
     },
-    async delete(){
+    async delete(e, row){
       let str = '确定要删除该项目吗？';
       const ret = await this.$utils.confirm(str);
       if(ret){
-
+        let [err,ret] = await this.$to(projectApi.deleteProject({ids:[row.id]}));
+        if(err) return;
+        if(ret.code == 200){
+          this.$utils.message("删除成功！");
+          this.getData();
+        }
       }
     },
     edit(e, row){
       this.$router.push({name:"editProject",params:{id:row.id}})
-      
     },
     showApikey(row){
       if(row.keyVisible){

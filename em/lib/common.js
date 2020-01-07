@@ -36,11 +36,11 @@ var utils = {
     let width = window.screen.width;
     let height = window.screen.height;
     var myScreen = {
-      screenInfo:JSON.stringify({
+      screenInfo: JSON.stringify({
         clientWidth,
         clientHeight,
         availWidth,
-        availHeight,
+        availHeight
       }),
       width,
       height
@@ -243,25 +243,25 @@ var utils = {
               browser: "Microsoft IE",
               version: "IE: 8" //内核版本号
             };
-            // break;
+          // break;
           case "5.0":
             return {
               browser: "Microsoft IE",
               version: "IE: 9"
             };
-            // break;
+          // break;
           case "6.0":
             return {
               browser: "Microsoft IE",
               version: "IE: 10"
             };
-            // break;
+          // break;
           case "7.0":
             return {
               browser: "Microsoft IE",
               version: "IE: 11"
             };
-            // break;
+          // break;
           default:
             return {
               browser: "Microsoft IE",

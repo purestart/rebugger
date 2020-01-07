@@ -8,6 +8,7 @@ import ElementUI from "element-ui";
 import formVerify from "./utils/formVerify";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import JsonViewer from "vue-json-viewer";
 
 import regComponents from "./utils/regComponents.js";
 import "flex.css";
@@ -15,6 +16,7 @@ import "./assets/css/base.scss";
 import utils from "./utils";
 import "./assets/icons/icon";
 Vue.prototype.$echarts = echarts;
+Vue.use(JsonViewer);
 
 Vue.use(ElementUI, {
   size: "small"
@@ -30,7 +32,7 @@ router.beforeEach((to, from, next) => {
   if (to.path == "/login") {
     window.localStorage.removeItem("user");
     window.sessionStorage.clear();
-    store.commit('clearUserInfo', {});
+    store.commit("clearUserInfo", {});
     // 清除所有tab缓存
     store.commit("clearTabs", "all");
     next();

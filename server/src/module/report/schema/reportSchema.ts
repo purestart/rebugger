@@ -17,6 +17,12 @@ export default function(sequelize: any, DataTypes: any) {
         // unique: true,
         comment:"项目编码"
       },
+      projectName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "",
+        comment:"项目名称"
+      },
       name:{
         type: DataTypes.STRING,
         allowNull: true,

@@ -23,7 +23,7 @@ class ReportController extends BaseController {
   }
 }
 
-let projectController = new ReportController(ReportService, "/report", {
+let projectController = new ReportController(ReportService, "/api/report", {
   infoCacheable: true
 });
 let projectRouter = projectController

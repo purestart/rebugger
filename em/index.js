@@ -102,7 +102,7 @@ var rebugger = {
         cityNo: rebugger.options.cityNo,
         cityName: rebugger.options.cityName,
         emitTime: new Date(),
-        type: errorInfo.type?errorInfo.type:"caught"
+        type: errorInfo.type ? errorInfo.type : "caught"
       };
       let baseInfo = utils.getBaseInfo();
       let metaData = rebugger.getMetaData();
@@ -110,7 +110,7 @@ var rebugger = {
     }
     let options = {
       method: "POST",
-      url: rebugger.options.baseUrl + "/report/create",
+      url: rebugger.options.baseUrl + "/api/report/create",
       // url: "/cpm/user/login",
       data: errorInfo
     };
@@ -132,7 +132,7 @@ var rebugger = {
     }
     let options = {
       method: "POST",
-      url: rebugger.options.baseUrl + "/cpm/user/login",
+      url: rebugger.options.baseUrl + "/api/report/create",
       data: dataObj
     };
     ajax(options)
@@ -385,7 +385,7 @@ export default rebugger;
         };
         let baseInfo = utils.getBaseInfo();
         let metaData = rebugger.getMetaData();
-        let params = Object.assign({}, initParam, baseInfo,metaData, errorInfo);
+        let params = Object.assign({}, initParam, baseInfo, metaData, errorInfo);
         // console.log(params);
         // rebugger.reportObject(params);
         reportHandller.report(rebugger, params);
@@ -473,7 +473,7 @@ export default rebugger;
         };
         let baseInfo = utils.getBaseInfo();
         let metaData = rebugger.getMetaData();
-        let params = Object.assign({}, initParam, baseInfo,metaData, errorInfo);
+        let params = Object.assign({}, initParam, baseInfo, metaData, errorInfo);
         // console.log(params);
         // rebugger.reportObject(params);
         reportHandller.report(rebugger, params);
@@ -556,7 +556,7 @@ export default rebugger;
     console.log(errorInfo);
     let baseInfo = utils.getBaseInfo();
     let metaData = rebugger.getMetaData();
-    let params = Object.assign({}, initParam, baseInfo,metaData, errorInfo);
+    let params = Object.assign({}, initParam, baseInfo, metaData, errorInfo);
     // console.log(params);
     // rebugger.reportObject(params);
     reportHandller.report(rebugger, params);

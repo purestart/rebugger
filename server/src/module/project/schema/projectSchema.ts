@@ -75,6 +75,11 @@ export default function(sequelize: any, DataTypes: any) {
         allowNull: true,
         comment:"模块分类配置"
       },
+      tenantId:{
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment:"租户Id"
+      },
       createDate: {
         type: DataTypes.DATE,
         allowNull: true,

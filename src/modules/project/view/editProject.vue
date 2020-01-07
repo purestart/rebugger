@@ -5,20 +5,51 @@
         <template v-for="item in formItems1">
           <dy-form-item :key="item.prop" :model="model" :item="item" v-if="!item.if || item.if()"></dy-form-item>
         </template>
-        <el-form-item label="状态" size="mini" prop="status">
+        <!-- <el-form-item label="状态" size="mini" prop="status">
           <el-radio-group v-model="model.status">
             <el-radio :label="0">禁用</el-radio>
             <el-radio :label="1">正常</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
         <div style="display:block;flex: 0 1 100%;">
-          <el-form-item label="项目描述" prop="mobile">
-            <el-input rows="5" type="textarea" v-model="model.mobile" placeholder="项目描述"></el-input>
+          <el-form-item label="允许域名" prop="domain">
+            <el-input rows="5" type="textarea" v-model="model.domain" placeholder="允许域名"></el-input>
           </el-form-item>
         </div>
         <div style="display:block;flex: 0 1 100%;">
-          <el-form-item label="项目图片" prop="mobile">
-            <image-select :url="model.url" @onSelect="onSelect" />
+          <el-form-item label="apikey" prop="apikey">
+            <span v-if="model.apikey">{{model.apikey}}</span> <a @click="generateApiKey" class="m-l-10">生成apikey</a>
+            <!-- <el-input rows="3" type="textarea" v-model="model.apikey" placeholder="apikey"></el-input> -->
+          </el-form-item>
+        </div>
+        <div style="display:block;flex: 0 1 100%;">
+          <el-form-item label="项目描述" prop="description">
+            <el-input rows="3" type="textarea" v-model="model.description" placeholder="项目描述"></el-input>
+          </el-form-item>
+        </div>
+        <div style="display:block;flex: 0 1 100%;">
+          <el-form-item label="项目图片" prop="url">
+            <image-select :url="model.image" @onSelect="onSelect" />
+          </el-form-item>
+        </div>
+        <div style="display:block;flex: 0 1 100%;">
+          <el-form-item label="保留字段" prop="retainNameConfig">
+            <el-input rows="3" type="textarea" v-model="model.retainNameConfig" placeholder="{title:'用户名',meta:'fullName',hideField:true,searchAble:true}"></el-input>
+          </el-form-item>
+        </div>
+        <div style="display:block;flex: 0 1 100%;">
+          <el-form-item label="保留字段一" prop="retainIdConfig">
+            <el-input rows="3" type="textarea" v-model="model.retainIdConfig" placeholder="{title:'用户名',meta:'loginName',hideField:true,searchAble:true}"></el-input>
+          </el-form-item>
+        </div>
+        <div style="display:block;flex: 0 1 100%;">
+          <el-form-item label="保留字段二" prop="retainFieldConfig">
+            <el-input rows="3" type="textarea" v-model="model.retainFieldConfig" placeholder="{title:'用户名',meta:'loginName',hideField:true,searchAble:true}"></el-input>
+          </el-form-item>
+        </div>
+        <div style="display:block;flex: 0 1 100%;">
+          <el-form-item label="模块分类配置" prop="moduleConfig">
+            <el-input rows="3" type="textarea" v-model="model.moduleConfig" placeholder="[{moduleName:'票务系统',code:'ctm',prefix:'/ticket/'}]"></el-input>
           </el-form-item>
         </div>
         <div class="w-p-100 m-t-10">
@@ -48,10 +79,10 @@ export default {
         {
           label: "项目名称",
           prop: "name",
-          props: { readonly: true },
+          props: { readonly: false },
           verify: {}
         },
-        { label: "项目编码", prop: "code" },
+        { label: "项目编码", prop: "code" , verify: {}},
         {
           label: "项目类型",
           type: "select",
@@ -72,21 +103,46 @@ export default {
     }
   },
   methods: {
+    async generateApiKey(){
+      if(this.model.apikey && this.model.apikey.length>0){
+        const ret = await this.$utils.confirm('确定重新生成apikey吗？生成后原来的apikey将作废！');
+        if(!ret) return;
+      }
+      this.model.apikey = this.$utils.generateUUID();
+      this.$nextTick(() => {
+        this.$forceUpdate();
+      });
+      this.$utils.message("生成秘钥成功！");
+    },
     async getData(id) {
       let params = { id };
       let [err, ret] = await this.$to(projectApi.fetchProjectById(params));
       if (err) return;
-      console.log(ret);
+      // console.log(ret);
       this.model = ret.data;
     },
     onSelect(url) {
-      this.model.url = url;
-      console.log(url);
+      this.model.image = url;
       this.$nextTick(() => {
         this.$forceUpdate();
       });
     },
-    onSubmit() {},
+    async onSubmit() {
+      this.$refs['form'].validate(async (valid) => {
+        if (valid) {
+          let params = this.model;
+          let [err, ret] = await this.$to(projectApi.createOrUpdateProject(params));
+          if(err) return;
+          // console.log(ret);
+          if(ret.code==200){
+            this.$utils.message("保存成功！")
+            this.$utils.closeTab("/project/list");
+          }
+        }else{
+          this.$utils.message('输入错误,请检查您的输入!!!', 'error')
+        }
+      });
+    },
     onCancel() {
       this.$utils.closeTab("/project/list");
     }

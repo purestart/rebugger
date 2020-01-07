@@ -47,45 +47,33 @@ let tmpMenus = [
     isVisible: 1
   },
   // {
-  //   id: 6661,
+  //   id: 67,
   //   parentId: 0,
-  //   children: [],
-  //   name: "项目编辑",
+  //   name: "我的工作台",
   //   icon: "icon-fa-columns",
-  //   sortNo: 1,
-  //   menuUrl: "/project/edit",
-  //   menuType: 0,
+  //   sortNo: 2,
+  //   menuUrl: null,
+  //   menuType: 1,
   //   applicationId: 81,
-  //   isVisible: 1
+  //   isVisible: 1,
+  //   children: [
+  //     {
+  //       id: 69,
+  //       parentId: 67,
+  //       children: [],
+  //       name: "我的待办",
+  //       icon: null,
+  //       sortNo: 1,
+  //       menuUrl: "/myAgent",
+  //       menuType: 0,
+  //       applicationId: 81,
+  //       isVisible: 1
+  //     }
+  //   ]
   // },
   {
-    id: 67,
-    parentId: 0,
-    name: "我的工作台",
-    icon: "icon-fa-columns",
-    sortNo: 2,
-    menuUrl: null,
-    menuType: 1,
-    applicationId: 81,
-    isVisible: 1,
-    children: [
-      {
-        id: 69,
-        parentId: 67,
-        children: [],
-        name: "我的待办",
-        icon: null,
-        sortNo: 1,
-        menuUrl: "/myAgent",
-        menuType: 0,
-        applicationId: 81,
-        isVisible: 1
-      }
-    ]
-  },
-  {
     id: 99,
-    name: "常用组件",
+    name: "日志管理",
     icon: "icon-gongnengdingyi",
     sortNo: 2,
     menuUrl: null,
@@ -97,10 +85,10 @@ let tmpMenus = [
         id: 991,
         parentId: 99,
         children: [],
-        name: "动态表格",
+        name: "日志信息",
         icon: null,
         sortNo: 3,
-        menuUrl: "/table",
+        menuUrl: "/report/info",
         menuType: 0,
         applicationId: 81,
         isVisible: 1
@@ -109,55 +97,55 @@ let tmpMenus = [
         id: 992,
         parentId: 99,
         children: [],
-        name: "动态表单",
+        name: "异常信息",
         icon: null,
         sortNo: 3,
-        menuUrl: "/table",
-        menuType: 0,
-        applicationId: 81,
-        isVisible: 1
-      },
-      {
-        id: 993,
-        parentId: 99,
-        children: [],
-        name: "TreeTable",
-        icon: null,
-        sortNo: 3,
-        menuUrl: "/table",
-        menuType: 0,
-        applicationId: 81,
-        isVisible: 1
-      },
-      {
-        id: 994,
-        parentId: 99,
-        children: [],
-        name: "地图选址",
-        icon: null,
-        sortNo: 3,
-        menuUrl: "/table",
-        menuType: 0,
-        applicationId: 81,
-        isVisible: 1
-      },
-      {
-        id: 999,
-        parentId: 99,
-        children: [],
-        name: "文件上传",
-        icon: null,
-        sortNo: 3,
-        menuUrl: "/table",
+        menuUrl: "/report/errorInfo",
         menuType: 0,
         applicationId: 81,
         isVisible: 1
       }
+      // {
+      //   id: 993,
+      //   parentId: 99,
+      //   children: [],
+      //   name: "TreeTable",
+      //   icon: null,
+      //   sortNo: 3,
+      //   menuUrl: "/table",
+      //   menuType: 0,
+      //   applicationId: 81,
+      //   isVisible: 1
+      // }
+      // {
+      //   id: 994,
+      //   parentId: 99,
+      //   children: [],
+      //   name: "地图选址",
+      //   icon: null,
+      //   sortNo: 3,
+      //   menuUrl: "/table",
+      //   menuType: 0,
+      //   applicationId: 81,
+      //   isVisible: 1
+      // },
+      // {
+      //   id: 999,
+      //   parentId: 99,
+      //   children: [],
+      //   name: "文件上传",
+      //   icon: null,
+      //   sortNo: 3,
+      //   menuUrl: "/table",
+      //   menuType: 0,
+      //   applicationId: 81,
+      //   isVisible: 1
+      // }
     ]
   },
   {
     id: 88,
-    name: "综合图表",
+    name: "报表统计",
     icon: "icon-jichuguanli",
     sortNo: 2,
     menuUrl: null,
@@ -176,33 +164,45 @@ let tmpMenus = [
         menuType: 0,
         applicationId: 81,
         isVisible: 1
-      }
-    ]
-  },
-  {
-    id: 66,
-    name: "编辑器",
-    icon: "icon-tianshenpi",
-    sortNo: 2,
-    menuUrl: null,
-    menuType: 1,
-    applicationId: 81,
-    isVisible: 1,
-    children: [
+      },
       {
-        id: 661,
-        parentId: 66,
+        id: 882,
+        parentId: 88,
         children: [],
-        name: "文章编辑示例",
+        name: "设备统计",
         icon: null,
         sortNo: 3,
-        menuUrl: "/editor",
+        menuUrl: "/chart",
         menuType: 0,
         applicationId: 81,
         isVisible: 1
       }
     ]
   },
+  // {
+  //   id: 66,
+  //   name: "编辑器",
+  //   icon: "icon-tianshenpi",
+  //   sortNo: 2,
+  //   menuUrl: null,
+  //   menuType: 1,
+  //   applicationId: 81,
+  //   isVisible: 1,
+  //   children: [
+  //     {
+  //       id: 661,
+  //       parentId: 66,
+  //       children: [],
+  //       name: "文章编辑示例",
+  //       icon: null,
+  //       sortNo: 3,
+  //       menuUrl: "/editor",
+  //       menuType: 0,
+  //       applicationId: 81,
+  //       isVisible: 1
+  //     }
+  //   ]
+  // },
   {
     id: 77,
     parentId: 0,

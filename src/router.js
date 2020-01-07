@@ -9,6 +9,7 @@ import system from "./modules/system/router";
 import publicRouter from "./modules/public/router";
 import chart from "./modules/chart/router";
 import projectRouter from "./modules/project/router";
+import reportRouter from './modules/report/router';
 
 // 全局处理异常 this.$router.push('/home') 出现 NavigationDuplicated 的bug
 const originalPush = Router.prototype.push;
@@ -29,7 +30,7 @@ export default new Router({
     {
       path: "/",
       component: MainLayout,
-      children: [...dashboard, ...system, ...chart, ...projectRouter]
+      children: [...dashboard, ...system, ...chart, ...projectRouter, ...reportRouter]
     },
     // {
     //   path: '/about',

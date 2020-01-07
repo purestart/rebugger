@@ -29,7 +29,7 @@ var reportHandller = {
             };
             let options = {
               method: "POST",
-              url: baseUrl + "/cpm/user/login",
+              url: baseUrl + "/api/report/create",
               // url: "/cpm/user/login",
               data: dataObj
             };
@@ -86,7 +86,7 @@ var reportHandller = {
       // 立即发送
       let options = {
         method: "POST",
-        url: baseUrl + "/cpm/user/login",
+        url: baseUrl + "/api/report/create",
         // url: "/cpm/user/login",
         data: params
       };
@@ -121,7 +121,7 @@ var reportHandller = {
         };
         let options = {
           method: "POST",
-          url: baseUrl + "/cpm/user/login",
+          url: baseUrl + "/api/report/create",
           // url: "/cpm/user/login",
           data: dataObj
         };
@@ -159,7 +159,7 @@ var reportHandller = {
         };
         let options = {
           method: "POST",
-          url: baseUrl + "/cpm/user/login",
+          url: baseUrl + "/api/report/create",
           // url: "/cpm/user/login",
           data: dataObj
         };

@@ -23,7 +23,7 @@ class ProjectController extends BaseController {
 }
 
 let projectController = new ProjectController(ProjectService, "/api/project", {
-  infoCacheable: true,
+  infoCacheable: false,
   findCacheable: true
 });
 let projectRouter = projectController
