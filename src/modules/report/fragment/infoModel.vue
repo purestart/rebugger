@@ -11,14 +11,8 @@
       <div>
         <el-tabs v-model="activeName" type="card">
           <el-tab-pane label="日志详情" name="first">
-            <div>
-              <el-form
-                size="small"
-                label-width="120px"
-                :model="model"
-                ref="form"
-                class="my-form"
-              >
+            <div class="p-b-40">
+              <el-form size="small" label-width="120px" :model="model" ref="form" class="my-form">
                 <template v-for="item in formItems">
                   <div
                     :style="item.fullWidth ? 'flex: 0 1 100%;' : 'flex: 0 1 50%;'"
@@ -32,7 +26,6 @@
                     ></dy-form-item>
                   </div>
                 </template>
-
               </el-form>
             </div>
           </el-tab-pane>
@@ -47,77 +40,67 @@
 
 <script type="text/ecmascript-6">
 export default {
-  props:{
-    info:{
-      type:Object,
-      require:true
+  props: {
+    info: {
+      type: Object,
+      require: true
     }
   },
-  data () {
+  data() {
     return {
-      activeName:"first",
-      model:{},
-      modelVisible:false,
-      formItems:[
-        { label: '异常名称', prop: 'name', type: 'view' },
-        { label: '异常类型', prop: 'type', type: 'view' , fullWidth:false}
+      activeName: "first",
+      model: {},
+      modelVisible: false,
+      formItems: [
+        { label: "异常名称", prop: "name", type: "view" },
+        { label: "异常类型", prop: "type", type: "view", fullWidth: false }
       ]
-    }
+    };
   },
-  created () {
-  },
-  mounted () {
-
-  },
-  methods:{
-    showInfoModel (modelVisible){
+  created() {},
+  mounted() {},
+  methods: {
+    showInfoModel(modelVisible) {
       // 处理formItems
       let formItems = [];
       let errorType = this.info.type;
       switch (errorType) {
-        case "info":  // 日志信息
-          
+        case "info": // 日志信息
           break;
-        case "caught":  // 主动上报异常
-          
+        case "caught": // 主动上报异常
           break;
-        case "unCaught":  // 自动捕获代码异常
-          
+        case "unCaught": // 自动捕获代码异常
           break;
-        case "sourceError":  // 资源加载异常
-          
+        case "sourceError": // 资源加载异常
           break;
-        case "httpError":  // 接口请求异常
-          
+        case "httpError": // 接口请求异常
           break;
-        case "unhandledRejection":  // 未处理promise异常
-          
+        case "unhandledRejection": // 未处理promise异常
           break;
-        case "handledRejection":  // 已处理promise异常
-          
+        case "handledRejection": // 已处理promise异常
           break;
-      
-        default:  // 默认使用 info + uncaught 内容
+
+        default:
+          // 默认使用 info + uncaught 内容
 
           break;
       }
       this.modelVisible = modelVisible;
     },
     // 获取显示字段和隐藏字段 showFields 要首先显示的字段
-    getFormItems(showFields = []){
-
-    },
-    onSubmit(){
+    getFormItems(showFields = []) {},
+    onSubmit() {
       this.modelVisible = false;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .report-info-model {
   /deep/ .jv-container .jv-code {
     padding: 0px 10px;
+    padding-bottom: 40px;
   }
 }
 </style>

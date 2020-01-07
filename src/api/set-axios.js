@@ -125,7 +125,7 @@ export default function setAxios() {
           if (res.status === 204) {
             return resolve({});
           }
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 200 || res.data.code === 0) {
             // return reject(res.data);
             return resolve(res.data);

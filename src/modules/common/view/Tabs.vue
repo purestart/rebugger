@@ -20,13 +20,13 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters } from "vuex";
 export default {
   data () {
     return {
-      perTab: '0',
+      perTab: "0",
       menuVisible: false
-    }
+    };
   },
   computed: {
     ...mapState({
@@ -34,65 +34,65 @@ export default {
       selectedTab: state => state.default.selectedTab
     }),
     ...mapGetters({
-      flatMenu: 'flatMenu'
+      flatMenu: "flatMenu"
     }),
     activeTab: {
       get () {
-        return this.selectedTab
+        return this.selectedTab;
       },
       set (val) {
-        this.perTab = this.activeTab
-        this.updateSelectedTab(val)
+        this.perTab = this.activeTab;
+        this.updateSelectedTab(val);
       }
     },
     tabs () {
       const menus = this.menuTabs.map(o => {
-        const menu = o.menus[o.menus.length - 1]
-        console.log(menu);
+        const menu = o.menus[o.menus.length - 1];
+        // console.log(menu);
         return {
           title: menu.name.name || menu.name,
           name: o.key,
-          noClose: menu.menuUrl === '/home' // menu.noClose
-        }
-      })
-      return menus
+          noClose: menu.menuUrl === "/home" // menu.noClose
+        };
+      });
+      return menus;
     }
   },
   watch: {
     flatMenu (val) {
       if (val.length) {
-        if (this.$route.path !== '' && this.$route.path !== '/') {
-          this.$utils.toTab(this.$route.fullPath, this.$route)
+        if (this.$route.path !== "" && this.$route.path !== "/") {
+          this.$utils.toTab(this.$route.fullPath, this.$route);
         }
       }
     }
   },
   methods: {
-    ...mapMutations(['updateSelectedTab']),
+    ...mapMutations(["updateSelectedTab"]),
     clickTab (tab) {
-      const perTab = this.perTab // 保存住跳转前的tab
+      const perTab = this.perTab; // 保存住跳转前的tab
       this.$nextTick(() => {
         // 此时，激活的选项卡已经改变，再手动改回去，
         // 此处理是为了实现，点击选项卡后，如果页面被拦截没有跳转的话，tab页应该也不能改变激活的选项卡
         // 而只有当路由真的跳转后，再更新激活的选项卡。
-        this.updateSelectedTab(perTab)
-        const item = this.menuTabs.find(item => item.key === tab.name)
+        this.updateSelectedTab(perTab);
+        const item = this.menuTabs.find(item => item.key === tab.name);
         if (item) {
-          this.$router.push(item.url)
+          this.$router.push(item.url);
         }
-      })
+      });
     },
     toggleMenuVisible (visible) {
-      this.menuVisible = visible
+      this.menuVisible = visible;
     },
     removeTab (key) {
-      this.$utils.removeTab(key)
+      this.$utils.removeTab(key);
     },
     removeTabs (command) {
-      this.$utils.removeTabs(command)
+      this.$utils.removeTabs(command);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

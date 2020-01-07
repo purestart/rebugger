@@ -34,22 +34,22 @@
         </div>
         <div style="display:block;flex: 0 1 100%;">
           <el-form-item label="保留字段" prop="retainNameConfig">
-            <el-input rows="3" type="textarea" v-model="model.retainNameConfig" placeholder="{title:'用户名',meta:'fullName',hideField:true,searchAble:true}"></el-input>
+            <el-input rows="3" type="textarea" v-model="model.retainNameConfig" placeholder="{'title':'用户名','meta':'fullName','hideField':true,'searchAble':true}"></el-input>
           </el-form-item>
         </div>
         <div style="display:block;flex: 0 1 100%;">
           <el-form-item label="保留字段一" prop="retainIdConfig">
-            <el-input rows="3" type="textarea" v-model="model.retainIdConfig" placeholder="{title:'用户名',meta:'loginName',hideField:true,searchAble:true}"></el-input>
+            <el-input rows="3" type="textarea" v-model="model.retainIdConfig" placeholder="{'title':'用户名','meta':'fullName','hideField':true,'searchAble':true}"></el-input>
           </el-form-item>
         </div>
         <div style="display:block;flex: 0 1 100%;">
           <el-form-item label="保留字段二" prop="retainFieldConfig">
-            <el-input rows="3" type="textarea" v-model="model.retainFieldConfig" placeholder="{title:'用户名',meta:'loginName',hideField:true,searchAble:true}"></el-input>
+            <el-input rows="3" type="textarea" v-model="model.retainFieldConfig" placeholder="{'title':'用户名','meta':'fullName','hideField':true,'searchAble':true}"></el-input>
           </el-form-item>
         </div>
         <div style="display:block;flex: 0 1 100%;">
           <el-form-item label="模块分类配置" prop="moduleConfig">
-            <el-input rows="3" type="textarea" v-model="model.moduleConfig" placeholder="[{moduleName:'票务系统',code:'ctm',prefix:'/ticket/'}]"></el-input>
+            <el-input rows="3" type="textarea" v-model="model.moduleConfig" placeholder="[{'moduleName':'票务系统','code':'ctm','prefix':'/ticket/'}]"></el-input>
           </el-form-item>
         </div>
         <div class="w-p-100 m-t-10">
@@ -82,7 +82,7 @@ export default {
           props: { readonly: false },
           verify: {}
         },
-        { label: "项目编码", prop: "code" , verify: {}},
+        { label: "项目编码", prop: "code", verify: {}},
         {
           label: "项目类型",
           type: "select",
@@ -97,16 +97,16 @@ export default {
   },
   created() {},
   mounted() {
-    if (this.$route.params.id) {
+    if (this.$route.params.id && this.$route.params.id != "0") {
       // 编辑
       this.getData(this.$route.params.id);
     }
   },
   methods: {
-    async generateApiKey(){
-      if(this.model.apikey && this.model.apikey.length>0){
-        const ret = await this.$utils.confirm('确定重新生成apikey吗？生成后原来的apikey将作废！');
-        if(!ret) return;
+    async generateApiKey() {
+      if (this.model.apikey && this.model.apikey.length > 0) {
+        const ret = await this.$utils.confirm("确定重新生成apikey吗？生成后原来的apikey将作废！");
+        if (!ret) return;
       }
       this.model.apikey = this.$utils.generateUUID();
       this.$nextTick(() => {
@@ -128,18 +128,18 @@ export default {
       });
     },
     async onSubmit() {
-      this.$refs['form'].validate(async (valid) => {
+      this.$refs["form"].validate(async (valid) => {
         if (valid) {
           let params = this.model;
           let [err, ret] = await this.$to(projectApi.createOrUpdateProject(params));
-          if(err) return;
+          if (err) return;
           // console.log(ret);
-          if(ret.code==200){
-            this.$utils.message("保存成功！")
+          if (ret.code == 200) {
+            this.$utils.message("保存成功！");
             this.$utils.closeTab("/project/list");
           }
-        }else{
-          this.$utils.message('输入错误,请检查您的输入!!!', 'error')
+        } else {
+          this.$utils.message("输入错误,请检查您的输入!!!", "error");
         }
       });
     },

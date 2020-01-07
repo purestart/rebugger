@@ -161,6 +161,7 @@ export default {
   .router-view {
     overflow: auto;
     padding: 10px;
+    height: calc(100vh - 100px);
   }
 }
 .body > .container > h3 {
