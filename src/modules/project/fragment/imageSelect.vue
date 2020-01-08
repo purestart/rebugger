@@ -129,6 +129,7 @@ export default {
 .image-select {
   width: 60px;
   height: 60px;
+  box-sizing: content-box;
   img {
     width: 60px;
     height: 60px;

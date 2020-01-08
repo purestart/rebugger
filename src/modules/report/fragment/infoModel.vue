@@ -117,42 +117,42 @@ export default {
       activeTab: "info",
       model: {},
       modelVisible: false,
-      fullWidthField: { stack:true ,metaData:true, agent:true, fileName:true},
+      fullWidthField: { stack: true, metaData: true, agent: true, fileName: true},
       formItems: [
-        { label: "异常名称", prop: "name", type: "view" },
-        { label: "异常类型", prop: "type", type: "view", fullWidth: false }
+        { label: "异常名称：", prop: "name", type: "view" },
+        { label: "异常类型：", prop: "type", type: "view", fullWidth: false }
       ],
-      deviceFormItems:[
-        { label: "设备IP", prop: "ip", type: "view" },
-        { label: "所在城市", prop: "cityName", type: "view", fullWidth: false },
-        { label: "浏览器", prop: "browser", type: "view" },
-        { label: "内核版本信息", prop: "coreVersion", type: "view" },
-        { label: "操作系统", prop: "OS", type: "view" },
-        { label: "网络是否在线", prop: "online", type: "view" },
-        { label: "屏幕宽度", prop: "width", type: "view" },
-        { label: "屏幕高度", prop: "height", type: "view" },
-        { label: "其它屏幕信息", prop: "screenInfo", type: "view" },
-        { label: "浏览器特征", prop: "agent", type: "view", fullWidth: true }
+      deviceFormItems: [
+        { label: "设备IP：", prop: "ip", type: "view" },
+        { label: "所在城市：", prop: "cityName", type: "view", fullWidth: false },
+        { label: "浏览器：", prop: "browser", type: "view" },
+        { label: "内核版本信息：", prop: "coreVersion", type: "view" },
+        { label: "操作系统：", prop: "OS", type: "view" },
+        { label: "网络是否在线：", prop: "online", type: "view" },
+        { label: "屏幕宽度：", prop: "width", type: "view" },
+        { label: "屏幕高度：", prop: "height", type: "view" },
+        { label: "其它屏幕信息：", prop: "screenInfo", type: "view" },
+        { label: "浏览器特征：", prop: "agent", type: "view", fullWidth: true }
       ],
       // 位置信息 包括IP 城市 城市编码 和自定义字段的用户信息
-      zoneFormItems:[
-        { label: "设备IP", prop: "ip", type: "view" },
-        { label: "所在城市", prop: "cityName", type: "view", fullWidth: false },
-        { label: "城市编码", prop: "cityNo", type: "view" }
+      zoneFormItems: [
+        { label: "设备IP：", prop: "ip", type: "view" },
+        { label: "所在城市：", prop: "cityName", type: "view", fullWidth: false },
+        { label: "城市编码：", prop: "cityNo", type: "view" }
 
       ],
-      moreFormItems:[],
+      moreFormItems: []
     };
   },
   created() {},
   mounted() {},
   methods: {
-    
-    showInfoModel(modelVisible, activeTab ="info") {
+
+    showInfoModel(modelVisible, activeTab = "info") {
       // 处理formItems
       let formItems = [];
       let errorType = this.info.type;
-      let showFields = ["name","type","message","stack"];
+      let showFields = ["name", "type", "message", "stack"];
       // 根据类型自定义显示字段
       switch (errorType) {
         case "info": // 日志信息
@@ -183,20 +183,22 @@ export default {
     // 获取显示字段和隐藏字段 showFields 要首先显示的字段
     getFormItems(showFields = []) {
       let keys = Object.keys(this.info);
-      let formItems = showFields.map(item=>{
+      let formItems = showFields.map(item => {
         let fullWidth = false;
-        if(this.fullWidthField[item]){
+        if (this.fullWidthField[item]) {
           fullWidth = true;
         }
-        let label = this.$c.reportFieldK[item];
+        let label = this.$c.reportFieldK[item] + "：";
         let prop = item;
         return {
-          label,prop,fullWidth,
+          label,
+          prop,
+          fullWidth,
           type: "view"
-        }
-      })
+        };
+      });
 
-      this.formItems =formItems;
+      this.formItems = formItems;
     },
     onSubmit() {
       this.modelVisible = false;

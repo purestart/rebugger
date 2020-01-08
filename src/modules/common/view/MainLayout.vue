@@ -12,7 +12,7 @@
         <div flex-box="1" class="router-view">
           <transition name="fade-transform" mode="out-in">
             <!-- <keep-alive :exclude="/^.*-noCache$/"> -->
-              <router-view></router-view>
+              <router-view :key="$route.fullPath"></router-view>
             <!-- </keep-alive> -->
           </transition>
         </div>

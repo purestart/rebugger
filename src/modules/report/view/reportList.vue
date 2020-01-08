@@ -15,7 +15,12 @@
         </template>
         <el-form-item label="异常类型：" prop="type">
           <el-select v-model="dataForm.type" placeholder="请选择" clearable>
-            <el-option v-for="(item,index) in $c.options.errorType" :key="index" :label="item.label" :value="item.value"></el-option>
+            <el-option
+              v-for="(item,index) in $c.options.errorType"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -44,7 +49,7 @@
 import baseMixins from "../../../mixins/baseMixins";
 import projectApi from "../api";
 import InfoModel from "../fragment/infoModel";
-import ResolveModel from '../fragment/resolveModel';
+import ResolveModel from "../fragment/resolveModel";
 export default {
   mixins: [baseMixins.pageMixin],
   components: {
@@ -57,13 +62,18 @@ export default {
       dynamicSearchForm: {},
       dataForm: {},
       loading: false,
-      project:null,
+      project: null,
       rows: [],
       columns: [
         // { type: 'index', align: 'center', label: '序号' },
         { label: "异常名称", prop: "name" },
-        { label: "异常类型", prop: "type" ,width: 120, formatter: (row, column, cellValue) => this.$c.errorTypeK[cellValue]},
-        { label: "异常时间", prop: "emitTime", width: 140 },
+        {
+          label: "异常类型",
+          prop: "type",
+          width: 120,
+          formatter: (row, column, cellValue) => this.$c.errorTypeK[cellValue]
+        },
+        { label: "异常发生时间", prop: "emitTime", width: 140 },
         { label: "异常信息", prop: "message" },
         { label: "项目名称", prop: "projectName" },
         {
@@ -85,7 +95,13 @@ export default {
         //     </div>
         //   )
         // },
-        { label: "状态", prop: "resolveStatus" ,width: 70,formatter: (row, column, cellValue) => this.$c.resolveStatusK[cellValue]},
+        {
+          label: "状态",
+          prop: "resolveStatus",
+          width: 70,
+          formatter: (row, column, cellValue) =>
+            this.$c.resolveStatusK[cellValue]
+        },
         {
           label: "操作",
           width: "200",
@@ -95,20 +111,40 @@ export default {
           renderCell: (h, value, row, index) => {
             return (
               <div>
-                <el-button size="mini" type="text" class="el-dropdown-link" onClick={e => this.info(row)}>
+                <el-button
+                  size="mini"
+                  type="text"
+                  class="el-dropdown-link"
+                  onClick={e => this.info(row)}
+                >
                   查看详情
                 </el-button>
-                <el-button type="text" size="mini" class="el-dropdown-link" onClick={e => this.showResolveModel(row)}>
+                <el-button
+                  type="text"
+                  size="mini"
+                  class="el-dropdown-link"
+                  onClick={e => this.showResolveModel(row)}
+                >
                   编辑状态
                 </el-button>
-                <el-dropdown onCommand = {(command) => this.handleCommand(command, row)}>
-                  <el-button type="text" size="mini" class="el-dropdown-link m-l-10">
+                <el-dropdown
+                  onCommand={command => this.handleCommand(command, row)}
+                >
+                  <el-button
+                    type="text"
+                    size="mini"
+                    class="el-dropdown-link m-l-10"
+                  >
                     更多<i class="el-icon-arrow-down el-icon--right"></i>
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="device">设备信息</el-dropdown-item>
+                    <el-dropdown-item command="device">
+                      设备信息
+                    </el-dropdown-item>
                     <el-dropdown-item command="zone">位置信息</el-dropdown-item>
-                    <el-dropdown-item command="status">查看状态</el-dropdown-item>
+                    <el-dropdown-item command="status">
+                      查看状态
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
@@ -129,32 +165,39 @@ export default {
       return arr;
     }
   },
-  created() {},
+  created() {
+    if (this.$route.params.activeTab) {
+      this.dataForm = {type: this.$route.params.activeTab};
+    }
+    if (this.$route.params.code) {
+      this.dataForm = {code: this.$route.params.code};
+    }
+  },
   mounted() {},
   methods: {
-    handleCommand(command, row){
+    handleCommand(command, row) {
       switch (command) {
         case "device":
-          this.info(row, "device")
+          this.info(row, "device");
           break;
         case "zone":
-          this.info(row, "zone")
+          this.info(row, "zone");
           break;
         case "status":
           this.showResolveModel(row, "view");
           break;
-      
+
         default:
           break;
       }
     },
-    showResolveModel(row, mode = "edit"){
+    showResolveModel(row, mode = "edit") {
       this.infoModelData = row;
       this.$nextTick(() => {
         this.$refs.resolveModel.showResolveModel(true, mode);
       });
     },
-    info(row,activeTab = "info") {
+    info(row, activeTab = "info") {
       this.infoModelData = row;
       this.$nextTick(() => {
         this.$refs.infoModel.showInfoModel(true, activeTab);
@@ -179,17 +222,19 @@ export default {
       this.project = project;
       let dynamicSearchForm = {};
       if (project) {
+        // let columns = JSON.parse(JSON.stringify(this.columns));
+        let columns = this.columns;
         let retainNameConfig = project.retainNameConfig;
         if (retainNameConfig && retainNameConfig.length > 5) {
           retainNameConfig = JSON.parse(retainNameConfig);
           retainNameConfig.fieldName = "retainName";
           dynamicSearchForm[retainNameConfig] = retainNameConfig;
           // console.log(retainNameConfig);
-          let retainNameColumn = this.columns.find(
+          let retainNameColumn = columns.find(
             item => item.prop == "retainName"
           );
           if (!retainNameColumn) {
-            this.columns.push({
+            columns.push({
               label: retainNameConfig.title,
               prop: "retainName"
             });
@@ -203,11 +248,11 @@ export default {
           retainIdConfig.fieldName = "retainId";
           dynamicSearchForm[retainIdConfig] = retainIdConfig;
           // console.log(retainNameConfig);
-          let retainNameColumn = this.columns.find(
+          let retainNameColumn = columns.find(
             item => item.prop == "retainId"
           );
           if (!retainNameColumn) {
-            this.columns.push({
+            columns.push({
               label: retainIdConfig.title,
               prop: "retainId"
             });
@@ -221,11 +266,11 @@ export default {
           retainFieldConfig.fieldName = "retainField";
           dynamicSearchForm[retainFieldConfig] = retainFieldConfig;
           // console.log(retainNameConfig);
-          let retainNameColumn = this.columns.find(
+          let retainNameColumn = columns.find(
             item => item.prop == "retainField"
           );
           if (!retainNameColumn) {
-            this.columns.push({
+            columns.push({
               label: retainFieldConfig.title,
               prop: "retainField"
             });
@@ -233,13 +278,17 @@ export default {
             retainNameColumn.label = retainFieldConfig.title;
           }
         }
+
+        this.columns = columns;
         this.dynamicSearchForm = dynamicSearchForm;
       }
-      ret.data.list.forEach(item => {
-        item.keyVisible = false;
-      });
+      if (ret.data.list && ret.data.list.length > 0) {
+        ret.data.list.forEach(item => {
+          item.keyVisible = false;
+        });
+      }
       this.total = ret.data.total;
-      this.rows = ret.data.list;
+      this.rows = ret.data.list || [];
     },
     async delete(e, row) {
       let str = "确定要删除该项目吗？";
@@ -285,7 +334,8 @@ export default {
     background-color: #efefef;
     display: inline-block;
   }
-  /deep/ .el-dropdown-menu__item:not(.is-disabled):hover, .el-dropdown-menu__item:focus {
+  /deep/ .el-dropdown-menu__item:not(.is-disabled):hover,
+  .el-dropdown-menu__item:focus {
     background-color: #fdf4e6;
     color: #409eff;
   }

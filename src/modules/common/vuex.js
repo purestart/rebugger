@@ -88,7 +88,7 @@ let tmpMenus = [
         name: "日志信息",
         icon: null,
         sortNo: 3,
-        menuUrl: "/report/info",
+        menuUrl: "/report/errorInfo/tab/info",
         menuType: 0,
         applicationId: 81,
         isVisible: 1
@@ -470,7 +470,7 @@ const actions = {
   updateUserInfo(context, params) {
     context.commit("updateUser", params);
   },
-  clearUserInfo(context, params){
+  clearUserInfo(context, params) {
     context.commit("clearUserInfo");
   },
   login(context, params) {

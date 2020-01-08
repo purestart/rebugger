@@ -34,22 +34,22 @@
         </div>
         <div style="display:block;flex: 0 1 100%;">
           <el-form-item label="保留字段" prop="retainNameConfig">
-            <el-input rows="3" type="textarea" v-model="model.retainNameConfig" placeholder="{'title':'用户名','meta':'fullName','hideField':true,'searchAble':true}"></el-input>
+            <el-input rows="3" type="textarea" v-model="model.retainNameConfig" :placeholder="JSON.stringify({'title':'用户名','meta':'fullName','hideField':true,'searchAble':true})"></el-input>
           </el-form-item>
         </div>
         <div style="display:block;flex: 0 1 100%;">
           <el-form-item label="保留字段一" prop="retainIdConfig">
-            <el-input rows="3" type="textarea" v-model="model.retainIdConfig" placeholder="{'title':'用户名','meta':'fullName','hideField':true,'searchAble':true}"></el-input>
+            <el-input rows="3" type="textarea" v-model="model.retainIdConfig" :placeholder="JSON.stringify({'title':'用户名','meta':'fullName','hideField':true,'searchAble':true})"></el-input>
           </el-form-item>
         </div>
         <div style="display:block;flex: 0 1 100%;">
           <el-form-item label="保留字段二" prop="retainFieldConfig">
-            <el-input rows="3" type="textarea" v-model="model.retainFieldConfig" placeholder="{'title':'用户名','meta':'fullName','hideField':true,'searchAble':true}"></el-input>
+            <el-input rows="3" type="textarea" v-model="model.retainFieldConfig" :placeholder="JSON.stringify({'title':'用户名','meta':'fullName','hideField':true,'searchAble':true})"></el-input>
           </el-form-item>
         </div>
         <div style="display:block;flex: 0 1 100%;">
           <el-form-item label="模块分类配置" prop="moduleConfig">
-            <el-input rows="3" type="textarea" v-model="model.moduleConfig" placeholder="[{'moduleName':'票务系统','code':'ctm','prefix':'/ticket/'}]"></el-input>
+            <el-input rows="3" type="textarea" v-model="model.moduleConfig" :placeholder="JSON.stringify([{'moduleName':'票务系统','code':'ctm','prefix':'/ticket/'}])"></el-input>
           </el-form-item>
         </div>
         <div class="w-p-100 m-t-10">

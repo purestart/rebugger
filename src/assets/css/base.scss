@@ -392,3 +392,10 @@ input::-moz-focus-inner {
 .ov-h {
   overflow: hidden;
 }
+
+.c-link{
+  color: #409EFF;
+  &:hover{
+    color: #409EFF;
+  }
+}
