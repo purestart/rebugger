@@ -14,11 +14,26 @@ class ReportController extends BaseController {
   public getCustomRouter() {
     return [
       // 自定义扩展
-      // {
-      //   url: this.profix + "/info",
-      //   method: "post",
-      //   function: async (ctx: Context) => {}
-      // }
+      {
+        url: this.profix + "/resolveStatus",
+        method: "post",
+        function: async (ctx: Context) => {
+          let obj = ctx.request.body;
+          const ret = await this.entityService.resolveStatus(obj);
+          if (ret) {
+            ctx.response.body = {
+              code: 200,
+              data: ret
+            };
+          } else {
+            ctx.response.body = {
+              code: 503,
+              data: null,
+              errMsg: "保存失败，请稍后再试"
+            };
+          }
+        }
+      }
     ];
   }
 }

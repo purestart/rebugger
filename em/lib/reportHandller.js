@@ -52,6 +52,7 @@ var reportHandller = {
   },
   report: function(vm, params) {
     let reportMode = vm.options.reportMode;
+    params = vm.formatErrorInfo(params);
     if (params.fileName && params.fileName.indexOf("rebugger.min") != -1) {
       console.warn("rebugger report warn");
       return;

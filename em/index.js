@@ -234,6 +234,21 @@ var rebugger = {
     }
     // 其它途径获取的metaData ...
     return { metaData: JSON.stringify(metaData) };
+  },
+  // 格式化上报数据
+  formatErrorInfo(errorInfo) {
+    // 内容截取
+    if (errorInfo.message && errorInfo.message.length > 2040) {
+      errorInfo.message = errorInfo.message.substring(0, 2040);
+    }
+    if (errorInfo.stack && errorInfo.stack.length > 60000) {
+      errorInfo.stack = errorInfo.stack.substring(0, 60000);
+    }
+
+    if (errorInfo.name && errorInfo.name.length > 254) {
+      errorInfo.name = errorInfo.name.substring(0, 254);
+    }
+    return errorInfo;
   }
 };
 export default rebugger;
@@ -385,7 +400,13 @@ export default rebugger;
         };
         let baseInfo = utils.getBaseInfo();
         let metaData = rebugger.getMetaData();
-        let params = Object.assign({}, initParam, baseInfo, metaData, errorInfo);
+        let params = Object.assign(
+          {},
+          initParam,
+          baseInfo,
+          metaData,
+          errorInfo
+        );
         // console.log(params);
         // rebugger.reportObject(params);
         reportHandller.report(rebugger, params);
@@ -473,7 +494,13 @@ export default rebugger;
         };
         let baseInfo = utils.getBaseInfo();
         let metaData = rebugger.getMetaData();
-        let params = Object.assign({}, initParam, baseInfo, metaData, errorInfo);
+        let params = Object.assign(
+          {},
+          initParam,
+          baseInfo,
+          metaData,
+          errorInfo
+        );
         // console.log(params);
         // rebugger.reportObject(params);
         reportHandller.report(rebugger, params);

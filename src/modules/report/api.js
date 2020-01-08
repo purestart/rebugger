@@ -5,5 +5,6 @@ export default {
   fetchReportList: params => request("/api/report/list", "post", params),
   fetchReportById: params => request("/api/report/info", "post", params),
   updateReport: params => request("/api/report/update", "post", params),
-  deleteReport: params => request("/api/report/delete", "post", params)
+  deleteReport: params => request("/api/report/delete", "post", params),
+  resolveStatus: params => request("/api/report/resolveStatus", "post", params)
 };

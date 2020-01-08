@@ -59,6 +59,7 @@ class ReportService extends BaseService {
       if (project && project.length == 1) {
         model.code = project[0].code;
         model.projectName = project[0].name;
+        model.resolveStatus = 0;  // 初始化解决状态
       } else {
         return {
           code: 503,
@@ -124,6 +125,27 @@ class ReportService extends BaseService {
       project
     };
     return result;
+  }
+
+  /**
+   * 更新 异常状态
+   * 
+   */
+  public async resolveStatus(model: any) {
+    let o = await this.entityDao.findOne({
+      where: {
+        id: model.id
+      }
+    });
+    o.updateDate = Date.now();
+    // 更新部分字段
+    o.resolveStatus = model.resolveStatus;
+    o.resolveUserId = model.resolveUserId;
+    o.resolveUserName = model.resolveUserName;
+    if(model.comment){
+      o.comment=model.comment;
+    }
+    return await o.save();
   }
 }
 const repoetService = new ReportService();

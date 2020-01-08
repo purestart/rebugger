@@ -7,7 +7,7 @@
         :model="dataForm"
         @keyup.enter.native="getData()"
       >
-        <el-form-item label="方案名称：">
+        <el-form-item label="项目名称：">
           <el-input
             v-model="dataForm.name"
             clearable

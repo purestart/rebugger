@@ -9,13 +9,21 @@
       @close="modelVisible = false"
     >
       <div>
-        <el-tabs v-model="activeName" type="card">
-          <el-tab-pane label="日志详情" name="first">
+        <el-tabs v-model="activeTab" type="card">
+          <el-tab-pane label="日志详情" name="info">
             <div class="p-b-40">
-              <el-form size="small" label-width="120px" :model="model" ref="form" class="my-form">
+              <el-form
+                size="small"
+                label-width="120px"
+                :model="model"
+                ref="form"
+                class="my-form"
+              >
                 <template v-for="item in formItems">
                   <div
-                    :style="item.fullWidth ? 'flex: 0 1 100%;' : 'flex: 0 1 50%;'"
+                    :style="
+                      item.fullWidth ? 'flex: 0 1 100%;' : 'flex: 0 1 50%;'
+                    "
                     :key="item.prop"
                   >
                     <dy-form-item
@@ -29,7 +37,61 @@
               </el-form>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="原始数据" name="second">
+          <el-tab-pane label="设备信息" name="device">
+            <div class="p-b-40">
+              <el-form
+                size="small"
+                label-width="120px"
+                :model="model"
+                ref="form"
+                class="my-form"
+              >
+                <template v-for="item in deviceFormItems">
+                  <div
+                    :style="
+                      item.fullWidth ? 'flex: 0 1 100%;' : 'flex: 0 1 50%;'
+                    "
+                    :key="item.prop"
+                  >
+                    <dy-form-item
+                      :key="item.prop"
+                      :model="info"
+                      :item="item"
+                      v-if="!item.if || item.if()"
+                    ></dy-form-item>
+                  </div>
+                </template>
+              </el-form>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="位置信息" name="zone">
+            <div class="p-b-40">
+              <el-form
+                size="small"
+                label-width="120px"
+                :model="model"
+                ref="form"
+                class="my-form"
+              >
+                <template v-for="item in zoneFormItems">
+                  <div
+                    :style="
+                      item.fullWidth ? 'flex: 0 1 100%;' : 'flex: 0 1 50%;'
+                    "
+                    :key="item.prop"
+                  >
+                    <dy-form-item
+                      :key="item.prop"
+                      :model="info"
+                      :item="item"
+                      v-if="!item.if || item.if()"
+                    ></dy-form-item>
+                  </div>
+                </template>
+              </el-form>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="原始数据" name="json">
             <json-viewer :value="info"></json-viewer>
           </el-tab-pane>
         </el-tabs>
@@ -44,26 +106,54 @@ export default {
     info: {
       type: Object,
       require: true
+    },
+    project: {
+      type: Object,
+      require: false
     }
   },
   data() {
     return {
-      activeName: "first",
+      activeTab: "info",
       model: {},
       modelVisible: false,
+      fullWidthField: { stack:true ,metaData:true, agent:true, fileName:true},
       formItems: [
         { label: "异常名称", prop: "name", type: "view" },
         { label: "异常类型", prop: "type", type: "view", fullWidth: false }
-      ]
+      ],
+      deviceFormItems:[
+        { label: "设备IP", prop: "ip", type: "view" },
+        { label: "所在城市", prop: "cityName", type: "view", fullWidth: false },
+        { label: "浏览器", prop: "browser", type: "view" },
+        { label: "内核版本信息", prop: "coreVersion", type: "view" },
+        { label: "操作系统", prop: "OS", type: "view" },
+        { label: "网络是否在线", prop: "online", type: "view" },
+        { label: "屏幕宽度", prop: "width", type: "view" },
+        { label: "屏幕高度", prop: "height", type: "view" },
+        { label: "其它屏幕信息", prop: "screenInfo", type: "view" },
+        { label: "浏览器特征", prop: "agent", type: "view", fullWidth: true }
+      ],
+      // 位置信息 包括IP 城市 城市编码 和自定义字段的用户信息
+      zoneFormItems:[
+        { label: "设备IP", prop: "ip", type: "view" },
+        { label: "所在城市", prop: "cityName", type: "view", fullWidth: false },
+        { label: "城市编码", prop: "cityNo", type: "view" }
+
+      ],
+      moreFormItems:[],
     };
   },
   created() {},
   mounted() {},
   methods: {
-    showInfoModel(modelVisible) {
+    
+    showInfoModel(modelVisible, activeTab ="info") {
       // 处理formItems
       let formItems = [];
       let errorType = this.info.type;
+      let showFields = ["name","type","message","stack"];
+      // 根据类型自定义显示字段
       switch (errorType) {
         case "info": // 日志信息
           break;
@@ -85,10 +175,29 @@ export default {
 
           break;
       }
+
+      this.getFormItems(showFields);
+      this.activeTab = activeTab;
       this.modelVisible = modelVisible;
     },
     // 获取显示字段和隐藏字段 showFields 要首先显示的字段
-    getFormItems(showFields = []) {},
+    getFormItems(showFields = []) {
+      let keys = Object.keys(this.info);
+      let formItems = showFields.map(item=>{
+        let fullWidth = false;
+        if(this.fullWidthField[item]){
+          fullWidth = true;
+        }
+        let label = this.$c.reportFieldK[item];
+        let prop = item;
+        return {
+          label,prop,fullWidth,
+          type: "view"
+        }
+      })
+
+      this.formItems =formItems;
+    },
     onSubmit() {
       this.modelVisible = false;
     }

@@ -140,11 +140,12 @@ export default {
   line-height: 1;
   background-color: #ffffff;
 
-  transition: transform 0.5s;
+  // transition: transform 0.5s;
   transform: scale(0, 0);
 
   &.show {
-    transform: scale(1, 1);
+    // transform: scale(1, 1);
+    animation: change 0.4s ease both 1;
   }
   //   .edit-box{
   //       background-color: #ffffff;
@@ -186,6 +187,20 @@ export default {
     z-index: 999;
     border-top: 1px solid #e4e4e4;
     box-sizing: border-box;
+  }
+}
+@keyframes change {
+  0% {
+    transform: scale(0,0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1,1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1,1);
+    opacity: 1;
   }
 }
 </style>

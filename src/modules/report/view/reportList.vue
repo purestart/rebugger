@@ -13,6 +13,11 @@
             <el-input v-model="dataForm[item.fieldName]" clearable :placeholder="item.title"></el-input>
           </el-form-item>
         </template>
+        <el-form-item label="异常类型：" prop="type">
+          <el-select v-model="dataForm.type" placeholder="请选择" clearable>
+            <el-option v-for="(item,index) in $c.options.errorType" :key="index" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button size="small" @click="getData()">查询</el-button>
           <!-- <el-button type="primary" size="small" @click="add()">新建项目</el-button> -->
@@ -30,7 +35,8 @@
       :layout="layout"
       :total="total"
     ></el-pagination>
-    <InfoModel :info="infoModelData" ref="infoModel" />
+    <info-model :info="infoModelData" :project="project" ref="infoModel" />
+    <resolve-model :info="infoModelData" :project="project" @refresh="getData" ref="resolveModel" />
   </div>
 </template>
 
@@ -38,10 +44,12 @@
 import baseMixins from "../../../mixins/baseMixins";
 import projectApi from "../api";
 import InfoModel from "../fragment/infoModel";
+import ResolveModel from '../fragment/resolveModel';
 export default {
   mixins: [baseMixins.pageMixin],
   components: {
-    InfoModel
+    InfoModel,
+    ResolveModel
   },
   data() {
     return {
@@ -49,11 +57,12 @@ export default {
       dynamicSearchForm: {},
       dataForm: {},
       loading: false,
+      project:null,
       rows: [],
       columns: [
         // { type: 'index', align: 'center', label: '序号' },
         { label: "异常名称", prop: "name" },
-        { label: "异常类型", prop: "type" },
+        { label: "异常类型", prop: "type" ,width: 120, formatter: (row, column, cellValue) => this.$c.errorTypeK[cellValue]},
         { label: "异常时间", prop: "emitTime", width: 140 },
         { label: "异常信息", prop: "message" },
         { label: "项目名称", prop: "projectName" },
@@ -76,6 +85,7 @@ export default {
         //     </div>
         //   )
         // },
+        { label: "状态", prop: "resolveStatus" ,width: 70,formatter: (row, column, cellValue) => this.$c.resolveStatusK[cellValue]},
         {
           label: "操作",
           width: "200",
@@ -88,17 +98,17 @@ export default {
                 <el-button size="mini" type="text" class="el-dropdown-link" onClick={e => this.info(row)}>
                   查看详情
                 </el-button>
-                <el-button type="text" size="mini" class="el-dropdown-link" onClick={e => this.delete(e, row)}>
+                <el-button type="text" size="mini" class="el-dropdown-link" onClick={e => this.showResolveModel(row)}>
                   编辑状态
                 </el-button>
-                <el-dropdown>
+                <el-dropdown onCommand = {(command) => this.handleCommand(command, row)}>
                   <el-button type="text" size="mini" class="el-dropdown-link m-l-10">
                     更多<i class="el-icon-arrow-down el-icon--right"></i>
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>设备信息</el-dropdown-item>
-                    <el-dropdown-item>位置信息</el-dropdown-item>
-                    <el-dropdown-item>异常详情</el-dropdown-item>
+                    <el-dropdown-item command="device">设备信息</el-dropdown-item>
+                    <el-dropdown-item command="zone">位置信息</el-dropdown-item>
+                    <el-dropdown-item command="status">查看状态</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
@@ -122,10 +132,32 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    info(row) {
+    handleCommand(command, row){
+      switch (command) {
+        case "device":
+          this.info(row, "device")
+          break;
+        case "zone":
+          this.info(row, "zone")
+          break;
+        case "status":
+          this.showResolveModel(row, "view");
+          break;
+      
+        default:
+          break;
+      }
+    },
+    showResolveModel(row, mode = "edit"){
       this.infoModelData = row;
       this.$nextTick(() => {
-        this.$refs.infoModel.showInfoModel(true);
+        this.$refs.resolveModel.showResolveModel(true, mode);
+      });
+    },
+    info(row,activeTab = "info") {
+      this.infoModelData = row;
+      this.$nextTick(() => {
+        this.$refs.infoModel.showInfoModel(true, activeTab);
       });
     },
     add() {
@@ -144,6 +176,7 @@ export default {
       }
       // console.log(ret);
       let project = ret.data.project;
+      this.project = project;
       let dynamicSearchForm = {};
       if (project) {
         let retainNameConfig = project.retainNameConfig;

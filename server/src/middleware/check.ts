@@ -5,8 +5,8 @@ import config from "../../config/default";
 
 async function check(ctx, next) {
   let url = ctx.request.url;
-  // 登录 和上报 不用检查
-  if (url == "/api/auth/login" || url.indexOf("/report/") != -1) await next();
+  // 登录 和上报 不用检查 url.indexOf("/report/") != -1
+  if (url == "/api/auth/login" || url == "/api/report/create") await next();
   else {
     // 规定token写在header 的 'autohrization'
     let token = ctx.request.headers["token"];

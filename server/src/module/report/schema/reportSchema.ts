@@ -34,7 +34,7 @@ export default function(sequelize: any, DataTypes: any) {
         comment:"异常类型" 
       },
       message:{
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(2048),
         allowNull: true,
         comment:"异常信息"
       },
@@ -234,7 +234,7 @@ export default function(sequelize: any, DataTypes: any) {
         allowNull: true,
         comment:"保留字段"
       },
-      resolvedStatus:{
+      resolveStatus:{
         type: DataTypes.INTEGER,
         allowNull: true,
         comment:"解决状态 0 未解决 1 已解决 2 其它原因"
