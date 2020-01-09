@@ -6,7 +6,7 @@ import ipAuthSchema from "../schema/ipAuthSchema";
 const ipAuthDao = ipAuthSchema(mysql, sequelize);
 
 // 重新生成表
-ipAuthDao.sync({ alter: true, force: true });
+// ipAuthDao.sync({ alter: true, force: true });
 
 class IpAuthService extends BaseService {
   constructor() {

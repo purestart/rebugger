@@ -218,6 +218,7 @@ export default {
         return;
       }
       // console.log(ret);
+      if(ret.code!=200) return;
       let project = ret.data.project;
       this.project = project;
       let dynamicSearchForm = {};

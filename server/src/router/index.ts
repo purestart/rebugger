@@ -4,6 +4,10 @@ import reportController from '../module/report/controller/reportController';
 import projectController from '../module/project/controller/projectController';
 import ipAuthController from '../module/ipAuth/controller/ipAuthController';
 import roleController from '../module/system/role/controller/roleController';
+import menuController from '../module/system/menu/controller/menuController';
+import orgController from '../module/system/org/controller/orgController';
+import configController from '../module/system/config/controller/configController';
+import dictController from '../module/system/dict/controller/dictController';
 
 export default {
   userController,
@@ -11,5 +15,9 @@ export default {
   reportController,
   projectController,
   ipAuthController,
-  roleController
+  roleController,
+  menuController,
+  orgController,
+  configController,
+  dictController
 };

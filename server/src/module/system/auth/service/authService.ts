@@ -1,6 +1,6 @@
 import mysql from '../../../../utils/mysql';
 import sequelize from 'sequelize';
-import userSchema from "../../user/schema/user";
+import userSchema from "../../user/schema/userSchema";
 const UserDao = userSchema(mysql, sequelize); // 引入user的表结构
 const jwt = require('jsonwebtoken');
 import config from '../../../../../config/default';

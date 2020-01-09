@@ -1,80 +1,70 @@
-// var moment = require('moment');
-import moment from "moment";
 export default function(sequelize: any, DataTypes: any) {
   return sequelize.define(
-    "user",
+    "sys_org",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(64),
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        comment:"主键"
       },
-      password: {
+      name:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        comment:"组织名称"
+      },
+      code:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        comment:"组织编码"
+      },
+      parentId:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        comment:"父级Id"
+      },
+      remark:{
+        type: DataTypes.TEXT,
+        allowNull: true,
+        comment:"备注"
+      },
+      retainField1:{
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ""
+        comment:"保留字段"
       },
-      name: {
+      retainField2:{
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ""
+        comment:"保留字段"
       },
-      loginName: {
+      retainField3:{
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: "",
-        field: "login_name"
+        comment:"保留字段"
       },
-      age: {
+      isDel:{
         type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: ""
-      },
-      tel: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ""
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ""
-      },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ""
-      },
-      sex: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        defaultValue: ""
-      },
-      roles: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ""
-      },
-      tenantId:{
-        type: DataTypes.STRING,
-        allowNull: true,
-        comment:"租户Id"
+        comment:"物理删除 0 不删除 1 删除"
       },
       createDate: {
         type: DataTypes.DATE,
         allowNull: true,
         primaryKey: false,
-        field: "create_date"
+        // field: "create_date",
+        comment:"创建日期"
       },
       updateDate: {
         type: DataTypes.DATE,
         allowNull: true,
         primaryKey: false,
-        field: "update_date"
+        // field: "update_date",
+        comment:"修改日期"
       }
     },
     {
-      tableName: "user",
+      tableName: "sys_org",
       createdAt: false, //去掉默认字段
       updatedAt: false //去掉默认字段
     }

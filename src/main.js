@@ -9,6 +9,7 @@ import formVerify from "./utils/formVerify";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import JsonViewer from "vue-json-viewer";
+import "default-passive-events"; // 去 Added non-passive event listener to a scroll-blocking。。。的警告
 
 import regComponents from "./utils/regComponents.js";
 import "flex.css";

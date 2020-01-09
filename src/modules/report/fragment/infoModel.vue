@@ -34,6 +34,22 @@
                     ></dy-form-item>
                   </div>
                 </template>
+                <span v-show="!infoMoreVisiable" @click="infoMoreVisiable = true" class="c-link f-14 p-v-10 show-more">查看更多...</span>
+                <template v-for="item in moreFormList">
+                  <div
+                    :style="
+                      item.fullWidth ? 'flex: 0 1 100%;' : 'flex: 0 1 50%;'
+                    "
+                    :key="item.prop"
+                  >
+                    <dy-form-item
+                      :key="item.prop"
+                      :model="info"
+                      :item="item"
+                      v-if="!item.if || item.if()"
+                    ></dy-form-item>
+                  </div>
+                </template>
               </el-form>
             </div>
           </el-tab-pane>
@@ -114,10 +130,11 @@ export default {
   },
   data() {
     return {
+      infoMoreVisiable:false,
       activeTab: "info",
       model: {},
       modelVisible: false,
-      fullWidthField: { stack: true, metaData: true, agent: true, fileName: true},
+      fullWidthField: { stack: true, metaData: true, agent: true, fileName: true, selector:true, componentName:true,url:true},
       formItems: [
         { label: "异常名称：", prop: "name", type: "view" },
         { label: "异常类型：", prop: "type", type: "view", fullWidth: false }
@@ -144,30 +161,46 @@ export default {
       moreFormItems: []
     };
   },
+  computed:{
+    moreFormList(){
+      if(this.infoMoreVisiable){
+        return this.moreFormItems
+      }else{
+        return [];
+      }
+    }
+  },
   created() {},
   mounted() {},
   methods: {
 
     showInfoModel(modelVisible, activeTab = "info") {
+      this.infoMoreVisiable = false;
       // 处理formItems
       let formItems = [];
       let errorType = this.info.type;
-      let showFields = ["name", "type", "message", "stack"];
+      let showFields = ["name","projectName", "type", "message","emitTime","url","fileName","lineNumber","columnNumber","componentName", "stack"];
       // 根据类型自定义显示字段
       switch (errorType) {
         case "info": // 日志信息
+             showFields = ["name","projectName", "type", "message","emitTime","url","fileName","lineNumber","columnNumber","componentName","stack"];
           break;
         case "caught": // 主动上报异常
+
           break;
         case "unCaught": // 自动捕获代码异常
           break;
         case "sourceError": // 资源加载异常
+              showFields = ["name","projectName", "type", "message","emitTime","url","src","tagName","outerHtml","selector"];
           break;
         case "httpError": // 接口请求异常
+              showFields = ["name","projectName", "type", "message","emitTime","url","src","status","statusText","stack"];
           break;
         case "unhandledRejection": // 未处理promise异常
+              showFields = ["name","projectName", "type", "message","emitTime","url","fileName","lineNumber","columnNumber","stack"];
           break;
         case "handledRejection": // 已处理promise异常
+
           break;
 
         default:
@@ -177,8 +210,49 @@ export default {
       }
 
       this.getFormItems(showFields);
+      // 处理自定义字段 放到 zoneFormItems
+      this.handleCustomField();
       this.activeTab = activeTab;
       this.modelVisible = modelVisible;
+    },
+    // 处理自定义字段 zoneFormItems接收
+    handleCustomField(){
+      let project = this.project;
+      let zoneFormItems = this.zoneFormItems;
+      if (project && project.code) {
+        let retainNameConfig = project.retainNameConfig;
+        if (retainNameConfig && retainNameConfig.length > 5) {
+          retainNameConfig = JSON.parse(retainNameConfig);
+          let item ={ label: retainNameConfig.title , prop: "retainName", type: "view" };
+          let retainNameColumn = zoneFormItems.find(
+            item => item.prop == "retainName"
+          );
+          if(!retainNameColumn){
+            zoneFormItems.push(item)
+          }
+        }else{
+          zoneFormItems = zoneFormItems.filter(item => item.prop !="retainName");
+        }
+        let retainIdConfig = project.retainIdConfig;
+        // if (retainIdConfig && retainIdConfig.length > 5) {
+        //   retainIdConfig = JSON.parse(retainIdConfig);
+        //   let item ={ label: retainIdConfig.title , prop: "retainId", type: "view" };
+        //   let retainIdColumn = zoneFormItems.find(
+        //     item => item.prop == "retainId"
+        //   );
+        //   if(!retainIdColumn){
+        //     zoneFormItems.push(item)
+        //   }
+        // }else{
+        //   zoneFormItems = zoneFormItems.filter(item => item.prop !="retainId");
+        // }
+      }else{
+        // 删除行
+        zoneFormItems = zoneFormItems.filter(item => (item.prop !="retainName" && item.prop !="retainId"));
+      }
+      console.log(zoneFormItems);
+      this.zoneFormItems = zoneFormItems;
+
     },
     // 获取显示字段和隐藏字段 showFields 要首先显示的字段
     getFormItems(showFields = []) {
@@ -188,7 +262,8 @@ export default {
         if (this.fullWidthField[item]) {
           fullWidth = true;
         }
-        let label = this.$c.reportFieldK[item] + "：";
+        let label = this.$c.reportFieldK[item] || item;
+        label = label + "：";
         let prop = item;
         return {
           label,
@@ -199,6 +274,25 @@ export default {
       });
 
       this.formItems = formItems;
+      // 获取剩余的项目
+      let leftKeys = keys.filter(i=>(showFields.every(j=>i!=j) && i !="id" && i!= "keyVisible" && i !="resolveUserId"));
+      // console.log(leftKeys);
+      let moreFormItems = leftKeys.map(item => {
+        let fullWidth = false;
+        if (this.fullWidthField[item]) {
+          fullWidth = true;
+        }
+        let label = this.$c.reportFieldK[item] || item;
+        label = label + "：";
+        let prop = item;
+        return {
+          label,
+          prop,
+          fullWidth,
+          type: "view"
+        };
+      });
+      this.moreFormItems =moreFormItems;
     },
     onSubmit() {
       this.modelVisible = false;
@@ -212,6 +306,12 @@ export default {
   /deep/ .jv-container .jv-code {
     padding: 0px 10px;
     padding-bottom: 40px;
+  }
+  .show-more{
+    display: block;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
   }
 }
 </style>

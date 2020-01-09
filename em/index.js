@@ -1,6 +1,6 @@
 /* eslint-disable space-before-function-paren */
 /* eslint-disable quotes */
-// type异常类型 caught 手动上报异常 unCaught 自动捕获代码异常 sourceError 资源加载异常 httpError 请求异常 unhandledRejection 未处理promise异常 handledRejection
+// type异常类型 warn info caught 手动上报异常 unCaught 自动捕获代码异常 sourceError 资源加载异常 httpError 请求异常 unhandledRejection 未处理promise异常 handledRejection
 import utils from "./lib/common";
 import customFieldUtil from "./lib/customFieldUtil";
 import reportHandller from "./lib/reportHandller";
@@ -63,7 +63,7 @@ var rebugger = {
     return document.domain;
   },
   reportByIMG: function(paramStr) {
-    var reportUrl = rebugger.baseUrl;
+    var reportUrl = rebugger.baseUrl + "/api/report/uploadShort";
     new Image().src = reportUrl + "?" + paramStr;
   },
   // 发送错误对象信息
@@ -94,7 +94,7 @@ var rebugger = {
   },
   // 默认type caught 用于手动  flag是否需要获取基础信息baseInfo和MetaData
   reportError: function(errorInfo, flag = true) {
-    // 立即发送
+    // 是否需要获取基础信息 立即发送
     if (flag) {
       let initParam = {
         apikey: rebugger.options.apikey,
@@ -111,7 +111,6 @@ var rebugger = {
     let options = {
       method: "POST",
       url: rebugger.options.baseUrl + "/api/report/create",
-      // url: "/cpm/user/login",
       data: errorInfo
     };
     ajax(options)
@@ -132,7 +131,7 @@ var rebugger = {
     }
     let options = {
       method: "POST",
-      url: rebugger.options.baseUrl + "/api/report/create",
+      url: rebugger.options.baseUrl + "/api/report/createList",
       data: dataObj
     };
     ajax(options)

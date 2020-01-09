@@ -41,9 +41,9 @@
         </el-popover>-->
         <!-- <div class="gap"></div> -->
         <div class="h-100 f-14 m-r-15">
-          <span class="h-100 a-c p-r-15">
+          <!-- <span class="h-100 a-c p-r-15">
             <a class="c-white" target="_blank" href="#">旧系统</a>
-          </span>
+          </span> -->
           <a class="h-100 a-c p-r-15 c-white" style="cursor: pointer;" href="/docs" target="_blank">
             <dy-icon name="wenhao" size="16" />
           </a>

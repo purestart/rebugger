@@ -1,8 +1,14 @@
 import mysql from '../../../../utils/mysql';
 import sequelize from 'sequelize';
-import userSchema from "../schema/user";
+import userSchema from "../schema/userSchema";
+import userRoleSchema from '../schema/userRoleSchema';
 const UserDao = userSchema(mysql, sequelize); // 引入user的表结构
 const uuid = require("node-uuid");
+const UserRoleDao = userRoleSchema(mysql, sequelize); 
+
+// 重新生成表
+// UserDao.sync({ alter: true, force: true });
+UserRoleDao.sync({ alter: true, force: true });
 
 export default {
   info: async (id: string) => {

@@ -1,6 +1,6 @@
 export default function(sequelize: any, DataTypes: any) {
   return sequelize.define(
-    "sys_menu",
+    "sys_dict",
     {
       id: {
         type: DataTypes.STRING(64),
@@ -8,65 +8,45 @@ export default function(sequelize: any, DataTypes: any) {
         primaryKey: true,
         comment:"主键"
       },
-      menuName:{
-        type: DataTypes.STRING(128),
-        allowNull: false,
-        comment:"菜单名称"
-      },
-      url:{
+      name:{
         type: DataTypes.STRING,
         allowNull: false,
-        comment:"菜单URL"
+        comment:"字典名称"
       },
-      menuCode:{
-        type: DataTypes.STRING(64),
-        allowNull: true,
-        comment:"菜单编码/权限编码"
+      type:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        comment:"字典类型"
       },
-      icon:{
-        type: DataTypes.STRING(64),
-        allowNull: true,
-        comment:"菜单图标"
+      code:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        comment:"字典码"
       },
-      parentId:{
-        type: DataTypes.STRING(64),
-        allowNull: true,
-        comment:"父级Id"
+      value:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        comment:"字典值"
       },
       seq:{
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         comment:"排序"
       },
-      position:{
-        type: DataTypes.STRING(64),
+      remark:{
+        type: DataTypes.TEXT,
         allowNull: true,
-        comment:"菜单位置"
-      },
-      productCode:{
-        type: DataTypes.STRING(64),
-        allowNull: true,
-        comment:"产品CODE"
-      },
-      isDel:{
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        comment:"是否逻辑删除 0 否 1 是"
+        comment:"备注"
       },
       retainField1:{
         type: DataTypes.STRING,
         allowNull: true,
         comment:"保留字段"
       },
-      retainField2:{
-        type: DataTypes.STRING,
+      isDel:{
+        type: DataTypes.INTEGER,
         allowNull: true,
-        comment:"保留字段"
-      },
-      retainField3:{
-        type: DataTypes.STRING,
-        allowNull: true,
-        comment:"保留字段"
+        comment:"物理删除 0 不删除 1 删除"
       },
       createDate: {
         type: DataTypes.DATE,
@@ -84,7 +64,7 @@ export default function(sequelize: any, DataTypes: any) {
       }
     },
     {
-      tableName: "sys_menu",
+      tableName: "sys_dict",
       createdAt: false, //去掉默认字段
       updatedAt: false //去掉默认字段
     }
