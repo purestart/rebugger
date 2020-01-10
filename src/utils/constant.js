@@ -34,7 +34,7 @@ class Constant {
   ReportFieldV = {
     项目编码: "code",
     项目名称: "projectName",
-    异常名称: "name",
+    日志名称: "name",
     异常类型: "type",
     异常信息: "message",
     系统信息: "OS",

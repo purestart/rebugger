@@ -102,7 +102,7 @@ export default {
         ...this.dataForm
       };
       let [err, ret] = await this.$to(projectApi.fetchProjectList(params));
-      if (err) {
+      if (err || ret.code != 200) {
         console.log(err);
         return;
       }

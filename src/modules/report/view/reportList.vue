@@ -1,35 +1,69 @@
 <template>
   <div class="project-list">
     <div class="search">
-      <el-form class="base-form" :inline="true" :model="dataForm" @keyup.enter.native="getData()">
+      <el-form
+        class="base-form"
+        :inline="true"
+        :model="dataForm"
+        @keyup.enter.native="getData()"
+      >
         <el-form-item label="项目名称:">
-          <el-input v-model="dataForm.projectName" clearable placeholder="项目名称"></el-input>
+          <el-input
+            v-model="dataForm.projectName"
+            clearable
+            placeholder="项目名称"
+          ></el-input>
         </el-form-item>
         <el-form-item label="项目编码:">
-          <el-input v-model="dataForm.code" clearable placeholder="项目编码"></el-input>
+          <el-input
+            v-model="dataForm.code"
+            clearable
+            placeholder="项目编码"
+          ></el-input>
         </el-form-item>
-        <template v-for="(item,index) in dynamicSearchFormList">
-          <el-form-item :key="index" :label="item.title+':'">
-            <el-input v-model="dataForm[item.fieldName]" clearable :placeholder="item.title"></el-input>
+        <template v-for="(item, index) in dynamicSearchFormList">
+          <el-form-item :key="index" :label="item.title + ':'">
+            <el-input
+              v-model="dataForm[item.fieldName]"
+              clearable
+              :placeholder="item.title"
+            ></el-input>
           </el-form-item>
         </template>
-        <el-form-item label="异常类型：" prop="type">
+        <el-form-item label="异常类型:" prop="type">
           <el-select v-model="dataForm.type" placeholder="请选择" clearable>
             <el-option
-              v-for="(item,index) in $c.options.errorType"
+              v-for="(item, index) in $c.options.errorType"
               :key="index"
               :label="item.label"
               :value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="申请日期:">
+          <el-date-picker
+            clearable
+            v-model="rangeDate"
+            type="datetimerange"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            @change="selectDate"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          ></el-date-picker>
+        </el-form-item>
         <el-form-item>
           <el-button size="small" @click="getData()">查询</el-button>
-          <!-- <el-button type="primary" size="small" @click="add()">新建项目</el-button> -->
         </el-form-item>
       </el-form>
     </div>
-    <dy-table border ref="dyTable" v-loading="loading" :columns="columns" :rows="rows"></dy-table>
+    <dy-table
+      border
+      ref="dyTable"
+      v-loading="loading"
+      :columns="columns"
+      :rows="rows"
+    ></dy-table>
     <el-pagination
       class="m-t-10 a-c"
       background
@@ -41,7 +75,12 @@
       :total="total"
     ></el-pagination>
     <info-model :info="infoModelData" :project="project" ref="infoModel" />
-    <resolve-model :info="infoModelData" :project="project" @refresh="getData" ref="resolveModel" />
+    <resolve-model
+      :info="infoModelData"
+      :project="project"
+      @refresh="getData"
+      ref="resolveModel"
+    />
   </div>
 </template>
 
@@ -58,6 +97,7 @@ export default {
   },
   data() {
     return {
+      rangeDate:[],
       infoModelData: {},
       dynamicSearchForm: {},
       dataForm: {},
@@ -66,7 +106,7 @@ export default {
       rows: [],
       columns: [
         // { type: 'index', align: 'center', label: '序号' },
-        { label: "异常名称", prop: "name" },
+        { label: "日志名称", prop: "name" },
         {
           label: "异常类型",
           prop: "type",
@@ -175,6 +215,15 @@ export default {
   },
   mounted() {},
   methods: {
+    selectDate(val){
+      if (val) {
+        this.dataForm.startTime = val[0]
+        this.dataForm.endTime = val[1]
+      } else {
+        this.dataForm.startTime = undefined
+        this.dataForm.endTime = undefined
+      }
+    },
     handleCommand(command, row) {
       switch (command) {
         case "device":

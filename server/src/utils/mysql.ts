@@ -30,7 +30,9 @@ var sequelized = new Sequelize(
     'define': {
       // 字段以下划线（_）来分割（默认是驼峰命名风格）
       'underscored': true
-    }
+    },
+    // 时区东八区
+    timezone: '+08:00'
   }
 );
 

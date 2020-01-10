@@ -319,6 +319,10 @@ export default rebugger;
     if (silentVideo && silentVideo == "true") {
       rebugger.options.silentVideo = true;
     }
+    let reportMode = script.getAttribute("reportMode");
+    if (reportMode && reportMode.length > 0) {
+      rebugger.options.reportMode = reportMode;
+    }
   } else {
     console.warn("script should be set id = 'rebugger'");
     return;
@@ -329,7 +333,7 @@ export default rebugger;
   let cityName = "";
   // 获取客户端ip和城市信息
   // eslint-disable-next-line no-undef
-  if (returnCitySN) {
+  if (window.returnCitySN) {
     // eslint-disable-next-line no-undef
     ip = returnCitySN["cip"];
     // eslint-disable-next-line no-undef
@@ -535,26 +539,29 @@ export default rebugger;
       emitTime: new Date()
     };
     let reason = event.reason;
+    let metaData = {};
     // 未处理网络promiase异常
-    if (message == "Network Error") {
+    if (message == "Network Error" || message == "网关超时") {
       type = "httpError";
       errorInfo.type = "httpError";
       if (reason.config) {
         let requestInfo = {
           method: reason.config.method,
-          url: reason.config.url
+          url: reason.config.url,
+          headers: reason.config.headers
         };
-        errorInfo.request = JSON.stringify(requestInfo);
+        errorInfo.src = reason.config.url;
+        metaData = Object.assign(metaData, requestInfo);
         let responseInfo = {};
         // 未验证 待验证
         if (reason.response) {
-          responseInfo.status = reason.response.status;
-          responseInfo.statusText = reason.response.statusText;
+          errorInfo.status = reason.response.status;
+          errorInfo.statusText = reason.response.statusText;
         }
       }
     }
     // 未处理promise里面的语法异常
-    if (message != "Network Error" && message != "caught promise error") {
+    if (message != "Network Error" && message != "caught promise error" && message != "网关超时") {
       let stackStr = event.reason.stack.toString();
       let arr = stackStr.split(/[\n]/);
       let fileName, lineNumber, columnNumber;
@@ -581,7 +588,7 @@ export default rebugger;
     }
     console.log(errorInfo);
     let baseInfo = utils.getBaseInfo();
-    let metaData = rebugger.getMetaData();
+    metaData = rebugger.getMetaData(metaData);
     let params = Object.assign({}, initParam, baseInfo, metaData, errorInfo);
     // console.log(params);
     // rebugger.reportObject(params);

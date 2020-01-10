@@ -234,18 +234,18 @@ export default {
           zoneFormItems = zoneFormItems.filter(item => item.prop !="retainName");
         }
         let retainIdConfig = project.retainIdConfig;
-        // if (retainIdConfig && retainIdConfig.length > 5) {
-        //   retainIdConfig = JSON.parse(retainIdConfig);
-        //   let item ={ label: retainIdConfig.title , prop: "retainId", type: "view" };
-        //   let retainIdColumn = zoneFormItems.find(
-        //     item => item.prop == "retainId"
-        //   );
-        //   if(!retainIdColumn){
-        //     zoneFormItems.push(item)
-        //   }
-        // }else{
-        //   zoneFormItems = zoneFormItems.filter(item => item.prop !="retainId");
-        // }
+        if (retainIdConfig && retainIdConfig.length > 5) {
+          retainIdConfig = JSON.parse(retainIdConfig);
+          let item ={ label: retainIdConfig.title , prop: "retainId", type: "view" };
+          let retainIdColumn = zoneFormItems.find(
+            item => item.prop == "retainId"
+          );
+          if(!retainIdColumn){
+            zoneFormItems.push(item)
+          }
+        }else{
+          zoneFormItems = zoneFormItems.filter(item => item.prop !="retainId");
+        }
       }else{
         // 删除行
         zoneFormItems = zoneFormItems.filter(item => (item.prop !="retainName" && item.prop !="retainId"));

@@ -26,6 +26,8 @@ Vue.use(formVerify);
 Vue.use(regComponents);
 Vue.use(utils);
 
+NProgress.configure({ showSpinner: false });
+
 router.beforeEach((to, from, next) => {
   let token = sessionStorage.getItem("token");
   let user = localStorage.getItem("user");

@@ -131,6 +131,10 @@ export default {
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
           let params = this.model;
+          if(!params.apikey){
+            this.$utils.message("必须生成apikey","error");
+            return;
+          }
           let [err, ret] = await this.$to(projectApi.createOrUpdateProject(params));
           if (err) return;
           // console.log(ret);

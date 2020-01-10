@@ -4,6 +4,25 @@ import lsUtils from "./lsUtils";
 import ajax from "./ajax";
 import utils from "./utils";
 
+var handleDebounce = function(action, delay) {
+  var timer = null;
+
+  return function(baseUrl, ls, todayLs, today) {
+    console.log("触发调用", todayLs);
+    var self = this;
+    if (timer) {
+      ls[today] = todayLs;
+      lsUtils.set("rebugger", ls);
+    }
+    // args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      console.log("最后调用", todayLs);
+      action.call(self, baseUrl, ls, todayLs, today);
+    }, delay);
+  };
+};
+
 var reportHandller = {
   // 查询当天是否有上报
   init: function(vm) {
@@ -29,7 +48,7 @@ var reportHandller = {
             };
             let options = {
               method: "POST",
-              url: baseUrl + "/api/report/create",
+              url: baseUrl + "/api/report/createList",
               // url: "/cpm/user/login",
               data: dataObj
             };
@@ -49,6 +68,10 @@ var reportHandller = {
         }
       }
     }
+    reportHandller.handleDebounceFn = handleDebounce(
+      reportHandller.reportByList,
+      500
+    );
   },
   report: function(vm, params) {
     let reportMode = vm.options.reportMode;
@@ -73,6 +96,7 @@ var reportHandller = {
         break;
       default:
         console.warn("rebugger > no this reportMode : " + reportMode);
+        vm.reportError(params, false);
         break;
     }
   },
@@ -122,7 +146,7 @@ var reportHandller = {
         };
         let options = {
           method: "POST",
-          url: baseUrl + "/api/report/create",
+          url: baseUrl + "/api/report/createList",
           // url: "/cpm/user/login",
           data: dataObj
         };
@@ -142,6 +166,7 @@ var reportHandller = {
       }
     }
   },
+  handleDebounceFn: null,
   reportByNum(vm, params) {
     let today = vm.options.today;
     let reportNum = vm.options.reportNum;
@@ -155,30 +180,33 @@ var reportHandller = {
       if (todayLs.list.length > reportNum - 1) {
         // if (true) {
         // console.log("满10条 发送数据 清空缓存");
-        let dataObj = {
-          list: todayLs.list
-        };
-        let options = {
-          method: "POST",
-          url: baseUrl + "/api/report/create",
-          // url: "/cpm/user/login",
-          data: dataObj
-        };
-        ajax(options)
-          .then(res => {
-            console.log("success", res);
-            todayLs.list = [];
-            ls[today] = todayLs;
-            lsUtils.set("rebugger", ls);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        reportHandller.handleDebounceFn(baseUrl, ls, todayLs, today);
       } else {
         ls[today] = todayLs;
         lsUtils.set("rebugger", ls);
       }
     }
+  },
+  reportByList(baseUrl, ls, todayLs, today) {
+    let dataObj = {
+      list: todayLs.list
+    };
+    let options = {
+      method: "POST",
+      url: baseUrl + "/api/report/createList",
+      // url: "/cpm/user/login",
+      data: dataObj
+    };
+    ajax(options)
+      .then(res => {
+        console.log("success", res);
+        todayLs.list = [];
+        ls[today] = todayLs;
+        lsUtils.set("rebugger", ls);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   getInitLs(today) {
     let initLs = {};
@@ -188,6 +216,7 @@ var reportHandller = {
     return initLs;
   }
 };
+
 export default reportHandller;
 
 // 存储数据结构 rebugger

@@ -5,6 +5,8 @@ import sequelize from "sequelize";
 import reportSchema from "../schema/reportSchema";
 const ReportDao = reportSchema(mysql, sequelize);
 const uuid = require("node-uuid");
+import logger from '../../../middleware/logger';
+const Op = sequelize.Op;
 
 // 重新生成表
 ReportDao.sync({ alter: true, force: true });
@@ -82,14 +84,64 @@ class ReportService extends BaseService {
     });
   }
 
+  
+  /**
+   * createList 批量上传数据
+   */
+  public async createList(model: any) {
+
+    // let errorObj = null;
+    model.list.forEach(async (item)=>{
+      try {
+        await this.create(item);
+      } catch (error) {
+        // throw error;
+        // console.log(error);
+        // Unhandled promise rejection 不会被捕抓 手动保存日志
+        let errorObj ={
+          message:error.message +": "+ (error.parent ? error.parent.message:''),
+          url:"/api/report/createList",
+          method:"post",
+          body:JSON.stringify(item)
+        }
+        logger.logger.log("error", errorObj);
+        // errorObj = error;
+      }
+    })
+    // if(errorObj){
+    //   throw errorObj;
+    // }
+    return {list:[],total:model.list.length}
+  }
+
+
   /**
    * 重写 查询list
    */
-  public async list(pageNum = 1, pageSize = 10, where) {
+  public async list(pageNum = 1, pageSize = 10, whereParams) {
     let project = null;
-    if (where.code && where.code.length > 0) {
+    let {startTime = null,endTime = null, ...where} = whereParams;
+    // 时间间隔查询
+    if(startTime && endTime){
+      let emitTime = {
+        [Op.gt]: startTime,
+        [Op.lt]: endTime
+      }
+      where = {emitTime, ...where};
+    }
+    console.log(where);
+    if ((where.code && where.code.length > 0) || (where.projectName && where.projectName.length>0)) {
       // 获取项目信息
-      let projectRet = await projectService.find({ code: where.code }, true);
+      let projectWhere = {}
+      if(where.projectName && where.projectName.length>0){
+        projectWhere = {name: where.projectName}
+      }
+
+      if(where.code && where.code.length > 0){
+        projectWhere = {code: where.code}
+      }
+
+      let projectRet = await projectService.find({ ...projectWhere }, true);
       if(projectRet && projectRet.length>0){
         projectRet[0].apikey = "";
         project = projectRet[0];
@@ -113,7 +165,7 @@ class ReportService extends BaseService {
     // console.log(offset);
     let list = await this.entityDao.findAll({
       where,
-      order: [["updateDate", "DESC"]],
+      order: [["emitTime", "DESC"]],
       offset: offset,
       limit: pageSize
     });
