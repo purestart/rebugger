@@ -79,8 +79,8 @@ export default {
 }
 .header {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  height: 45px;
+  line-height: 45px;
   /*background:rgba(255,209,73,1);*/
   min-width: 1200px;
 }

@@ -33,18 +33,18 @@
 
 <script>
 
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters } from "vuex";
 
 export default {
   data () {
     return {
-      Openactive: 'menus',
-      perIndex: '0'
-    }
+      Openactive: "menus",
+      perIndex: "0"
+    };
   },
   created () {
-    if (window.sessionStorage.getItem('Openactive')) {
-      this.Openactive = window.sessionStorage.getItem('Openactive')
+    if (window.sessionStorage.getItem("Openactive")) {
+      this.Openactive = window.sessionStorage.getItem("Openactive");
     }
   },
   mounted () {
@@ -55,13 +55,13 @@ export default {
       menus: state => state.default.menus
     }),
     ...mapGetters({
-      flatMenu: 'flatMenu' // getToDo 不是字符串，对应的是getter里面的一个方法名字 然后将这个方法名字重新取一个别名 todosALise
+      flatMenu: "flatMenu" // getToDo 不是字符串，对应的是getter里面的一个方法名字 然后将这个方法名字重新取一个别名 todosALise
     })
   },
-  props: ['isCollapse', 'lips'],
+  props: ["isCollapse", "lips"],
   methods: {
     // ...mapActions([""]),
-    ...mapMutations(['updateSelectedTab']),
+    ...mapMutations(["updateSelectedTab"]),
     selectMenu (index) {
       // console.log("selectMenu");
       // console.log(index);
@@ -77,7 +77,7 @@ export default {
       // })
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
@@ -130,15 +130,15 @@ export default {
     }
     .el-submenu__title {
       padding-left: 6px !important;
-      // height: 35px;
-      // line-height: 35px;
+      height: 40px;
+      line-height: 40px;
       i {
         color: #fdfefe !important;
       }
     }
     .el-menu-item {
-      // height: 35px;
-      // line-height: 35px;
+      height: 40px;
+      line-height: 40px;
       i {
         color: #fdfefe !important;
       }
@@ -167,7 +167,8 @@ export default {
       -moz-osx-font-smoothing: grayscale;
 
       vertical-align: middle;
-      margin-right: 5px;
+      vertical-align: text-bottom;
+      margin-right: 0px;
 
       width: 24px;
       text-align: center;

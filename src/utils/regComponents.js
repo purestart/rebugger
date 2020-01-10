@@ -5,6 +5,7 @@ import TreeTable from "../components/TreeTable/TreeTable.vue";
 import DyFormItem from "../components/base/DyFormItem.vue";
 import utils from "./uiUtils";
 import constant from "./constant";
+import "../assets/css/element-common.scss";
 
 import VueProgressBar from "vue-progressbar";
 

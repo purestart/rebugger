@@ -6,7 +6,7 @@
       <dy-icon v-if="isCollapse" name="gcjzlogo" size="37" />
     </div>
     <div class="h_nav">
-      <dy-icon :name="isCollapse?'expand':'unexpand'" @click="expandChange" size="50" class="expand" />
+      <dy-icon :name="isCollapse?'expand':'unexpand'" @click="expandChange" size="45" class="expand" />
       <ul class="list">
         <li v-if="false">后台管理系统</li>
         <!-- <el-popover placement="bottom" width="300" trigger="hover">
@@ -40,11 +40,11 @@
             </a>
         </el-popover>-->
         <!-- <div class="gap"></div> -->
-        <div class="h-100 f-14 m-r-15">
+        <div flex="main:center cross:center" class="f-14 m-r-15">
           <!-- <span class="h-100 a-c p-r-15">
             <a class="c-white" target="_blank" href="#">旧系统</a>
           </span> -->
-          <a class="h-100 a-c p-r-15 c-white" style="cursor: pointer;" href="/docs" target="_blank">
+          <a class="a-c p-r-15 c-white" style="cursor: pointer;" href="/docs" target="_blank">
             <dy-icon name="wenhao" size="16" />
           </a>
         </div>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from "vuex";
 export default {
   components: {
   },
@@ -89,177 +89,177 @@ export default {
       colNum: 8,
       formDataUser: {
         props: {
-          size: 'small'
+          size: "small"
           // disabled:
           //   this.$utils.getUserInfo('userType') === this.$c.UserTypeV.欧派
         },
         model: {},
         items: [
           {
-            label: '登录名',
-            prop: 'userName',
+            label: "登录名",
+            prop: "userName",
             props: { disabled: true },
             verify: {}
           },
-          { label: '用户名', prop: 'fullName', verify: { maxLength: 20 } },
-          { label: '昵称', prop: 'nickName', verify: { maxLength: 20, canBeEmpty: '' } },
-          { label: '岗位', prop: 'position', props: { disabled: true } },
+          { label: "用户名", prop: "fullName", verify: { maxLength: 20 } },
+          { label: "昵称", prop: "nickName", verify: { maxLength: 20, canBeEmpty: "" } },
+          { label: "岗位", prop: "position", props: { disabled: true } },
           {
-            label: '代码',
-            prop: 'code',
+            label: "代码",
+            prop: "code",
             props: { disabled: true },
-            target: ['table', 'editForm', 'view'],
+            target: ["table", "editForm", "view"],
             verify: { maxLength: 20 }
           },
           {
-            label: '性别',
-            prop: 'sex',
-            type: 'select',
-            target: ['table', 'editForm'],
+            label: "性别",
+            prop: "sex",
+            type: "select",
+            target: ["table", "editForm"],
             verify: {},
             options: this.$c.options.sex
           },
           {
-            label: '手机号码',
-            prop: 'phone',
-            target: ['table', 'editForm', 'view'],
+            label: "手机号码",
+            prop: "phone",
+            target: ["table", "editForm", "view"],
             verify: { phone: true }
           },
           {
-            label: '邮箱',
-            prop: 'mail',
-            target: ['table', 'editForm', 'view'],
+            label: "邮箱",
+            prop: "mail",
+            target: ["table", "editForm", "view"],
             verify: { email: true }
           }
         ],
         btns: []
       },
       formDataPwd: {
-        props: { size: 'small' },
+        props: { size: "small" },
         model: {},
         items: [
           {
-            label: '原密码',
-            type: 'password',
-            prop: 'oldPassword',
+            label: "原密码",
+            type: "password",
+            prop: "oldPassword",
             verify: { maxLength: 20 }
           },
           {
-            label: '新密码',
-            type: 'password',
-            prop: 'newPassword',
+            label: "新密码",
+            type: "password",
+            prop: "newPassword",
             verify: { maxLength: 20 }
           },
           {
-            label: '重复新密码',
-            type: 'password',
-            prop: 'newPassword2',
-            verify: { watch: 'newPassword', maxLength: 20 }
+            label: "重复新密码",
+            type: "password",
+            prop: "newPassword2",
+            verify: { watch: "newPassword", maxLength: 20 }
           }
         ],
         btns: []
       }
-    }
+    };
   },
-  props: ['username', 'isCollapse'],
+  props: ["username", "isCollapse"],
   computed: {
     ...mapState({
-      userInfo: state => state.default.userInfo,
+      userInfo: state => state.default.userInfo
     }),
     selected () {
       return this.userDashboard.map(
         userDashboard => userDashboard.dashboard.id
-      )
+      );
     }
   },
   created () {
-    this.initData()
+    this.initData();
   },
   mounted () { },
   methods: {
-    ...mapActions(['fetchCourse', 'changeTheme', 'logOut']),
+    ...mapActions(["fetchCourse", "changeTheme", "logOut"]),
     expandChange () {
-      this.$emit('changeCollapse')
+      this.$emit("changeCollapse");
     },
     initData () { },
     onLayoutUpdated () { },
     sumitForm () { },
     toPage (name) {
-      this.$router.push({ name: name })
+      this.$router.push({ name: name });
     },
     async onChangeUserInfo () {
-      this.isPwd = false
-      this.modelVisibleUser = true
+      this.isPwd = false;
+      this.modelVisibleUser = true;
       const { data } = await this.$store.dispatch(
-        'getUserInfo',
+        "getUserInfo",
         this.$store.state.default.userInfo.id
-      )
+      );
       if (data) {
-        this.formDataUser.model = data
+        this.formDataUser.model = data;
       }
     },
     async onSubmitUser () {
       if (this.isPwd) {
-        this.$refs['formPwd'].validate(async valid => {
+        this.$refs["formPwd"].validate(async valid => {
           if (valid) {
             if (
               this.formDataPwd.model.newPassword !==
               this.formDataPwd.model.newPassword2
             ) {
-              this.$utils.message('2次输入的密码不一致', 'error')
-              return
+              this.$utils.message("2次输入的密码不一致", "error");
+              return;
             }
             const { data } = await this.$store.dispatch(
-              'changePwd',
+              "changePwd",
               this.formDataPwd.model
-            )
+            );
             if (data) {
-              this.modelVisibleUser = false
-              this.$utils.message('修改密码成功')
+              this.modelVisibleUser = false;
+              this.$utils.message("修改密码成功");
             }
           } else {
-            return false
+            return false;
           }
-        })
+        });
       } else {
-        this.$refs['formUser'].validate(async valid => {
+        this.$refs["formUser"].validate(async valid => {
           if (valid) {
             const { data } = await this.$store.dispatch(
-              'userSave',
+              "userSave",
               this.formDataUser.model
-            )
+            );
             if (data) {
-              this.modelVisibleUser = false
-              this.$utils.message('修改个人资料成功')
+              this.modelVisibleUser = false;
+              this.$utils.message("修改个人资料成功");
             }
           } else {
-            return false
+            return false;
           }
-        })
+        });
       }
     },
     onChangePwd () {
-      this.isPwd = true
-      this.modelVisibleUser = true
+      this.isPwd = true;
+      this.modelVisibleUser = true;
     },
     selectSelf (a) {
       switch (a) {
-        case '桌面配置':
-          this.modelVisible = true
-          break
-        case '3':
+        case "桌面配置":
+          this.modelVisible = true;
+          break;
+        case "3":
           // this.doLogout()
-          this.$router.push('/login')
-          break
-        case 'changetheme':
+          this.$router.push("/login");
+          break;
+        case "changetheme":
           // this.ThemeChange();
-          break
-        case 'userInfo':
-          this.onChangeUserInfo()
-          break
-        case 'password':
-          this.onChangePwd()
-          break
+          break;
+        case "userInfo":
+          this.onChangeUserInfo();
+          break;
+        case "password":
+          this.onChangePwd();
+          break;
       }
     },
     changeSys () {
@@ -268,16 +268,16 @@ export default {
     doLogout () {
       // 注销登录信息
       // this.$router.push({ path: "/login" });
-      this.logOut()
+      this.logOut();
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import "../../../assets/css/vars.scss";
 
 .header-container {
-  height: 50px;
+  height: 45px;
   display: flex;
   background-color: $bg_color;
   .logo {
@@ -368,7 +368,7 @@ export default {
         color: $fontcolor;
       }
       .login-user {
-        line-height: 50px;
+        line-height: 45px;
         vertical-align: middle;
         display: -ms-flexbox;
         display: -moz-box;
