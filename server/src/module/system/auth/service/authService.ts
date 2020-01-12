@@ -4,14 +4,19 @@ import userSchema from "../../user/schema/userSchema";
 const UserDao = userSchema(mysql, sequelize); // 引入user的表结构
 const jwt = require('jsonwebtoken');
 import config from '../../../../../config/default';
+import md5 from 'js-md5';
 
 class authService {
   constructor() {
   }
   /**
-   * login
+   * login 46f94c8de14fb36680850768ff1b7f2a
    */
   public async login(params : any) {
+    if(params.password){
+      params.password = md5(params.password);
+    }
+
     if(params.userName && params.password){
       let ret = await this.loginByLoginName(params.userName, params.password);
       if(ret){

@@ -6,6 +6,7 @@
 <template>
   <div class="dashboard-container">
     <div v-loading="loading">
+
       <div class="info-wrapper">
         <el-row :gutter="10">
           <el-col :span="6">
@@ -54,40 +55,30 @@
           </el-col>
         </el-row>
       </div>
-      <div v-if="false" class="m-t-10">
-        <el-row :gutter="10">
-          <el-col :span="16">
-            <ItemAgent :todos="todos"></ItemAgent>
-          </el-col>
-          <el-col :span="8">
-            <ItemMessage :messages="messages"></ItemMessage>
-          </el-col>
-        </el-row>
+      <div flex="box:mean" class="panel-wrapper m-t-10">
+        <panel class="m-r-10" height = "200px" />
+        <panel height = "200px" />
       </div>
-      <div v-if="false" class="m-t-10">
-        <el-row :gutter="10">
-          <el-col :span="16">
-            <ItemNotice :notices="notices"></ItemNotice>
-          </el-col>
-          <el-col :span="8">
-            <ItemTemplate :templates="templates"></ItemTemplate>
-          </el-col>
-        </el-row>
+      <div flex="box:mean" class="panel-wrapper m-t-10">
+        <panel class="m-r-10" height = "200px" />
+        <panel  height = "200px" />
       </div>
     </div>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
+import panel from "../fragment/pannel";
 // import ItemAgent from './fragment/ItemAgent.vue'
 // import ItemMessage from './fragment/ItemMessage'
 // import ItemNotice from './fragment/ItemNotice.vue'
 // import ItemTemplate from './fragment/ItemTemplate.vue'
 // import agentApi from '../../api/agentApi.js'
-const agentApi = null
+const agentApi = null;
 export default {
   components: {
+    panel
     // ItemAgent,
     // ItemMessage,
     // ItemNotice,
@@ -106,7 +97,7 @@ export default {
         template: 4
       },
       loading: false
-    }
+    };
   },
   computed: {
     ...mapState({
@@ -125,16 +116,16 @@ export default {
   },
   methods: {
     toMyMessage () {
-      this.$router.push('/myMessage')
+      this.$router.push("/myMessage");
     },
     toMyAgent () {
-      this.$router.push('/myAgent')
+      this.$router.push("/myAgent");
     },
     toMyNotice () {
-      this.$router.push('/myNotice')
+      this.$router.push("/myNotice");
     },
     toTemplate () {
-      this.$router.push('/template')
+      this.$router.push("/template");
     },
     // 获取通知公告
     async getNotice () {
@@ -143,13 +134,13 @@ export default {
         pageSize: 10,
         userId: this.user.id,
         type: 1
-      }
-      this.loading = true
-      let data = await agentApi.getHomeNotice(params)
-      this.loading = false
+      };
+      this.loading = true;
+      let data = await agentApi.getHomeNotice(params);
+      this.loading = false;
       if (data.status === 200) {
-        this.notices = data.data.records
-        console.log(data)
+        this.notices = data.data.records;
+        console.log(data);
       }
     },
     // 获取消息列表
@@ -159,30 +150,30 @@ export default {
         pageSize: 14,
         userId: this.user.id,
         readStatus: 2
-      }
+      };
       //   this.loading = true;
-      let data = await agentApi.getMessageList(params)
+      let data = await agentApi.getMessageList(params);
 
       //   this.loading = false;
       if (data.status === 200) {
-        this.messages = data.data.records
-        this.total = data.data.total
+        this.messages = data.data.records;
+        this.total = data.data.total;
       }
-      console.log(data)
+      console.log(data);
     },
     // 获取未读统计
     async getCountUnread () {
       let params = {
         userId: this.user.id,
-        fdNotifyType: 'todo',
+        fdNotifyType: "todo",
         systemId: this.$bpmSysId,
-        fdLoginName: this.user.companyCode !== 'oppein.com'
-          ? this.user.userName + '@' + this.user.companyCode
+        fdLoginName: this.user.companyCode !== "oppein.com"
+          ? this.user.userName + "@" + this.user.companyCode
           : this.user.userName
-      }
-      let data = await agentApi.getCountUnread(params)
+      };
+      let data = await agentApi.getCountUnread(params);
       if (data.status === 200) {
-        this.unreadCount = data.data
+        this.unreadCount = data.data;
       }
     },
     // 获取制度模板
@@ -191,43 +182,46 @@ export default {
         userId: this.user.id,
         pageNum: 1,
         pageSize: 10
-      }
-      let data = await agentApi.getHomeTemplate(params)
-      console.log(data)
+      };
+      let data = await agentApi.getHomeTemplate(params);
+      console.log(data);
       if (data.status === 200) {
-        this.templates = data.data.records
+        this.templates = data.data.records;
       }
     },
     // 获取首页代办
     async getAgent () {
       let params = {
-        fdNotifyType: 'todo',
-        fdLoginName: this.user.companyCode !== 'oppein.com' ? this.user.userName + '@' + this.user.companyCode : this.user.userName,
+        fdNotifyType: "todo",
+        fdLoginName: this.user.companyCode !== "oppein.com" ? this.user.userName + "@" + this.user.companyCode : this.user.userName,
         systemId: this.$bpmSysId,
-        fdNotifySubType: '1'
-      }
-      this.loading = true
-      let data = await agentApi.getHomeAgent(params)
-      this.loading = false
-      console.log(data)
+        fdNotifySubType: "1"
+      };
+      this.loading = true;
+      let data = await agentApi.getHomeAgent(params);
+      this.loading = false;
+      console.log(data);
       if (data.status === 200) {
-        this.todos = data.data
+        this.todos = data.data;
       }
     },
     getStoreUser () {
       if (!this.user.id) {
-        let userStr = this.$ls.get('user')
-        this.user = JSON.parse(userStr)
-        console.log(this.user)
+        let userStr = this.$ls.get("user");
+        this.user = JSON.parse(userStr);
+        console.log(this.user);
       }
     }
   }
-}
+};
 </script>
 
 <style lang='scss' scoped>
 .dashboard-container {
   margin: 0px;
+  .panel-wrapper{
+    position: relative;
+  }
   .info-wrapper {
     .info-box {
       //    background-color: rgb(83, 190, 234);

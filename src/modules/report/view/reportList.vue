@@ -97,7 +97,7 @@ export default {
   },
   data() {
     return {
-      rangeDate:[],
+      rangeDate: [],
       infoModelData: {},
       dynamicSearchForm: {},
       dataForm: {},
@@ -215,13 +215,13 @@ export default {
   },
   mounted() {},
   methods: {
-    selectDate(val){
+    selectDate(val) {
       if (val) {
-        this.dataForm.startTime = val[0]
-        this.dataForm.endTime = val[1]
+        this.dataForm.startTime = val[0];
+        this.dataForm.endTime = val[1];
       } else {
-        this.dataForm.startTime = undefined
-        this.dataForm.endTime = undefined
+        this.dataForm.startTime = undefined;
+        this.dataForm.endTime = undefined;
       }
     },
     handleCommand(command, row) {
@@ -267,7 +267,7 @@ export default {
         return;
       }
       // console.log(ret);
-      if(ret.code!=200) return;
+      if (ret.code != 200) return;
       let project = ret.data.project;
       this.project = project;
       let dynamicSearchForm = {};

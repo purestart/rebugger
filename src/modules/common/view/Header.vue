@@ -71,6 +71,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import SystemApi from "../../../modules/system/api";
 export default {
   components: {
   },
@@ -97,20 +98,20 @@ export default {
         items: [
           {
             label: "登录名",
-            prop: "userName",
+            prop: "loginName",
             props: { disabled: true },
             verify: {}
           },
-          { label: "用户名", prop: "fullName", verify: { maxLength: 20 } },
-          { label: "昵称", prop: "nickName", verify: { maxLength: 20, canBeEmpty: "" } },
-          { label: "岗位", prop: "position", props: { disabled: true } },
-          {
-            label: "代码",
-            prop: "code",
-            props: { disabled: true },
-            target: ["table", "editForm", "view"],
-            verify: { maxLength: 20 }
-          },
+          { label: "用户名", prop: "name", verify: { maxLength: 20 } },
+          // { label: "昵称", prop: "nickName", verify: { maxLength: 20, canBeEmpty: "" } },
+          // { label: "岗位", prop: "position", props: { disabled: true } },
+          // {
+          //   label: "代码",
+          //   prop: "code",
+          //   props: { disabled: true },
+          //   target: ["table", "editForm", "view"],
+          //   verify: { maxLength: 20 }
+          // },
           {
             label: "性别",
             prop: "sex",
@@ -121,13 +122,13 @@ export default {
           },
           {
             label: "手机号码",
-            prop: "phone",
+            prop: "tel",
             target: ["table", "editForm", "view"],
             verify: { phone: true }
           },
           {
             label: "邮箱",
-            prop: "mail",
+            prop: "email",
             target: ["table", "editForm", "view"],
             verify: { email: true }
           }
@@ -141,7 +142,7 @@ export default {
           {
             label: "原密码",
             type: "password",
-            prop: "oldPassword",
+            prop: "password",
             verify: { maxLength: 20 }
           },
           {
@@ -190,13 +191,13 @@ export default {
     async onChangeUserInfo () {
       this.isPwd = false;
       this.modelVisibleUser = true;
-      const { data } = await this.$store.dispatch(
-        "getUserInfo",
-        this.$store.state.default.userInfo.id
-      );
-      if (data) {
-        this.formDataUser.model = data;
-      }
+      // const { data } = await this.$store.dispatch(
+      //   "getUserInfo",
+      //   this.$store.state.default.userInfo.id
+      // );
+      // if (data) {
+      this.formDataUser.model = this.userInfo;
+      //
     },
     async onSubmitUser () {
       if (this.isPwd) {
@@ -209,11 +210,17 @@ export default {
               this.$utils.message("2次输入的密码不一致", "error");
               return;
             }
-            const { data } = await this.$store.dispatch(
-              "changePwd",
-              this.formDataPwd.model
-            );
-            if (data) {
+            // const { data } = await this.$store.dispatch(
+            //   "changePwd",
+            //   this.formDataPwd.model
+            // );
+            // console.log(this.formDataPwd.model);
+            let params = {...this.formDataPwd.model, id: this.formDataUser.model.id};
+            params.id = this.userInfo.id;
+            console.log(params);
+
+            let [err, ret] = await this.$to(SystemApi.updatePassword(params));
+            if (ret && ret.code == 200) {
               this.modelVisibleUser = false;
               this.$utils.message("修改密码成功");
             }
@@ -224,11 +231,12 @@ export default {
       } else {
         this.$refs["formUser"].validate(async valid => {
           if (valid) {
-            const { data } = await this.$store.dispatch(
-              "userSave",
-              this.formDataUser.model
-            );
-            if (data) {
+            // const { data } = await this.$store.dispatch(
+            //   "userSave",
+            //   this.formDataUser.model
+            // );
+            let [err, ret] = await this.$to(SystemApi.createOrUpdateUser(this.formDataUser.model));
+            if (ret && ret.code == 200) {
               this.modelVisibleUser = false;
               this.$utils.message("修改个人资料成功");
             }

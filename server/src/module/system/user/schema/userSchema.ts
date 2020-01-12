@@ -84,10 +84,20 @@ export default function(sequelize: any, DataTypes: any) {
         allowNull: true,
         comment:"组织Id"
       },
+      orgName:{
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment:"所属部门"
+      },
       tenantId:{
         type: DataTypes.STRING(64),
         allowNull: true,
         comment:"租户Id"
+      },
+      isDel:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        comment:"逻辑删除 0  1删除"
       },
       createDate: {
         type: DataTypes.DATE,

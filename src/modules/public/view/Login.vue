@@ -44,9 +44,9 @@ export default {
     return {
       logining: false,
       ruleForm2: {
-        companyCode: "MH00000",
-        userName: "purestart",
-        password: "123qwe"
+        companyCode: "oristar",
+        userName: "",
+        password: ""
       },
       rules2: {
         // organNum: [
@@ -65,12 +65,36 @@ export default {
       checked: true
     };
   },
+  mounted() {
+    let formData = this.$ls.getObj("cacheForm");
+    if (formData) {
+      let ruleForm2 = {
+        companyCode: this.$utils.deCode(formData.companyCode),
+        userName: this.$utils.deCode(formData.userName),
+        password: this.$utils.deCode(formData.password)
+      };
+      this.ruleForm2 = ruleForm2;
+      this.checked = formData.checked;
+    }
+  },
   methods: {
     ...mapMutations(["updateUserInfo"]),
     handleReset2 () {
       this.$refs.ruleForm2.resetFields();
     },
     async handleSubmit2 () {
+      if (this.checked) {
+        // 加密
+        let formData = {
+          checked: this.checked,
+          companyCode: this.$utils.enCode(this.ruleForm2.companyCode),
+          userName: this.$utils.enCode(this.ruleForm2.userName),
+          password: this.$utils.enCode(this.ruleForm2.password)
+        };
+        this.$ls.set("cacheForm", formData);
+      } else {
+        this.$ls.remove("cacheForm");
+      }
       let [err, ret] = await this.$to(publicApi.login(this.ruleForm2));
       if (err) {
         console.log(err);

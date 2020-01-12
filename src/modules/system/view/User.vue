@@ -1,11 +1,11 @@
 <template>
   <div class="sys-user--list">
-    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getData()">
       <el-form-item>
         <el-input size="small" v-model="dataForm.username" placeholder="用户名" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button size="small" @click="getDataList()">查询</el-button>
+        <el-button size="small" @click="getData()">查询</el-button>
       </el-form-item>
       <el-form-item>
         <!-- $hasPermission('sys:user:save') -->
@@ -14,198 +14,146 @@
       <!-- v-if="$hasPermission('sys:user:delete')" -->
       <el-form-item>
         <!-- $hasPermission('sys:user:delete') -->
-        <el-button size="small" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button
+          size="small"
+          type="danger"
+          @click="deleteHandle()"
+          :disabled="dataListSelections.length <= 0"
+        >批量删除</el-button>
       </el-form-item>
       <!-- v-if="$hasPermission('sys:user:export')" -->
-      <el-form-item>
+      <!-- <el-form-item>
         <el-button size="small" type="info" @click="exportHandle()">导出</el-button>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
-    <el-table :data="dataList" size="small" border v-loading="dataListLoading" @selection-change="selectionChangeHandle" style="width: 100%;">
-      <el-table-column type="selection" header-align="center" align="center" width="50">
-      </el-table-column>
-      <el-table-column prop="userId" header-align="center" align="center" width="80" label="ID">
-      </el-table-column>
-      <el-table-column prop="username" header-align="center" align="center" label="用户名">
-      </el-table-column>
-      <el-table-column prop="deptName" header-align="center" align="center" label="所属部门">
-      </el-table-column>
-      <el-table-column prop="email" header-align="center" align="center" label="邮箱">
-      </el-table-column>
-      <el-table-column prop="mobile" header-align="center" align="center" label="手机号">
-      </el-table-column>
-      <el-table-column prop="status" header-align="center" align="center" label="状态">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="0" @change="updateStatusHandle(scope.row)">
-          </el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column prop="createTime" header-align="center" align="center" width="180" label="创建时间">
-      </el-table-column>
-      <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
-        <template slot-scope="scope">
-          <!-- $hasPermission('sys:user:update') -->
-          <el-button v-if="true" type="text" size="small" @click="addOrUpdateHandle(scope.row.userId)">修改</el-button>
-          <el-button v-if="true" type="text" size="small" @click="deleteHandle(scope.row.userId)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="m-t-16 a-c">
-      <el-pagination @size-change="sizeChangeHandle" @current-change="currentChangeHandle" :current-page="pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize" :total="totalPage" layout="total, sizes, prev, pager, next, jumper">
-      </el-pagination>
-    </div>
+    
+    <dy-table border ref="dyTable" v-loading="loading" :columns="columns" :rows="rows"></dy-table>
+    <el-pagination
+      class="m-t-10 a-c"
+      background
+      @current-change="pageNumChange"
+      @size-change="pageSizeChange"
+      :page-size="pageSize"
+      :current-page="pageNum"
+      :layout="layout"
+      :total="total"
+    ></el-pagination>
 
     <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" :user="currentRow" @refreshDataList="getData"></add-or-update>
   </div>
 </template>
 
 <script>
-import AddOrUpdate from './UserAddOrUpdate'
+import AddOrUpdate from "./UserAddOrUpdate";
+import userApi from "../api";
+import baseMixins from "../../../mixins/baseMixins";
 // import Cookies from 'js-cookie'
 // import qs from 'qs'
 export default {
+  mixins: [baseMixins.pageMixin],
   data () {
     return {
       dataForm: {
-        username: ''
+        username: ""
       },
+      currentRow: {},
+      loading: false,
       dataList: [],
-      pageIndex: 1,
-      pageSize: 10,
-      totalPage: 0,
-      dataListLoading: false,
       dataListSelections: [],
-      addOrUpdateVisible: false
-    }
+      addOrUpdateVisible: false,
+      rows: [],
+      columns: [
+        // { type: 'index', align: 'center', label: '序号' },
+        { label: "用户名", prop: "name" },
+        { label: "所属部门", prop: "orgName" },
+        { label: "邮箱", prop: "email" },
+        { label: "手机号", prop: "tel" },
+        { label: "创建时间", prop: "createDate" },
+        {
+          label: "操作",
+          width: "200",
+          fixed: "right",
+          align: "center",
+          target: ["table"],
+          renderCell: (h, value, row, index) => {
+            return (
+              <div>
+                <el-button
+                  size="mini"
+                  type="text"
+                  class="el-dropdown-link"
+                  onClick={e => this.edit(row)}
+                >
+                  编辑
+                </el-button>
+               <el-button
+                  size="mini"
+                  type="text"
+                  class="el-dropdown-link"
+                  onClick={e => this.delete(row)}
+                >
+                  删除
+                </el-button>
+                </div>
+            );
+          }
+        }
+
+      ]
+    };
   },
   components: {
     AddOrUpdate
   },
-  activated () {
-    this.getDataList()
-  },
   methods: {
     // 获取数据列表
-    getDataList () {
-      this.dataListLoading = true
-      const data = require('./user-list.json')
+    async getData () {
+      // const data = require("./user-list.json");
+      let params = {
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        ...this.dataForm
+      };
+      let [err, ret] = await this.$to(userApi.fetchUserList());
 
-      if (data && data.code === 0) {
-        this.dataList = data.data
-        this.totalPage = data.count
+      if (ret && ret.code === 200) {
+        this.rows = ret.data.list || [];
+        this.total = ret.data.total;
       } else {
-        this.dataList = []
-        this.totalPage = 0
+        this.rows = [];
+        this.total = 0;
       }
-      this.dataListLoading = false
-
-      // this.$http.get(
-      //   `${window.SITE_CONFIG['baseURL']}/sys/user/list`,
-      //   {
-      //     params: {
-      //       'page': this.pageIndex,
-      //       'limit': this.pageSize,
-      //       'username': this.dataForm.username
-      //     }
-      //   }
-      // ).then(({data}) => {
-      //   if (data && data.code === 0) {
-      //     this.dataList = data.data
-      //     this.totalPage = data.count
-      //   } else {
-      //     this.dataList = []
-      //     this.totalPage = 0
-      //   }
-      //   this.dataListLoading = false
-      // })
     },
-    // 每页数
-    sizeChangeHandle (val) {
-      this.pageSize = val
-      this.pageIndex = 1
-      this.getDataList()
+    async delete (row) {
+      let str = "确定要删除该用户吗？";
+      const ret = await this.$utils.confirm(str);
+      if (ret) {
+        let [err, ret] = await this.$to(
+          userApi.deleteUser({ ids: [row.id] })
+        );
+        if (err) return;
+        if (ret && ret.code == 200) {
+          this.$utils.message("删除成功！");
+          this.getData();
+        }
+      }
     },
-    // 当前页
-    currentChangeHandle (val) {
-      this.pageIndex = val
-      this.getDataList()
+    edit(row) {
+      this.addOrUpdateHandle(row);
     },
     // 多选
     selectionChangeHandle (val) {
-      this.dataListSelections = val
+      this.dataListSelections = val;
     },
     // 新增 / 修改
-    addOrUpdateHandle (id) {
-      this.addOrUpdateVisible = true
+    addOrUpdateHandle (row) {
+      this.addOrUpdateVisible = true;
+      this.currentRow = row || {};
       this.$nextTick(() => {
-        this.$refs.addOrUpdate.dataForm.id = id || 0
-        this.$refs.addOrUpdate.init()
-      })
-    },
-    // 删除
-    deleteHandle (id) {
-      var ids = id ? [id] : this.dataListSelections.map(item => {
-        return item.userId
-      })
-      this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$http.post(
-          `${window.SITE_CONFIG['baseURL']}/sys/user/delete`,
-          ids
-        ).then(({ data }) => {
-          if (data && data.code === 0) {
-            this.$message({
-              message: '操作成功',
-              type: 'success',
-              duration: 1500,
-              onClose: () => {
-                this.getDataList()
-              }
-            })
-          } else {
-            this.$message.error(data.msg)
-          }
-        })
-      }).catch(() => { })
-    },
-    // 修改状态
-    updateStatusHandle (row) {
-      this.$confirm(`确定对[id=${row.userId}]状态进行[${row.status ? '开启' : '禁用'}]操作?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$http.post(
-          `${window.SITE_CONFIG['baseURL']}/sys/user/status`,
-          {
-            'userId': row.userId,
-            'status': row.status
-          },
-          {
-            headers: { 'content-type': 'application/x-www-form-urlencoded' }
-          }
-        ).then(({ data }) => {
-          if (data && data.code === 0) {
-            this.$message({
-              message: '操作成功',
-              type: 'success',
-              duration: 1500,
-              onClose: () => {
-                this.getDataList()
-              }
-            })
-          } else {
-            row.status = Number(!row.status)
-            this.$message.error(data.msg)
-          }
-        })
-      }).catch(() => {
-        row.status = Number(!row.status)
-      })
+        // this.$refs.addOrUpdate.dataForm.id = id || 0;
+        this.$refs.addOrUpdate.init();
+      });
     }
     // 导出
     // exportHandle () {
@@ -216,7 +164,7 @@ export default {
     //   window.location.href = `${window.SITE_CONFIG['baseURL']}/sys/user/export?${qs.stringify(params)}`
     // }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .sys-user--list {

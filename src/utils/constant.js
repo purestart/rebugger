@@ -8,8 +8,8 @@ import { utils } from "./utils";
 class Constant {
   // 性别
   SexV = {
-    男: "M",
-    女: "F"
+    男: 1,
+    女: 0
   };
 
   ProjectTypeV = {
