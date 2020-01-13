@@ -3,6 +3,8 @@ import projectService from "../../project/service/projectService";
 import mysql from "../../../utils/mysql";
 import sequelize from "sequelize";
 import reportSchema from "../schema/reportSchema";
+import sysConfig from "../../../../config/default";
+import cacheUtil from "../../../utils/cacheUtil";
 const ReportDao = reportSchema(mysql, sequelize);
 const uuid = require("node-uuid");
 import logger from '../../../middleware/logger';
@@ -180,6 +182,79 @@ class ReportService extends BaseService {
   }
 
   /**
+   * 重写 查询已解决list
+   */
+  public async resolveList(pageNum = 1, pageSize = 10, whereParams) {
+    let project = null;
+    let {startTime = null,endTime = null, ...where} = whereParams;
+    // 时间间隔查询
+    if(startTime && endTime){
+      let emitTime = {
+        [Op.gt]: startTime,
+        [Op.lt]: endTime
+      }
+      where = {
+        emitTime, 
+        ...where,
+        type:{
+          [Op.notIn]: ["info", "warning"]
+        },
+        resolveStatus:{
+          [Op.lte]: 0
+        }
+      };
+    }
+    // console.log(where);
+    // if ((where.code && where.code.length > 0) || (where.projectName && where.projectName.length>0)) {
+    //   // 获取项目信息
+    //   let projectWhere = {}
+    //   if(where.projectName && where.projectName.length>0){
+    //     projectWhere = {name: where.projectName}
+    //   }
+
+    //   if(where.code && where.code.length > 0){
+    //     projectWhere = {code: where.code}
+    //   }
+
+    //   let projectRet = await projectService.find({ ...projectWhere }, true);
+    //   if(projectRet && projectRet.length>0){
+    //     projectRet[0].apikey = "";
+    //     project = projectRet[0];
+    //   }
+    // }
+    let total = 0;
+    total = await this.entityDao.count({ where }, { logging: true });
+    if (total < 1) {
+      return {
+        pageSize,
+        pageNum,
+        list: [],
+        total: 0
+        // project
+      };
+    }
+    let offset = 0;
+    if (pageNum > 1) {
+      offset = (pageNum - 1) * pageSize;
+    }
+    // console.log(offset);
+    let list = await this.entityDao.findAll({
+      where,
+      order: [["emitTime", "DESC"]],
+      offset: offset,
+      limit: pageSize
+    });
+    let result = {
+      pageSize,
+      pageNum,
+      list,
+      total
+      // project
+    };
+    return result;
+  }
+
+  /**
    * 更新 异常状态
    * 
    */
@@ -199,6 +274,44 @@ class ReportService extends BaseService {
     }
     return await o.save();
   }
+
+/**
+   * id 查询字段
+   * cacheable 是否开启缓存
+   */
+  public async info(id: string, cacheable = false, options?: any) {
+    if (cacheable) {
+      let obj = await cacheUtil.get(id);
+      if (obj) {
+        obj = JSON.parse(obj);
+        return obj;
+      } else {
+        let ret = await this.entityDao.findOne({
+          where: {
+            id
+          }
+        });
+        if (ret) {
+          cacheUtil.set(
+            id,
+            JSON.stringify(ret),
+            options && options.exprires
+              ? options.exprires
+              : sysConfig.redis.exprires
+          );
+        }
+        return ret;
+      }
+    } else {
+      return await this.entityDao.findOne({
+        where: {
+          id
+        }
+      });
+    }
+  }
+
+
 }
 const repoetService = new ReportService();
 export default repoetService;

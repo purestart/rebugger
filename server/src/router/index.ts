@@ -8,6 +8,7 @@ import menuController from '../module/system/menu/controller/menuController';
 import orgController from '../module/system/org/controller/orgController';
 import configController from '../module/system/config/controller/configController';
 import dictController from '../module/system/dict/controller/dictController';
+import dashboardController from '../module/dashboard/controller/dashboardController';
 
 export default {
   userController,
@@ -19,5 +20,6 @@ export default {
   menuController,
   orgController,
   configController,
-  dictController
+  dictController,
+  dashboardController
 };

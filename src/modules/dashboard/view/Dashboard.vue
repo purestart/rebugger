@@ -7,7 +7,7 @@
   <div class="dashboard-container">
     <div v-loading="loading">
 
-      <div class="info-wrapper">
+      <div v-if="false" class="info-wrapper">
         <el-row :gutter="10">
           <el-col :span="6">
             <div @click="toMyMessage" class="info-box message">
@@ -55,13 +55,17 @@
           </el-col>
         </el-row>
       </div>
-      <div flex="box:mean" class="panel-wrapper m-t-10">
-        <panel class="m-r-10" height = "200px" />
-        <panel height = "200px" />
+      <div flex="box:first">
+        <lineChartPanel :statInfo="statInfo" ref="lineChartPanel" title="日志统计" class="m-r-10" width = "75%" height = "40vh" />
+        <handleInfo title="处理记录" height = "40vh" />
       </div>
       <div flex="box:mean" class="panel-wrapper m-t-10">
-        <panel class="m-r-10" height = "200px" />
-        <panel  height = "200px" />
+        <statPannel :statInfo="statInfo" title="概况" class="m-r-10" height = "200px" />
+        <panel title="日志分布" height = "200px" />
+      </div>
+      <div flex="box:mean" class="panel-wrapper m-t-10">
+        <projectPannel title="所有项目" class="" minHeight = "200px" />
+        <!-- <panel  height = "200px" /> -->
       </div>
     </div>
   </div>
@@ -70,32 +74,23 @@
 <script type='text/ecmascript-6'>
 import { mapState } from "vuex";
 import panel from "../fragment/pannel";
-// import ItemAgent from './fragment/ItemAgent.vue'
-// import ItemMessage from './fragment/ItemMessage'
-// import ItemNotice from './fragment/ItemNotice.vue'
-// import ItemTemplate from './fragment/ItemTemplate.vue'
-// import agentApi from '../../api/agentApi.js'
+import lineChartPanel from '../fragment/lineChartPanel';
+import projectPannel from '../fragment/projectPannel';
+import statPannel from '../fragment/statPannel';
+import handleInfo from '../fragment/handleInfo';
+import dashboardApi from '../api';
 const agentApi = null;
 export default {
   components: {
-    panel
-    // ItemAgent,
-    // ItemMessage,
-    // ItemNotice,
-    // ItemTemplate
+    panel,
+    lineChartPanel,
+    projectPannel,
+    statPannel,
+    handleInfo
   },
   data () {
     return {
-      notices: [],
-      messages: [],
-      templates: [],
-      todos: [],
-      unreadCount: {
-        message: 20,
-        todo: 30,
-        notice: 2,
-        template: 4
-      },
+      statInfo:{},
       loading: false
     };
   },
@@ -105,27 +100,32 @@ export default {
     })
   },
   created () { },
-  mounted () { },
+  mounted () {
+    this.getStatInfo();
+   },
   activated () {
-    // this.getStoreUser();
-    // this.getAgent()
-    // this.getNotice()
-    // this.getMessageList()
-    // this.getCountUnread()
-    // this.getHomeTemplate()
   },
   methods: {
-    toMyMessage () {
-      this.$router.push("/myMessage");
-    },
-    toMyAgent () {
-      this.$router.push("/myAgent");
-    },
-    toMyNotice () {
-      this.$router.push("/myNotice");
-    },
-    toTemplate () {
-      this.$router.push("/template");
+    async getStatInfo(){
+      let params = {};
+      let [err, ret] = await this.$to(dashboardApi.fetchDashboardStatInfo(params));
+      if(err || ret.code!=200) return;
+      console.log(ret);
+      let xAxisData = [];
+      let seriesData = [];
+      if (ret.data && ret.data.dailySum) {
+        ret.data.dailySum.forEach(item=>{
+          xAxisData.push(item.date);
+          seriesData.push(item.dayTotal);
+        })
+        ret.data.xAxisData = xAxisData;
+        ret.data.seriesData = seriesData;
+      }
+      this.$refs.lineChartPanel.lineOption.xAxis[0].data = xAxisData;
+      this.$refs.lineChartPanel.lineOption.series[0].data = seriesData;
+      this.$refs.lineChartPanel.drawLineChart();
+      this.statInfo = ret.data;
+      this.$forceUpdate();
     },
     // 获取通知公告
     async getNotice () {
@@ -160,50 +160,6 @@ export default {
         this.total = data.data.total;
       }
       console.log(data);
-    },
-    // 获取未读统计
-    async getCountUnread () {
-      let params = {
-        userId: this.user.id,
-        fdNotifyType: "todo",
-        systemId: this.$bpmSysId,
-        fdLoginName: this.user.companyCode !== "oppein.com"
-          ? this.user.userName + "@" + this.user.companyCode
-          : this.user.userName
-      };
-      let data = await agentApi.getCountUnread(params);
-      if (data.status === 200) {
-        this.unreadCount = data.data;
-      }
-    },
-    // 获取制度模板
-    async getHomeTemplate () {
-      let params = {
-        userId: this.user.id,
-        pageNum: 1,
-        pageSize: 10
-      };
-      let data = await agentApi.getHomeTemplate(params);
-      console.log(data);
-      if (data.status === 200) {
-        this.templates = data.data.records;
-      }
-    },
-    // 获取首页代办
-    async getAgent () {
-      let params = {
-        fdNotifyType: "todo",
-        fdLoginName: this.user.companyCode !== "oppein.com" ? this.user.userName + "@" + this.user.companyCode : this.user.userName,
-        systemId: this.$bpmSysId,
-        fdNotifySubType: "1"
-      };
-      this.loading = true;
-      let data = await agentApi.getHomeAgent(params);
-      this.loading = false;
-      console.log(data);
-      if (data.status === 200) {
-        this.todos = data.data;
-      }
     },
     getStoreUser () {
       if (!this.user.id) {

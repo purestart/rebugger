@@ -4,11 +4,12 @@ import lsUtils from "./lsUtils";
 import ajax from "./ajax";
 import utils from "./utils";
 
+// 去抖动
 var handleDebounce = function(action, delay) {
   var timer = null;
 
   return function(baseUrl, ls, todayLs, today) {
-    console.log("触发调用", todayLs);
+    // console.log("触发调用", todayLs);
     var self = this;
     if (timer) {
       ls[today] = todayLs;
@@ -17,7 +18,7 @@ var handleDebounce = function(action, delay) {
     // args = arguments;
     clearTimeout(timer);
     timer = setTimeout(function() {
-      console.log("最后调用", todayLs);
+      // console.log("最后调用", todayLs);
       action.call(self, baseUrl, ls, todayLs, today);
     }, delay);
   };
@@ -31,7 +32,7 @@ var reportHandller = {
     let today = vm.options.today;
     let baseUrl = vm.options.baseUrl;
     let ls = lsUtils.getObj("rebugger", {});
-    let copyLs = JSON.parse(JSON.stringify(ls));
+    // let copyLs = JSON.parse(JSON.stringify(ls));
     for (let key in ls) {
       // 判断key是否为日期格式 xxx-xx-xx
       let arr = key.split("-");
@@ -55,7 +56,14 @@ var reportHandller = {
             ajax(options)
               .then(res => {
                 console.log("init report success", res);
-                if (res && res.status == 200) {
+                // console.log(JSON.parse(res));
+                let ret = null;
+                if (utils.isString(res) && res.indexOf("{") == 0) {
+                  ret = JSON.parse(res);
+                }
+                if (ret && ret.code == 200) {
+                  let reb = lsUtils.getObj("rebugger", {});
+                  let copyLs = JSON.parse(JSON.stringify(reb));
                   delete copyLs[key];
                   // console.log(copyLs);
                   lsUtils.set("rebugger", copyLs);
@@ -153,9 +161,15 @@ var reportHandller = {
         ajax(options)
           .then(res => {
             console.log("excess limitNum reportByDay success", res);
-            todayLs.list = [];
-            ls[today] = todayLs;
-            lsUtils.set("rebugger", ls);
+            let ret = null;
+            if (utils.isString(res) && res.indexOf("{") == 0) {
+              ret = JSON.parse(res);
+            }
+            if (ret && ret.code == 200) {
+              todayLs.list = [];
+              ls[today] = todayLs;
+              lsUtils.set("rebugger", ls);
+            }
           })
           .catch(err => {
             console.log(err);

@@ -161,7 +161,7 @@ var rebugger = {
       // handle error
       // `info` 是 Vue 特定的错误信息，比如错误所在的生命周期钩子
       // 只在 2.2.0+ 可用
-      console.error("Vue errror", err);
+      console.error("捕获 Vue errror", err);
       // console.log(info);
       let componentName = rebugger.getComponentName(vm);
       let propsData = vm.$options && vm.$options.propsData;

@@ -34,6 +34,7 @@ export default {
     return {
       dataForm: {},
       loading: false,
+      
       rows: [],
       columns: [
         // { type: 'index', align: 'center', label: '序号' },

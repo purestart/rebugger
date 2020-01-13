@@ -1,12 +1,12 @@
 <template>
   <div :style = "[styleObj]" class="pannel-com">
-    <div flex="main:justify" class="panel-header b-b">
+    <div v-if="headerVisible" flex="main:justify" class="panel-header b-b">
         <span class="title p-l-10">{{title}}</span>
         <div class="p-r-10">
           <slot name="header-right"></slot>
         </div>
     </div>
-    <div>
+    <div class="pannel-slot">
       <slot></slot>
     </div>
   </div>
@@ -14,6 +14,11 @@
 <script type='text/ecmascript-6'>
 export default {
   props: {
+    headerVisible:{
+      type: Boolean,
+      required:false,
+      default:true
+    },
     width: {
       type: String,
       required: false
@@ -45,13 +50,13 @@ export default {
     };
   },
   created() {
-    console.log(this.width);
+    // console.log(this.width);
 
     this.styleObj = {
       width: this.width ? this.width : undefined,
       height: this.height ? this.height : undefined
     };
-    console.log(this.styleObj);
+    // console.log(this.styleObj);
   }
 };
 </script>

@@ -135,6 +135,18 @@ export default {
   display:-webkit-box;
   display: -webkit-flex;
   display: flex;
+  /deep/ .el-button{
+    background-color: #390b98;
+    color: #FFF;
+    border-color: #580ef3;
+  }
+  /deep/ .el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: #6835d2;
+    border-color: #8767ca;
+  }
+  /deep/ .el-checkbox__input.is-checked + .el-checkbox__label {
+    color: #8767ca;
+  }
   .layer-box{
     background-color: #111d75;
     height: 100%;
