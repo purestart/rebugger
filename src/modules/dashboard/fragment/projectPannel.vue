@@ -20,7 +20,7 @@
 <script type='text/ecmascript-6'>
 import baseMixins from "../../../mixins/baseMixins";
 import projectApi from "../../project/api";
-import pannel from './pannel';
+import pannel from "./pannel";
 export default {
   mixins: [baseMixins.pageMixin],
   components: {
@@ -34,7 +34,7 @@ export default {
         // { type: 'index', align: 'center', label: '序号' },
         { label: "项目名称", prop: "name" },
         { label: "项目编码", prop: "code", width: 120 },
-        { label: "项目类型", prop: "type", width: 120 },
+        { label: "项目类型", prop: "type", width: 120, formatter: (row, column, cellValue) => this.$c.projectTypeK[cellValue]},
         { label: "编写语言", prop: "language", width: 120 },
         { label: "使用框架", prop: "frame" },
         { label: "更新日期", prop: "updateDate" },
@@ -55,7 +55,7 @@ export default {
           }
         }
       ]
-    }
+    };
   },
   created () {
   },
@@ -81,11 +81,11 @@ export default {
       this.total = ret.data.total;
       this.rows = ret.data.list;
     },
-        toReportInfo(row) {
+    toReportInfo(row) {
       this.$router.push("/report/errorInfo/projectCode/" + row.code);
-    },
+    }
   }
-}
+};
 </script>
 
 <style lang='scss' scoped>

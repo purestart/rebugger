@@ -75,7 +75,7 @@ class DashboardService {
 
     let ret = await new Promise(async (resolve,reject)=>{
       let arr :Array<Object> = [];
-      for(let i=0; i<dayCount; i++){
+      for(let i=dayCount -1; i>-1; i--){
         let date = moment().subtract('days', i).format('YYYY-MM-DD');//n天前
         let emitTime = {
           [Op.gt]: date + " 00:00:00",

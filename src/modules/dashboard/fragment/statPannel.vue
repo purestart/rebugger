@@ -38,10 +38,10 @@
 </template>
 
 <script type='text/ecmascript-6'>
-import pannel from './pannel';
+import pannel from "./pannel";
 export default {
-  props:{
-    statInfo:{
+  props: {
+    statInfo: {
       type: Object,
       required: true
     }
@@ -51,7 +51,7 @@ export default {
   },
   data () {
     return {
-    }
+    };
   },
   created () {
   },
@@ -61,7 +61,7 @@ export default {
   methods: {
 
   }
-}
+};
 </script>
 
 <style lang='scss' scoped>

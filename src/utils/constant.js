@@ -20,10 +20,10 @@ class Constant {
 
   // 异常类型
   ErrorTypeV = {
-    日志信息: "info",
-    警告信息: "warn",
-    主动上报代码异常: "caught",
     捕获代码异常: "unCaught",
+    主动上报代码异常: "caught",
+    日志信息: "info",
+    警告信息: "warning",
     资源加载异常: "sourceError",
     接口请求异常: "httpError",
     未处理promise异常: "unhandledRejection",
@@ -70,7 +70,8 @@ class Constant {
     解决状态: "resolveStatus",
     问题描述: "comment",
     子模块名称: "moduleName",
-    创建日期: "createDate"
+    创建日期: "createDate",
+    处理人: "resolveUserName"
   }
   // 解决状态
   ResolveStatusV = {

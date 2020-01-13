@@ -57,11 +57,11 @@
       </div>
       <div flex="box:first">
         <lineChartPanel :statInfo="statInfo" ref="lineChartPanel" title="日志统计" class="m-r-10" width = "75%" height = "40vh" />
-        <handleInfo title="处理记录" height = "40vh" />
+        <handleInfo  title="处理记录" height = "40vh" />
       </div>
       <div flex="box:mean" class="panel-wrapper m-t-10">
         <statPannel :statInfo="statInfo" title="概况" class="m-r-10" height = "200px" />
-        <panel title="日志分布" height = "200px" />
+        <piePannel :statInfo="statInfo" title="日志分布" height = "200px" />
       </div>
       <div flex="box:mean" class="panel-wrapper m-t-10">
         <projectPannel title="所有项目" class="" minHeight = "200px" />
@@ -74,11 +74,12 @@
 <script type='text/ecmascript-6'>
 import { mapState } from "vuex";
 import panel from "../fragment/pannel";
-import lineChartPanel from '../fragment/lineChartPanel';
-import projectPannel from '../fragment/projectPannel';
-import statPannel from '../fragment/statPannel';
-import handleInfo from '../fragment/handleInfo';
-import dashboardApi from '../api';
+import lineChartPanel from "../fragment/lineChartPanel";
+import projectPannel from "../fragment/projectPannel";
+import statPannel from "../fragment/statPannel";
+import handleInfo from "../fragment/handleInfo";
+import dashboardApi from "../api";
+import piePannel from "../fragment/piePannel";
 const agentApi = null;
 export default {
   components: {
@@ -86,11 +87,12 @@ export default {
     lineChartPanel,
     projectPannel,
     statPannel,
-    handleInfo
+    handleInfo,
+    piePannel
   },
   data () {
     return {
-      statInfo:{},
+      statInfo: {},
       loading: false
     };
   },
@@ -102,22 +104,22 @@ export default {
   created () { },
   mounted () {
     this.getStatInfo();
-   },
+  },
   activated () {
   },
   methods: {
-    async getStatInfo(){
+    async getStatInfo() {
       let params = {};
       let [err, ret] = await this.$to(dashboardApi.fetchDashboardStatInfo(params));
-      if(err || ret.code!=200) return;
+      if (err || ret.code != 200) return;
       console.log(ret);
       let xAxisData = [];
       let seriesData = [];
       if (ret.data && ret.data.dailySum) {
-        ret.data.dailySum.forEach(item=>{
+        ret.data.dailySum.forEach(item => {
           xAxisData.push(item.date);
           seriesData.push(item.dayTotal);
-        })
+        });
         ret.data.xAxisData = xAxisData;
         ret.data.seriesData = seriesData;
       }

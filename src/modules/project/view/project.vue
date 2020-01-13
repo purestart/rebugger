@@ -34,13 +34,18 @@ export default {
     return {
       dataForm: {},
       loading: false,
-      
+
       rows: [],
       columns: [
         // { type: 'index', align: 'center', label: '序号' },
         { label: "项目名称", prop: "name" },
         { label: "项目编码", prop: "code", width: 120 },
-        { label: "项目类型", prop: "type", width: 120 },
+        {
+          label: "项目类型",
+          prop: "type",
+          width: 120,
+          formatter: (row, column, cellValue) => this.$c.projectTypeK[cellValue]
+        },
         { label: "编写语言", prop: "language", width: 120 },
         { label: "使用框架", prop: "frame" },
         { label: "更新日期", prop: "updateDate" },
@@ -74,13 +79,28 @@ export default {
           renderCell: (h, value, row, index) => {
             return (
               <div>
-                <el-button size="mini" class="f-12 c-link" type="text" onClick={e => this.edit(e, row)}>
+                <el-button
+                  size="mini"
+                  class="f-12 c-link"
+                  type="text"
+                  onClick={e => this.edit(e, row)}
+                >
                   编辑
                 </el-button>
-                <el-button size="mini" class="f-12 c-link" type="text" onClick={e => this.delete(e, row)}>
+                <el-button
+                  size="mini"
+                  class="f-12 c-link"
+                  type="text"
+                  onClick={e => this.delete(e, row)}
+                >
                   删除
                 </el-button>
-                <el-button size="mini" class="f-12 c-link" type="text" onClick={e => this.toReportInfo(row)}>
+                <el-button
+                  size="mini"
+                  class="f-12 c-link"
+                  type="text"
+                  onClick={e => this.toReportInfo(row)}
+                >
                   项目日志
                 </el-button>
               </div>
