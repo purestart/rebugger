@@ -1,13 +1,8 @@
 <template>
   <div class="image-select b-o">
     <img @click="select" :src="url" alt />
-    <edit-model
-      :hideSubmitBtn="false"
-      title="修改个人信息"
-      :modelVisible="modelVisible"
-      @submit="onSubmit"
-      @close="modelVisible=false"
-    >
+    <edit-model :hideSubmitBtn="false" title="修改个人信息" :modelVisible="modelVisible" @submit="onSubmit"
+      @close="modelVisible=false">
       <div flex="dir:top" class="p-10">
         <div flex="dir:left cross:center" class="h-80 b-b">
           <div>
@@ -15,10 +10,12 @@
           </div>
           <img :src="selectedImage" alt />
         </div>
-        <div flex class="p-t-10">
-          <div class="p-10" :key="index" v-for="(item,index) in imageList">
+        <div>
+        <div flex="dir:left main:center" style="white-space:wrap;flex-flow:row wrap;" class="p-t-10">
+          <div style="display:inline-block;" class="p-10" :key="index" v-for="(item,index) in imageList">
             <img @click="selectImage(item)" :src="item.url" alt />
           </div>
+        </div>
         </div>
       </div>
       <!-- <dy-form ref="formUser" :data="formData" class="my-form col-2 m-r-16 p-v-16"></dy-form> -->
@@ -34,7 +31,7 @@ export default {
       default: ""
     }
   },
-  data() {
+  data () {
     return {
       selectedImage: "",
       imageList: [
@@ -48,11 +45,63 @@ export default {
         },
         {
           name: "",
-          url: "/static/assets/javascript.jpg"
+          url: "/static/assets/vue.png"
         },
         {
           name: "",
-          url: "/static/assets/javascript.jpg"
+          url: "/static/assets/element.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/react.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/java.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/qq.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/wechat.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/edas.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/ios.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/mobile.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/sae.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/webx.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/wwafeb.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/yytj.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/swas.png"
+        },
+        {
+          name: "",
+          url: "/static/assets/yytg.png"
         }
       ],
       modelVisible: false,
@@ -109,16 +158,16 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    selectImage(item) {
+    selectImage (item) {
       this.selectedImage = item.url;
     },
-    select() {
+    select () {
       this.selectedImage = this.url;
       this.modelVisible = true;
     },
-    onSubmit() {
+    onSubmit () {
       this.$emit("onSelect", this.selectedImage);
       this.modelVisible = false;
     }

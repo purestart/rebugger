@@ -71,7 +71,8 @@ class Constant {
     问题描述: "comment",
     子模块名称: "moduleName",
     创建日期: "createDate",
-    处理人: "resolveUserName"
+    处理人: "resolveUserName",
+    环境类型: "env"
   }
   // 解决状态
   ResolveStatusV = {
@@ -80,12 +81,21 @@ class Constant {
     其它原因: 2
   }
 
+  // 环境
+  EnvInfoV = {
+    生产环境: "pro",
+    预发布环境: "pre",
+    测试环境: "test",
+    开发环境: "dev"
+  }
+
   options = {
     sex: utils.objToArr(this.SexV),
     projectType: utils.objToArr(this.ProjectTypeV),
     errorType: utils.objToArr(this.ErrorTypeV),
     resolveStatus: utils.objToArr(this.ResolveStatusV),
-    reportField: utils.objToArr(this.ReportFieldV)
+    reportField: utils.objToArr(this.ReportFieldV),
+    envInfo: utils.objToArr(this.EnvInfoV)
   };
 
   constructor() {
@@ -94,6 +104,7 @@ class Constant {
     this.errorTypeK = utils.reverse(this.ErrorTypeV);
     this.resolveStatusK = utils.reverse(this.ResolveStatusV);
     this.reportFieldK = utils.reverse(this.ReportFieldV);
+    this.envInfoK = utils.reverse(this.EnvInfoV);
   }
 }
 const constant = new Constant();

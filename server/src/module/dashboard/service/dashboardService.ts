@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 import moment from "moment"
 import config from '../../../../config/default';
 import md5 from 'js-md5';
+import ProjectService from "../../project/service/projectService";
+import cacheUtil from "../../../utils/cacheUtil";
 const Op = sequelize.Op;
 
 class DashboardService {
@@ -16,10 +18,18 @@ class DashboardService {
    * name
    */
   public async stat(param) {
+    // 新增缓存 5分钟统计一次
+    let obj = await cacheUtil.get("dashboardStat");
+    if (obj) {
+      obj = JSON.parse(obj);
+      console.log("取缓存");
+      return obj;
+    }
+
     var startTime = moment().startOf("day");
     let endTime = moment().endOf("day");
-    console.log(startTime);
-    console.log(endTime);
+    // console.log(startTime);
+    // console.log(endTime);
     let emitTime = {
       [Op.gt]: startTime,
       [Op.lt]: endTime
@@ -57,13 +67,24 @@ class DashboardService {
       total = totalObj[0].table_rows;
     }
     let dailySum = await this.dailySum(12);
-    return {
+    let projectSum = await this.statByProject();
+    let typeSum = await this.statByType();
+    let ret = {
       dayTotal,
       infoTotal,
       errorTotal,
       total:total,
-      dailySum
+      dailySum,
+      projectSum,
+      typeSum
     }
+    cacheUtil.set(
+      "dashboardStat",
+      JSON.stringify(ret),
+      60000 * 5
+    );
+    
+    return ret;
   }
 
   /**
@@ -94,6 +115,78 @@ class DashboardService {
       }
       resolve(arr);
     });
+    return ret;
+  }
+
+  /**
+   * statByProject
+   * 按项目统计当天数量
+   */
+  public async statByProject() {
+    let ret = await new Promise(async (resolve,reject)=>{
+      let arr :Array<Object> = [];
+      let result = await ProjectService.list(1,10,{});
+      if(result && result.list && result.list.length > 0){
+        for(let i=0; i < result.list.length; i++){
+          let project = result.list[i];
+          let date = moment().subtract('days', 0).format('YYYY-MM-DD');//今天
+          let emitTime = {
+            [Op.gt]: date + " 00:00:00",
+            [Op.lt]: date + " 23:59:59"
+          }
+          let dayTotalWhere = {
+            emitTime,
+            code: project.code
+          }
+          let dayTotal = 0
+          dayTotal = await ReportDao.count({ where:dayTotalWhere }, { logging: true });
+          let obj = {
+            id: project.id,
+            name: project.name,
+            date,
+            total: dayTotal?dayTotal:0
+          }
+          arr.push(obj);
+        }
+      }
+      resolve(arr);
+    })
+    return ret;
+  }
+
+  /**
+   * statByType
+   * 按异常类型统计
+   */
+  public async statByType() {
+    let types = ["unCaught","caught","info","warning","sourceError","httpError","unhandledRejection","handledRejection"];
+    let typeNames = ["捕获代码异常","主动上报代码异常","日志信息","警告信息","资源加载异常","接口请求异常","未处理promise异常","已处理promise异常"];
+    let ret = await new Promise(async (resolve,reject)=>{
+      let arr :Array<Object> = [];
+      for(let i=0; i < types.length; i++){
+        let type = types[i];
+        let typeName = typeNames[i];
+        let date = moment().subtract('days', 0).format('YYYY-MM-DD');//今天
+        let emitTime = {
+          [Op.gt]: date + " 00:00:00",
+          [Op.lt]: date + " 23:59:59"
+        }
+        let dayTotalWhere = {
+          emitTime,
+          type: type
+        }
+        let dayTotal = 0
+        dayTotal = await ReportDao.count({ where:dayTotalWhere }, { logging: true });
+        let obj = {
+          type,
+          typeName,
+          date,
+          total: dayTotal?dayTotal:0
+        }
+        arr.push(obj);
+      }
+      resolve(arr);
+    })
     return ret;
   }
 

@@ -61,7 +61,7 @@
       </div>
       <div flex="box:mean" class="panel-wrapper m-t-10">
         <statPannel :statInfo="statInfo" title="概况" class="m-r-10" height = "200px" />
-        <piePannel :statInfo="statInfo" title="日志分布" height = "200px" />
+        <piePannel ref="piePannel" :statInfo="statInfo" title="日志分布" height = "200px" />
       </div>
       <div flex="box:mean" class="panel-wrapper m-t-10">
         <projectPannel title="所有项目" class="" minHeight = "200px" />
@@ -123,45 +123,34 @@ export default {
         ret.data.xAxisData = xAxisData;
         ret.data.seriesData = seriesData;
       }
+      let pieProjectDate = [];
+      if (ret.data && ret.data.projectSum) {
+        ret.data.projectSum.forEach(item => {
+          let obj = { value: item.total, name: item.name+" " + item.total};
+          if(obj.value != 0){
+            pieProjectDate.push(obj);
+          }
+        })
+        let otherObj = { value: 0, name: "其它项目 0"};
+        pieProjectDate.push(otherObj);
+      }
+      let pieTypeDate = [];
+      if (ret.data && ret.data.typeSum) {
+        ret.data.typeSum.forEach(item => {
+          let obj = { value: item.total, name: item.typeName+" " + item.total};
+          if(obj.value != 0){
+            pieTypeDate.push(obj);
+          }
+        })
+        let otherObj = { value: 0, name: "其它类型 0"};
+        pieTypeDate.push(otherObj);
+      }
       this.$refs.lineChartPanel.lineOption.xAxis[0].data = xAxisData;
       this.$refs.lineChartPanel.lineOption.series[0].data = seriesData;
       this.$refs.lineChartPanel.drawLineChart();
+      this.$refs.piePannel.drawPieChart(pieProjectDate, pieTypeDate);
       this.statInfo = ret.data;
       this.$forceUpdate();
-    },
-    // 获取通知公告
-    async getNotice () {
-      let params = {
-        pageNum: 1,
-        pageSize: 10,
-        userId: this.user.id,
-        type: 1
-      };
-      this.loading = true;
-      let data = await agentApi.getHomeNotice(params);
-      this.loading = false;
-      if (data.status === 200) {
-        this.notices = data.data.records;
-        console.log(data);
-      }
-    },
-    // 获取消息列表
-    async getMessageList () {
-      let params = {
-        pageNum: 1,
-        pageSize: 14,
-        userId: this.user.id,
-        readStatus: 2
-      };
-      //   this.loading = true;
-      let data = await agentApi.getMessageList(params);
-
-      //   this.loading = false;
-      if (data.status === 200) {
-        this.messages = data.data.records;
-        this.total = data.data.total;
-      }
-      console.log(data);
     },
     getStoreUser () {
       if (!this.user.id) {

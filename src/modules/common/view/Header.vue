@@ -2,7 +2,7 @@
   <div class="header-container">
     <div class="logo" :class="isCollapse?'collapse':''">
       <!-- <img v-if="!isCollapse" class="img-logo p-l-20" src="../../../assets/logo1.png"> -->
-      <span v-if="!isCollapse" class="f-18">LOGO</span>
+      <span v-if="!isCollapse" class="f-18">异常监控系统</span>
       <dy-icon v-if="isCollapse" name="gcjzlogo" size="37" />
     </div>
     <div class="h_nav">

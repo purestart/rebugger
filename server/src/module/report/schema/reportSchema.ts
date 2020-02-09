@@ -234,6 +234,11 @@ export default function(sequelize: any, DataTypes: any) {
         allowNull: true,
         comment:"保留字段"
       },
+      env: {
+        type: DataTypes.STRING(128),
+        allowNull: true,
+        comment:"环境 dev 开发 test pre pro"
+      },
       resolveStatus:{
         type: DataTypes.INTEGER,
         allowNull: true,

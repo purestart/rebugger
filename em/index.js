@@ -267,7 +267,8 @@ export default rebugger;
   // 异常上报模式 onError 立即上报 byDay 按天上报 onErrorOffline 立即上报但支持线下缓存
   let reportMode = "onError";
 
-  var script = document.querySelector("#rebugger");
+  // var script = document.querySelector("#rebugger");
+  var script = document.getElementById("front-logger");
   if (script) {
     apikey = script.getAttribute("apikey");
     let useCustomFieldStr = script.getAttribute("useCustomField");

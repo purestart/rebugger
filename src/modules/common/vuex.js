@@ -82,18 +82,6 @@ let tmpMenus = [
     isVisible: 1,
     children: [
       {
-        id: 991,
-        parentId: 99,
-        children: [],
-        name: "日志信息",
-        icon: null,
-        sortNo: 3,
-        menuUrl: "/report/errorInfo/tab/info",
-        menuType: 0,
-        applicationId: 81,
-        isVisible: 1
-      },
-      {
         id: 992,
         parentId: 99,
         children: [],
@@ -104,43 +92,19 @@ let tmpMenus = [
         menuType: 0,
         applicationId: 81,
         isVisible: 1
+      },
+      {
+        id: 991,
+        parentId: 99,
+        children: [],
+        name: "日志信息",
+        icon: null,
+        sortNo: 3,
+        menuUrl: "/report/errorInfo/tab/info",
+        menuType: 0,
+        applicationId: 81,
+        isVisible: 1
       }
-      // {
-      //   id: 993,
-      //   parentId: 99,
-      //   children: [],
-      //   name: "TreeTable",
-      //   icon: null,
-      //   sortNo: 3,
-      //   menuUrl: "/table",
-      //   menuType: 0,
-      //   applicationId: 81,
-      //   isVisible: 1
-      // }
-      // {
-      //   id: 994,
-      //   parentId: 99,
-      //   children: [],
-      //   name: "地图选址",
-      //   icon: null,
-      //   sortNo: 3,
-      //   menuUrl: "/table",
-      //   menuType: 0,
-      //   applicationId: 81,
-      //   isVisible: 1
-      // },
-      // {
-      //   id: 999,
-      //   parentId: 99,
-      //   children: [],
-      //   name: "文件上传",
-      //   icon: null,
-      //   sortNo: 3,
-      //   menuUrl: "/table",
-      //   menuType: 0,
-      //   applicationId: 81,
-      //   isVisible: 1
-      // }
     ]
   },
   {
@@ -153,18 +117,18 @@ let tmpMenus = [
     applicationId: 81,
     isVisible: 1,
     children: [
-      {
-        id: 881,
-        parentId: 88,
-        children: [],
-        name: "综合图表",
-        icon: null,
-        sortNo: 3,
-        menuUrl: "/chart",
-        menuType: 0,
-        applicationId: 81,
-        isVisible: 1
-      },
+      // {
+      //   id: 881,
+      //   parentId: 88,
+      //   children: [],
+      //   name: "综合图表",
+      //   icon: null,
+      //   sortNo: 3,
+      //   menuUrl: "/chart",
+      //   menuType: 0,
+      //   applicationId: 81,
+      //   isVisible: 1
+      // },
       {
         id: 882,
         parentId: 88,
@@ -172,7 +136,7 @@ let tmpMenus = [
         name: "设备统计",
         icon: null,
         sortNo: 3,
-        menuUrl: "/chart",
+        menuUrl: "/stat/device",
         menuType: 0,
         applicationId: 81,
         isVisible: 1

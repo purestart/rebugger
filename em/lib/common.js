@@ -18,14 +18,40 @@ var utils = {
       url: this.getLocalUrl(),
       online: this.getNetStatus()
     };
+    let envInfo = this.getEnv();
     let ret = Object.assign(
       {},
       screenInfo,
       languageInfo,
       getSysInfo,
-      agentInfo
+      agentInfo,
+      envInfo
     );
     return ret;
+  },
+  getEnv: function() {
+    let envInfo = {
+      env: "pro"
+    };
+    let domain = document.domain;
+    let arr = domain.split(".");
+    if (
+      domain === "127.0.0.1" ||
+      domain === "localhost" ||
+      arr[0].indexOf("dev") != -1
+    ) {
+      // 开发环境
+      envInfo.env = "dev";
+    }
+    if (arr[0].indexOf("test") != -1) {
+      // 测试环境禁用
+      envInfo.env = "test";
+    }
+    if (arr[0].indexOf("pre") != -1) {
+      // 预发布环境禁用
+      envInfo.env = "pre";
+    }
+    return envInfo;
   },
   getScreen: function() {
     // var screen = {};

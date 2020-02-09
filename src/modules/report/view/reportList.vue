@@ -40,6 +40,16 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="环境类型:" prop="env">
+          <el-select v-model="dataForm.env" placeholder="请选择" clearable>
+            <el-option
+              v-for="(item, index) in $c.options.envInfo"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="申请日期:">
           <el-date-picker
             clearable
@@ -278,7 +288,7 @@ export default {
         if (retainNameConfig && retainNameConfig.length > 5) {
           retainNameConfig = JSON.parse(retainNameConfig);
           retainNameConfig.fieldName = "retainName";
-          dynamicSearchForm[retainNameConfig] = retainNameConfig;
+          dynamicSearchForm["retainName"] = retainNameConfig;
           // console.log(retainNameConfig);
           let retainNameColumn = columns.find(
             item => item.prop == "retainName"
@@ -296,7 +306,7 @@ export default {
         if (retainIdConfig && retainIdConfig.length > 5) {
           retainIdConfig = JSON.parse(retainIdConfig);
           retainIdConfig.fieldName = "retainId";
-          dynamicSearchForm[retainIdConfig] = retainIdConfig;
+          dynamicSearchForm["retainId"] = retainIdConfig;
           // console.log(retainNameConfig);
           let retainNameColumn = columns.find(
             item => item.prop == "retainId"
@@ -314,7 +324,7 @@ export default {
         if (retainFieldConfig && retainFieldConfig.length > 5) {
           retainFieldConfig = JSON.parse(retainFieldConfig);
           retainFieldConfig.fieldName = "retainField";
-          dynamicSearchForm[retainFieldConfig] = retainFieldConfig;
+          dynamicSearchForm["retainField"] = retainFieldConfig;
           // console.log(retainNameConfig);
           let retainNameColumn = columns.find(
             item => item.prop == "retainField"
