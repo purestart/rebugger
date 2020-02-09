@@ -1,0 +1,365 @@
+/**
+ *  2017/8/4.
+ */
+@import "./vars";
+/* 改变element-ui默认主题变量 */
+/*主色*/
+$--color-primary: $color-primary;
+$--color-success: $color-success;
+$--color-warning: $color-warning;
+$--color-danger: $color-danger;
+$--color-info: $color-info;
+$--input-border-color: $border-color;
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+@import "~element-ui/packages/theme-chalk/src/index";
+
+#app {
+  /*覆盖主题样式*/
+  // tabs页
+
+  .tab-view-container {
+    .el-tabs__header .el-tabs__item .el-icon-close {
+      position: absolute;
+      font-size: 12px;
+      // width: 0;
+      height: 14px;
+      vertical-align: middle;
+      line-height: 15px;
+      overflow: hidden;
+      top: 1px;
+      right: 1px;
+      transform-origin: 100% 50%;
+      transition: none;
+    }
+
+    .el-tabs__header .el-tabs__item.is-closable:hover .el-icon-close,
+    .el-tabs__header .el-tabs__item.is-active.is-closable .el-icon-close {
+      width: 14px;
+    }
+
+    .el-tabs--border-card>.el-tabs__header .el-tabs__item {
+      -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      border: 1px solid transparent;
+      border-right-color: #dcdfe6;
+      border-left-color: #dcdfe6;
+      margin: 0px 5px;
+      background-color: #dfdfdf;
+      color: #2d2d2d;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      transition: none;
+
+      &.is-active {
+        background-color: $color-primary;
+        color: #ffffff;
+        border-right-color: $color-primary;
+        border-left-color: $color-primary;
+      }
+    }
+
+    .el-tabs--border-card>.el-tabs__header {
+      background-color: transparent;
+      border-bottom: 0px solid #e4e7ed;
+      margin: 0;
+    }
+
+    .el-tabs--border-card {
+      background-color: transparent;
+    }
+
+    .el-tabs--border-card>.el-tabs__header .el-tabs__item:first-child {
+      margin-left: 0px;
+    }
+
+    // .el-tabs__header .el-tabs__item.is-closable:hover{
+    //   padding: 0 13px;
+    // }
+    .el-tabs--border-card {
+      box-shadow: none;
+      border: 0;
+    }
+
+    .el-tabs__nav-wrap {
+      margin-bottom: 0;
+    }
+
+    .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-focus {
+      box-shadow: none;
+    }
+  }
+
+  // 卡片
+  .el-card {
+
+    //margin: 10px 0;
+    .el-card__header {
+      font-size: 16px;
+    }
+  }
+
+  .el-card.p {
+    border-top: 3px solid $color-primary;
+  }
+
+  .el-card.s {
+    border-top: 3px solid $color-success;
+  }
+
+  .el-card.d {
+    border-top: 3px solid $color-danger;
+  }
+
+  .el-card.w {
+    border-top: 3px solid $color-warning;
+  }
+
+  .el-card.i {
+    border-top: 3px solid $color-info;
+  }
+
+  .el-card.flex {
+    display: flex;
+    flex-direction: column;
+
+    .el-card__body {
+      flex: auto;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .el-collapse {
+    .el-collapse-item__header {
+      font-size: 14px;
+    }
+  }
+
+  .el-tag {
+    .el-input {
+      width: auto;
+      margin-left: 5px;
+
+      input {
+        height: 22px;
+        line-height: 22px;
+        width: 60px;
+        padding: 0 5px;
+      }
+    }
+  }
+
+  .vue-grid-item.vue-grid-placeholder {
+    background-color: $color-danger;
+  }
+}
+
+// 表单样式
+.el-form {
+  display: flex;
+  flex-wrap: wrap;
+
+  .el-form-item {
+    flex: 0 1 50%;
+  }
+
+  .el-form-item[type="daterange"],
+  .el-form-item[type="checkbox"],
+  .el-form-item[type="checkboxbutton"],
+  .el-form-item[type="radio"],
+  .el-form-item[type="radiobutton"] {
+    flex: 0 1 100%;
+  }
+
+  .el-select,
+  .el-range-editor,
+  .el-date-editor,
+  .el-cascader,
+  .el-date-editor .el-range-input {
+    width: 100%;
+  }
+
+  .el-form-item[type="slider"] .el-form-item__content>div {
+    margin: 0 10px;
+
+    .el-slider__runway {
+      margin: 13px 0;
+    }
+  }
+
+  .el-rate {
+    height: 32px;
+    display: flex;
+    align-items: center;
+  }
+
+  .action {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .el-checkbox {
+    margin-right: 30px;
+    margin-left: 0;
+  }
+}
+
+.el-form.full-width {
+  display: block;
+}
+
+.el-form.el-form--inline {
+  .el-form-item {
+    margin-right: 16px;
+    margin-bottom: 10px;
+    flex: none;
+  }
+
+  .el-form-item__label {
+    padding-right: 10px;
+    width: inherit !important;
+  }
+
+  .el-input {
+    width: 180px;
+  }
+
+  .action {
+    height: 32px;
+    width: inherit;
+    flex: none;
+    margin: 0 0 10px;
+    justify-content: center;
+
+    .el-button {
+      padding: 9px;
+    }
+  }
+}
+
+// 弹窗的表单调整一下样式
+.el-dialog {
+  .el-dialog__header {
+    padding: 10px 20px !important;
+    background-color: $color-primary !important;
+
+    .el-dialog__title {
+      color: #ffffff;
+      font-size: 16px;
+    }
+
+    .el-dialog__close {
+      color: #ffffff !important;
+    }
+
+    .el-dialog__headerbtn {
+      top: 10px !important;
+    }
+  }
+
+  //无标题弹窗
+  &.no-padding {
+    .el-dialog__header {
+      padding: 0px !important;
+
+      .el-dialog__headerbtn {
+        z-index: 666 !important;
+      }
+
+      .el-dialog__close {
+        color: #909399 !important;
+      }
+    }
+  }
+
+  .el-dialog__footer {
+    padding-bottom: 16px;
+  }
+
+  .el-dialog__body {
+    padding: 10px 20px;
+  }
+
+  .div {
+    padding: 0 10px;
+    border-radius: 0;
+    border: 0 !important;
+    border-bottom: 1px solid $--input-border-color !important;
+  }
+
+  .el-card {
+    border: 0;
+    padding: 0;
+    border-radius: 0;
+
+    .el-card__body {
+      padding: 0;
+    }
+  }
+
+  .action {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 6px;
+  }
+}
+
+/*自定义样式*/
+.div {
+  background-color: $color-white;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+}
+
+.tip {
+  padding: 10px;
+  border-left: 5px solid darken($color-warning, 10%);
+  background: $color-warning;
+  border-radius: 4px;
+  color: $color-white;
+}
+
+.f-b {
+  font-weight: bold;
+}
+
+.dialog-popover {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.vue-grid-item>div,
+.vue-grid-item .root {
+  height: 100%;
+}
+
+//表格样式
+.el-table .el-table__header th {
+
+  background: #f6f6f6;
+}
+
+.is-round {
+  background: $color-warning;
+  color: $color-white;
+}
+
+.no-data {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  color: $color-nodata;
+}
+
+.login-box {
+  .el-input__inner {
+    padding-left: 30px !important;
+  }
+
+  .el-input__prefix {
+    line-height: 40px;
+  }
+}

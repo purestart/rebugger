@@ -1,3 +1,0 @@
-    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
-    <script src="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb.min.js"></script>
-    <script id="rebugger"  apikey="sdbauikbhuebjk_dsjk" src="/static/assets/external/js/rebugger.min.js"></script>

@@ -1,0 +1,7 @@
+// 查询表行数 统计总数
+select table_schema,table_name,table_type,table_rows from information_schema.tables where table_schema='rebugger_db' and table_name='report';
+// 今日数量
+
+// 今日日志数
+
+// 今日bug数

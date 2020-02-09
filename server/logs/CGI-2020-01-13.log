@@ -1,4 +1,0 @@
-2020-01-13 09:49:17 [error] /api/auth/login: Unknown column 'org_name' in 'field list': Unknown column 'org_name' in 'field list' Method: POST {"companyCode":"oristar","userName":"purestart","password":"46f94c8de14fb36680850768ff1b7f2a"} {}
-2020-01-13 15:01:23 [error] /api/dashboard/statInfo: Unknown column 'report.$and' in 'where clause': Unknown column 'report.$and' in 'where clause' Method: POST {} {}
-2020-01-13 17:42:52 [error] /api/dashboard/statInfo: Invalid value { type: [ 'info', 'warning' ] }:  Method: POST {} {}
-2020-01-13 17:43:38 [error] /api/dashboard/statInfo: Invalid value { type: 'info' }:  Method: POST {} {}

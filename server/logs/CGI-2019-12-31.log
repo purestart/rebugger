@@ -1,8 +1,0 @@
-2019-12-31 15:17:12 [undefined] error: notNull Violation: project.name cannot be null,
-notNull Violation: project.code cannot be null:  /project/createOrUpdate POST {"apikey":"b402fd20-262d-11ea-8a78-557d3d32d13c","domain":"localhost,127.0.0.1"} {}
-2019-12-31 15:19:01 [error] undefined: notNull Violation: project.name cannot be null,
-notNull Violation: project.code cannot be null:  /project/createOrUpdate POST {"apikey":"b402fd20-262d-11ea-8a78-557d3d32d13c","domain":"localhost,127.0.0.1"} {}
-2019-12-31 15:19:45 [error] /project/createOrUpdate: notNull Violation: project.name cannot be null,
-notNull Violation: project.code cannot be null:  POST {"apikey":"b402fd20-262d-11ea-8a78-557d3d32d13c","domain":"localhost,127.0.0.1"} {}
-2019-12-31 15:20:32 [error] /project/createOrUpdate: notNull Violation: project.name cannot be null,
-notNull Violation: project.code cannot be null:  Method: POST {"apikey":"b402fd20-262d-11ea-8a78-557d3d32d13c","domain":"localhost,127.0.0.1"} {}
