@@ -32,7 +32,7 @@
 
 解决github图片不显示问题
 
-解决方法，打开路径C:\Windows\System32\drivers\etc下的hosts文件
+解决方法，打开路径C:\Windows\System32\drivers\etc下的hosts文件 添加如下地址
 ```
 # GitHub Start 
 192.30.253.112 github.com
