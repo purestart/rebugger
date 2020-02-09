@@ -8,6 +8,8 @@
 
 > rebugger-schedule: 定时任务项目 用于报表统计等任务开发
 
+项目已在公司多项目中实践，已收集百万异常数据和日志数据
+
 ## 项目控制台截图
 
 <img src="https://gitee.com/_pure/codes/dn4u2bw65zxemfklcao9i45/raw?blob_name=rebugger1.png" >
