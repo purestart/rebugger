@@ -127,17 +127,30 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 
 ## 安装部署
 
-## Build Setup
+## Changelog
 
-```bash
-# install dependencies
-npm install
+### 2019.07.18
 
-# serve with hot reload at localhost:8080
-npm run dev
+> v0.0.1 \* 初始化项目
 
-# build for production with minification
-npm run build
-```
+### 2019.08.01
+
+> v0.0.1 \* rebugger-embed 开发完成
+
+### 2019.08.12
+
+> v0.0.1 \* rebugger-server 和 rebugger-admin 开发完成
+
+### 2019.08.20
+
+> v0.0.1 \* 项目开始应用于生产
+
+### 2019.10.15
+
+> v0.0.2 \* 更新异常上传方式和rebugger-schedule
+
+### 2019.12.15
+
+> v0.1.1 \* 开始迁移到github,开源此项目
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
