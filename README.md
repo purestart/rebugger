@@ -93,6 +93,34 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 ```
 修改hosts文件后，刷新githab页面
 
+## 埋点属性
+  埋点属性提供了apikey 、环境禁用设置、异常上传模式、自定义字段收集等配置信息
+> 属性配置方式，只需要将配置script标签属性即可 例如：
+```
+  <script id="rebugger" useCustomField="true" silentDev="false" reportMode="onError" apikey="API-KEY" src="/static/js/front_rebugger.min.js" crossorigin="anonymous"></script>
+```
+> 动态接入属性配置 通过setAttribute方法配置埋点属性 例如
+```
+<script type="text/javascript">
+
+function loadScript(url, apikey) {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = url;
+    script.setAttribute("id", "rebugger");
+    script.setAttribute("apikey", apikey);
+    script.setAttribute("reportMode", "onError");
+    document.body.appendChild(script);
+}
+
+loadScript("/static/js/front_rebugger.min.js", "API-KEY")
+</script>
+```
+
+## 上报接口
+
+## 安装部署
+
 ## Build Setup
 
 ```bash
