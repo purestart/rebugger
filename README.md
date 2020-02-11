@@ -153,4 +153,8 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 
 > v0.1.1 \* 开始迁移到github,开源此项目
 
+### 2020.2.9
+
+> v0.1.3 \* 拆分项目
+
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
