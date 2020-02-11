@@ -15,7 +15,7 @@
 > 静态文件脚本接入
 
 ```
-<script id="rebugger" useCustomField="true" silentDev="false" reportMode="onError" apikey="9638ef8d-4f4d-4c31-b952-d9947f7054b1" src="/static/js/front_rebugger.min.js" crossorigin="anonymous"></script>
+<script id="rebugger" useCustomField="true" silentDev="false" reportMode="onError" apikey="API-KEY" src="/static/js/front_rebugger.min.js" crossorigin="anonymous"></script>
 ```
 > 动态接入
 
