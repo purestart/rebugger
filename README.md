@@ -1,12 +1,12 @@
 ## 项目说明
 
 > rebugger-embed: 埋点项目
-```
+
     可以收集系统捕获异常和手动上报数据、其中异常包括 unCaught 自动捕获js异常、
     接口异常、静态资源加载异常、httpError 请求异常 unhandledRejection 未处理promise异常 
     handledRejection 已处理promise异常 caught 手动上报异常 warn 手动上报警告信息 
     info 手动上报日志信息
-```
+    
 > rebugger-service: 接口服务项目
 
     所用技术 koa2 + typescript + mysql + redis + sequelize + jwt + pm2 + memory-cache(本地缓存和redis可以随时切换)
