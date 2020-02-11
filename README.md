@@ -2,11 +2,19 @@
 
 > rebugger-embed: 埋点项目
 
+  可以收集系统捕获异常和手动上报数据、其中异常包括 unCaught 自动捕获js异常、接口异常、静态资源加载异常、httpError 请求异常 unhandledRejection 未处理promise异常 handledRejection 已处理promise异常 caught 手动上报异常 warn 手动上报警告信息 info 手动上报日志信息
+
 > rebugger-service: 接口服务项目
+
+    所用技术 koa2 + typescript + mysql + redis + sequelize + jwt + pm2 + memory-cache(本地缓存和redis可以随时切换)
 
 > rebugger-admin:  控制台项目
 
+    vue2 + vuex + vue-router + element-ui + echarts 等技术
+
 > rebugger-schedule: 定时任务项目 用于报表统计等任务开发
+
+    待补充、可用于用于分析、浏览器设备占比分析、地区分析、操作系统分析、屏幕大小占比分析、等前端决策性数据
 
 项目已在公司多项目中实践，已收集百万异常数据和日志数据
 
