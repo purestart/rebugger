@@ -271,7 +271,7 @@ export default logger;
   let reportMode = "onError";
 
   // var script = document.querySelector("#logger");
-  var script = document.getElementById("front-logger");
+  var script = document.getElementById("rebugger");
   if (script) {
     apikey = script.getAttribute("apikey");
     let useCustomFieldStr = script.getAttribute("useCustomField");
@@ -332,7 +332,7 @@ export default logger;
       logger.options.customField = JSON.parse(customField);
     }
   } else {
-    console.warn("script should be set id = 'front-logger'");
+    console.warn("script should be set id = 'rebugger'");
     return;
   }
 
