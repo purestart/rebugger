@@ -116,6 +116,12 @@ function loadScript(url, apikey) {
 loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 </script>
 ```
+> 埋点属性
+
+| params  | Type   | Description                                 |
+| ------- | ------ | ------------------------------------------  |
+| id      | String | 必填, 且值为rebugger                        |
+| apikey  | String | 必填, 用于项目区分，不同项目apikey不一样     |
 
 ## 上报接口
 
