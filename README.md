@@ -39,7 +39,7 @@ function loadScript(url, apikey) {
     script.type = "text/javascript";
     script.src = url;
     script.setAttribute("id", "rebugger");
-    script.setAttribute("id", "rebugger");
+    script.setAttribute("apikey", apikey);
     script.setAttribute("reportMode", "onError");
     document.body.appendChild(script);
 }
