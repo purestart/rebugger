@@ -130,6 +130,35 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 | useCustomField  | Boolean | 选填默认false, 是否收集自定义字段，保存在metaData里面     |
 | customField  | Object | 选填, 通过埋点设置必须是json字符串建议在埋点后script标签里面定义，配置的数据将被保存在metaData字段里面     |
 
+> 其它配置属性
+
+| params  | Type    | Description                                 |
+| ------- | ------  | ------------------------------------------  |
+| reportNum      | Number  | 选填默认10, byNum上传模式满n个上传数据，缓解服务端压力      |
+| reportNum      | Number  | 选填默认10, byNum上传模式满n个上传数据，缓解服务端压力      |
+| limitNum      | Number  | 选填默认20, byDay上传模式默认超过20个会主动上传数据    |
+| baseUrl      | String  | 选填默认http://localhost:9090,定义上报服务器地址   |
+| customField      | Object  | 选填和埋点属性同一个属性, 自定义保存字段 数据将会保存在metaData里面 origin: localStorage / sessionStorage / window / cookie 不能获取跨域信息 需要将js文件下载    |
+
+    <script id="rebugger" useCustomField="true" silentDev="false" reportMode="onError" apikey="API-KEY" src="/static/js/rebugger_logger.min.js"></script>
+    // 定义属性配置
+    <script>
+        if(Rebugger){
+            // 配置自定义上报字段 这些字段将会以JSON字符串的形式保存在metaDta字段里
+            Rebugger.default.options.customField = {
+                userName: {
+                    origin: "localStorage",
+                    paths: "user.userName"
+                },
+                userId: {
+                    origin: "localStorage",
+                    paths: "user.id"
+                }
+            }
+            Rebugger.default.options.baseUrl = "http://xxx...";
+        }
+    </script>
+
 ## 上报接口
 
 ## 安装部署
