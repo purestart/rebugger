@@ -118,10 +118,17 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 ```
 > 埋点属性
 
-| params  | Type   | Description                                 |
-| ------- | ------ | ------------------------------------------  |
-| id      | String | 必填, 且值为rebugger                        |
-| apikey  | String | 必填, 用于项目区分，不同项目apikey不一样     |
+| params  | Type    | Description                                 |
+| ------- | ------  | ------------------------------------------  |
+| id      | String  | 必填, 且值为rebugger                        |
+| apikey  | String  | 必填, 用于项目区分，不同项目apikey不一样     |
+| silent  | Boolean | 选填默认false, 如果为true,禁用rebugger不收集任何数据             |
+| silentDev  | Boolean | 选填默认false, 如果为true,不再收集开发环境的错误             |
+| silentTest  | Boolean | 选填默认false, 如果为true,不再收集测试环境的错误             |
+| silentPre  | Boolean | 选填默认false, 如果为true,不再收集预发布环境的错误             |
+| reportMode  | String | 选填默认onError, 异常上传模式 onError 立即上传 byNum 按天存储满多少个上传 byDay 按天上传 onErrorOffline 立即上报且支持线下缓存             |
+| useCustomField  | Boolean | 选填默认false, 是否收集自定义字段，保存在metaData里面     |
+| customField  | Object | 选填, 通过埋点设置必须是json字符串建议在埋点后script标签里面定义，配置的数据将被保存在metaData字段里面     |
 
 ## 上报接口
 
