@@ -206,6 +206,26 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 
    OSLogger.default.reportHandledRejection(errorInfo);
 
+> errorInfo 字段信息对照
+
+```
+  // 异常字段
+  ReportFieldV = {
+    日志名称: "name",
+    异常信息: "message",
+    异常堆栈: "stack",
+    异常文件: "fileName",
+    所在文件行: "lineNumber",
+    所在文件列: "columnNumber",
+    其它信息: "metaData",
+    异常组件: "componentName",
+    组件参数: "propsData",
+    资源接口地址: "src",
+    状态码: "status",
+    状态内容: "statusText",
+  }
+```
+
 ## 安装部署
 
 > rebugger-embed
