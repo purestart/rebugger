@@ -24,14 +24,20 @@
 
 ## 埋点接入
 
-> 静态文件脚本接入
+> 静态文件脚本引入
 
 ```
+// 获取城市信息 必须引入
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+// 埋点引入
 <script id="rebugger" useCustomField="true" silentDev="false" reportMode="onError" apikey="API-KEY" src="/static/js/front_rebugger.min.js" crossorigin="anonymous"></script>
 ```
-> 动态接入
+> 动态引入
 
 ```
+// 获取城市信息 必须引入
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+// 动态埋点引入
 <script type="text/javascript">
 
 function loadScript(url, apikey) {
@@ -161,7 +167,67 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 
 ## 上报接口
 
+> 代码中主动上报 使用全局Rebugger对象
+
+```
+    // 使用日志对象时必须先判断该对象是否存在
+    if ( Rebugger ) {
+        ...
+        Rebugger.default.上报方法(上报信息对象);
+    }
+    // 安全使用 添加try catch
+    try {
+        if ( Rebugger ) {
+        ...
+        Rebugger.default.上报方法(上报信息对象);
+        }
+    } catch (error) {
+        
+    }
+```
+
+> 1、日志收集
+
+      OSLogger.default.reportInfo(errorInfo);
+
+> 2、警告信息
+
+     OSLogger.default.reportWarning(errorInfo);
+
+> 3、http请求异常
+
+    OSLogger.default.reportHttpError(errorInfo);
+
+> 4、js异常收集
+
+   OSLogger.default.reportError(errorInfo);
+
+> 5、promise异常上报
+
+   OSLogger.default.reportHandledRejection(errorInfo);
+
 ## 安装部署
+
+> rebugger-embed
+
+        打包埋点文件 npm run build:em
+
+> rebugger-admin
+
+        npm install
+        npm run dev
+        npm run build
+
+> rebugger-service 和 rebugger-schedule
+
+        npm run serve 开始调试模式
+        部署模式需要环境全局安装pm2
+        npm install -g pm2 // 安装pm2
+        npm run restart:dev // 部署到开发环境
+        npm run restart:test // 部署到测试环境
+        npm run restart:prod // 部署到生产环境
+
+
 
 ## Changelog
 

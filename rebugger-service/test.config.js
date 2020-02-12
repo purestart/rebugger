@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "front-logger-server",
+      name: "rebugger-server",
       script: "server/build/app.js",
       // watch: true,
       // watch: [

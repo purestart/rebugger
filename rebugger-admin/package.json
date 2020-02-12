@@ -1,8 +1,8 @@
 {
-  "name": "front-logger",
+  "name": "rebugger-admin",
   "version": "0.1.3",
   "author": "purestart <522382456@qq.com>",
-  "description": "front-logger",
+  "description": "rebugger-admin",
   "private": false,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -14,8 +14,8 @@
     "tsc": "tsc",
     "serve": "ts-node-dev --respawn --transpileOnly ./server/app.ts",
     "serve:node": "npm run tsc && node server/build/app.js",
-    "serve:pm2": "npm run tsc && cross-env NODE_ENV=prod pm2 start server/build/app.js -i 2 --name front-logger-server -e log/error.log",
-    "stop": "pm2 delete front-logger-server",
+    "serve:pm2": "npm run tsc && cross-env NODE_ENV=prod pm2 start server/build/app.js -i 2 --name rebugger-server -e log/error.log",
+    "stop": "pm2 delete rebugger-server",
     "restart": "npm run stop && npm run serve:pm2"
   },
   "dependencies": {
