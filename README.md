@@ -129,12 +129,12 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 | reportMode  | String | 选填默认onError, 异常上传模式 onError 立即上传 byNum 按天存储满多少个上传 byDay 按天上传 onErrorOffline 立即上报且支持线下缓存             |
 | useCustomField  | Boolean | 选填默认false, 是否收集自定义字段，保存在metaData里面     |
 | customField  | Object | 选填, 通过埋点设置必须是json字符串建议在埋点后script标签里面定义，配置的数据将被保存在metaData字段里面     |
+| silentVideo  | Boolean | 选填默认false, 是否开启视频录制, 异常场景还原, 该功能待开发,  |
 
 > 其它配置属性
 
 | params  | Type    | Description                                 |
 | ------- | ------  | ------------------------------------------  |
-| reportNum      | Number  | 选填默认10, byNum上传模式满n个上传数据，缓解服务端压力      |
 | reportNum      | Number  | 选填默认10, byNum上传模式满n个上传数据，缓解服务端压力      |
 | limitNum      | Number  | 选填默认20, byDay上传模式默认超过20个会主动上传数据    |
 | baseUrl      | String  | 选填默认http://localhost:9090,定义上报服务器地址   |
