@@ -30,7 +30,8 @@
 // 获取城市信息 必须引入
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 // 埋点引入
-<script id="rebugger" useCustomField="true" silentDev="false" reportMode="onError" apikey="API-KEY" src="/static/js/front_rebugger.min.js" crossorigin="anonymous"></script>
+<script id="rebugger" useCustomField="true" silentDev="false" reportMode="onError" apikey="API-KEY"
+ src="/static/js/front_rebugger.min.js" crossorigin="anonymous"></script>
 ```
 > 动态引入
 
@@ -188,23 +189,23 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 
 > 1、日志收集
 
-      OSLogger.default.reportInfo(errorInfo);
+      Rebugger.default.reportInfo(errorInfo);
 
 > 2、警告信息
 
-     OSLogger.default.reportWarning(errorInfo);
+     Rebugger.default.reportWarning(errorInfo);
 
 > 3、http请求异常
 
-    OSLogger.default.reportHttpError(errorInfo);
+    Rebugger.default.reportHttpError(errorInfo);
 
 > 4、js异常收集
 
-   OSLogger.default.reportError(errorInfo);
+   Rebugger.default.reportError(errorInfo);
 
 > 5、promise异常上报
 
-   OSLogger.default.reportHandledRejection(errorInfo);
+   Rebugger.default.reportHandledRejection(errorInfo);
 
 > errorInfo 字段信息对照
 
