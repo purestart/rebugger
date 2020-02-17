@@ -201,11 +201,11 @@ loadScript("/static/js/front_rebugger.min.js", "API-KEY")
 
 > 4、js异常收集
 
-   Rebugger.default.reportError(errorInfo);
+    Rebugger.default.reportError(errorInfo);
 
 > 5、promise异常上报
 
-   Rebugger.default.reportHandledRejection(errorInfo);
+    Rebugger.default.reportHandledRejection(errorInfo);
 
 > errorInfo 字段信息对照
 
